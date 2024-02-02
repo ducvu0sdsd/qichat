@@ -17,7 +17,7 @@ export default function Home() {
         <div className='w-[600px] flex flex-col items-start gap-[1rem]'>
           <span className='rounded-[20px] font-semibold text-[white] bg-[#FFB800] px-[1.5rem] py-[0.5rem]'>Hello My Family!!!</span>
           <h1 className='text-[50px] text-[white] leading-[65px] font-semibold'>
-            It's A Good Platform For Message Sharing
+            {"It's A Good Platform For Message Sharing"}
           </h1>
           <span className='text-[white] border-[white] border-l-[4px] text-[20px] pl-[0.5rem]'>Helps you connect with people, share knowledge and experiences.</span>
           <button className='px-[1rem] py-[0.5rem] rounded-full text-[15px] text-[white] font-semibold bg-[#FFB800]'>START FREE</button>
