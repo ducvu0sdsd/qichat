@@ -48,25 +48,25 @@ const VideoRoom = ({ setJoined, joined }) => {
         await client.leave();
     };
 
-    useEffect(() => {
-        if (currentTracks && currentUser) {
-            if (mute) {
-                currentUser.audioTrack.stop()
-            } else {
-                currentUser.audioTrack.play()
-            }
-        }
-    }, [mute])
+    // useEffect(() => {
+    //     if (currentTracks && currentUser) {
+    //         if (mute) {
+    //             currentUser.audioTrack.stop()
+    //         } else {
+    //             currentUser.audioTrack.play()
+    //         }
+    //     }
+    // }, [mute])
 
-    useEffect(() => {
-        if (currentUser && currentTracks) {
-            if (!cam) {
-                currentUser.videoTrack.stop()
-            } else {
-                currentUser.videoTrack.play()
-            }
-        }
-    }, [cam])
+    // useEffect(() => {
+    //     if (currentUser && currentTracks) {
+    //         if (!cam) {
+    //             currentUser.videoTrack.stop()
+    //         } else {
+    //             currentUser.videoTrack.play()
+    //         }
+    //     }
+    // }, [cam])
 
 
     useEffect(() => {
@@ -103,22 +103,22 @@ const VideoRoom = ({ setJoined, joined }) => {
                 ))}
             </div>
             <div className='w-full flex justify-center items-center gap-2 h-[60px]'>
-                <button onClick={() => setMute(!mute)} style={{ backgroundColor: mute && '#999', color: mute ? 'white' : '#999', border: mute ? '0px' : '1px solid #999' }} className={`h-[50px] w-[50px] flex items-center justify-center text-[white] rounded-full`}>
+                {/* <button onClick={() => setMute(!mute)} style={{ backgroundColor: mute && '#999', color: mute ? 'white' : '#999', border: mute ? '0px' : '1px solid #999' }} className={`h-[50px] w-[50px] flex items-center justify-center text-[white] rounded-full`}>
                     {
                         mute ?
                             (<i className='bx bx-microphone-off text-[20px]'></i>)
                             :
                             (<i className='bx bx-microphone text-[20px]'></i>)
                     }
-                </button>
-                <button onClick={() => setCam(!cam)} style={{ backgroundColor: !cam && '#999', color: !cam ? 'white' : '#999', border: !cam ? '0px' : '1px solid #999' }} className={`h-[50px] w-[50px] flex items-center justify-center text-[white] rounded-full`}>
+                </button> */}
+                {/* <button onClick={() => setCam(!cam)} style={{ backgroundColor: !cam && '#999', color: !cam ? 'white' : '#999', border: !cam ? '0px' : '1px solid #999' }} className={`h-[50px] w-[50px] flex items-center justify-center text-[white] rounded-full`}>
                     {
                         !cam ?
                             (<i className='bx bx-camera-off text-[20px]'></i>)
                             :
                             (<i className='bx bx-camera text-[20px]'></i>)
                     }
-                </button>
+                </button> */}
                 <a href='/adding'>
                     <button onClick={() => setJoined(false)} className='h-[50px] w-[50px] flex items-center justify-center bg-[#e52929] text-[white] rounded-full'>
                         <i className='bx bx-phone text-[20px]'></i>
