@@ -79,14 +79,7 @@ const VideoRoom = ({ setJoined, joined }) => {
 
     return (
         <div className={`w-[100%] h-full flex flex-col gap-3 py-[1rem]`}>
-            {/* <div className={`w-[100%] h-full grid grid-cols-${handleResizeScreenByNumberOfParticipants(users.length)} gap-[10px] px-[2rem] justify-items-center justify-center items-center`}>
-                {users.map((user) => (
-                    <div key={user.uid} className='w-[100%] h-[100%] rounded-lg overflow-hidden'>
-                        <VideoPlayer user={user} />
-                    </div>
-                ))}
-            </div> */}
-            <div className='w-[100%] h-full'>
+            <div style={{ gridTemplateColumns: handleResizeScreenByNumberOfParticipants(users.length) }} className={`w-[100%] h-full grid gap-[10px] px-[2rem] justify-items-center justify-center items-center`}>
                 {users.map((user) => (
                     <div key={user.uid} className='w-[100%] h-[100%] rounded-lg overflow-hidden'>
                         <VideoPlayer user={user} />
