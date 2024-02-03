@@ -9,7 +9,7 @@ const AddingPage = () => {
     return (
         <div className='w-full flex flex-col items-center justify-center h-screen' >
             {!joined && (<button onClick={() => setJoined(true)}>Join</button>)}
-            {joined && (<VideoRoom setJoined={setJoined} />)}
+            {joined && (<VideoRoom setJoined={setJoined} joined={joined} />)}
         </div>
     )
 }
