@@ -6,7 +6,7 @@ const PrivateLayout = ({ children }) => {
     return (
         <section className='flex'>
             <PrivateNavbar />
-            <div>
+            <div className='w-full'>
                 {children}
             </div>
         </section>

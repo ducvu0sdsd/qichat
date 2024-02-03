@@ -8,12 +8,11 @@ export const VideoPlayer = ({ user }) => {
     }, []);
 
     return (
-        <div>
-            Uid: {user.uid}
-            <div
-                ref={ref}
-                style={{ width: '200px', height: '200px' }}
-            ></div>
+        <div
+            className='w-[100%] h-[100%] relative'
+            ref={ref}
+        >
+            <span className='absolute bottom-2 left-3 text-[white] font-medium'>Participant</span>
         </div>
     );
 };

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import AgoraRTC from 'agora-rtc-sdk-ng'
 import { VideoPlayer } from './videoPlayer'
+import { handleResizeScreenByNumberOfParticipants } from '@/utils/call'
 
 const APP_ID = '8a94359d703244a88967b428b483d7a4'
 const TOKEN = '007eJxTYOh+X/Jw8acj89fw52tJx58VLixckVXlcuRUytoFG9hjz6spMFgkWpoYm1qmmBsYG5mYJFpYWJqZJ5kYWSSZWBinmCeaeP3dm9oQyMhQd3guMyMDBIL4bAyFmckZiSUMDADP1yEJ'
@@ -11,11 +12,18 @@ const client = AgoraRTC.createClient({
     codec: 'vp8'
 })
 
-const VideoRoom = () => {
+const VideoRoom = ({ setJoined, joined }) => {
     const [users, setUsers] = useState([])
+    const [currentTracks, setCurrentTracks] = useState()
+    const [currentUser, setCurrentUser] = useState()
+    const [mute, setMute] = useState()
+    const [cam, setCam] = useState()
 
     const handleUserJoined = async (user, mediaType) => {
         await client.subscribe(user, mediaType)
+
+        setCurrentUser(user)
+
         if (mediaType === 'video') {
             setUsers((prevUsers) => [...prevUsers, user])
         }
@@ -29,6 +37,22 @@ const VideoRoom = () => {
         setUsers(prev => prev.filter(item => item.uid !== user.uid))
     }
 
+    // useEffect(() => {
+    //     if (mute) {
+    //         currentUser.audioTrack.pause()
+    //     } else {
+    //         currentUser.audioTrack.play()
+    //     }
+    // }, [mute])
+
+    useEffect(() => {
+        if (joined === false) {
+            if (currentTracks) {
+                client.unpublish(currentTracks)
+            }
+        }
+    }, [joined])
+
     useEffect(() => {
         client.on('user-published', handleUserJoined)
         client.on('user-left', handleUserLeft)
@@ -40,23 +64,50 @@ const VideoRoom = () => {
                     const videoTrack = tracks.filter(item => item._ID.toString().includes('cam'))[0]
                     setUsers((prevUsers) => [...prevUsers, {
                         uid,
-                        videoTrack
+                        videoTrack,
+                        audioTrack
                     }])
+                    setCurrentTracks(tracks)
                     client.publish(tracks);
                 })
                 .catch((error) => {
                     console.error("Error joining channel or creating tracks:", error);
                 });
         }
+
     }, [])
 
     return (
-        <div>VideoRoom
-            {console.log(users)}
-            {users.map((user) => (
-                <VideoPlayer key={user.uid} user={user} />
-            ))}
-        </div>
+        <div className={`w-[100%] h-full flex flex-col gap-3 py-[1rem]`}>
+            <div className={`w-[100%] h-full grid grid-cols-${handleResizeScreenByNumberOfParticipants(users.length)} gap-[10px] px-[2rem] justify-items-center justify-center items-center`}>
+                {users.map((user) => (
+                    <div className='w-[100%] h-[100%] rounded-lg overflow-hidden'>
+                        <VideoPlayer key={user.uid} user={user} />
+                    </div>
+                ))}
+            </div>
+            <div className='w-full flex justify-center items-center gap-2 h-[60px]'>
+                <button onClick={() => setMute(!mute)} style={{ backgroundColor: mute && '#999', color: mute ? 'white' : '#999', border: mute ? '0px' : '1px solid #999' }} className={`h-[50px] w-[50px] flex items-center justify-center text-[white] rounded-full`}>
+                    {
+                        mute ?
+                            (<i className='bx bx-microphone-off text-[20px]'></i>)
+                            :
+                            (<i className='bx bx-microphone text-[20px]'></i>)
+                    }
+                </button>
+                <button onClick={() => setCam(!cam)} style={{ backgroundColor: cam && '#999', color: cam ? 'white' : '#999', border: cam ? '0px' : '1px solid #999' }} className={`h-[50px] w-[50px] flex items-center justify-center text-[white] rounded-full`}>
+                    {
+                        cam ?
+                            (<i className='bx bx-camera-off text-[20px]'></i>)
+                            :
+                            (<i className='bx bx-camera text-[20px]'></i>)
+                    }
+                </button>
+                <button onClick={() => setJoined(false)} className='h-[50px] w-[50px] flex items-center justify-center bg-[#e52929] text-[white] rounded-full'>
+                    <i className='bx bx-phone text-[20px]'></i>
+                </button>
+            </div>
+        </div >
     )
 }
 
