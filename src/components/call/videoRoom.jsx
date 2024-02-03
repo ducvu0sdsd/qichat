@@ -16,8 +16,8 @@ const VideoRoom = ({ setJoined, joined }) => {
     const [users, setUsers] = useState([])
     const [currentTracks, setCurrentTracks] = useState()
     const [currentUser, setCurrentUser] = useState()
-    const [mute, setMute] = useState()
-    const [cam, setCam] = useState()
+    const [mute, setMute] = useState(false)
+    const [cam, setCam] = useState(true)
 
     const handleUserJoined = async (user, mediaType) => {
         await client.subscribe(user, mediaType)
@@ -37,21 +37,37 @@ const VideoRoom = ({ setJoined, joined }) => {
         setUsers(prev => prev.filter(item => item.uid !== user.uid))
     }
 
-    // useEffect(() => {
-    //     if (mute) {
-    //         currentUser.audioTrack.pause()
-    //     } else {
-    //         currentUser.audioTrack.play()
-    //     }
-    // }, [mute])
+    const disconnect = async () => {
+        await waitForConnectionState('CONNECTED');
+        client.removeAllListeners();
+        for (let track of currentTracks) {
+            track.stop();
+            track.close();
+        }
+        await client.unpublish(currentTracks);
+        await client.leave();
+    };
 
     useEffect(() => {
-        if (joined === false) {
-            if (currentTracks) {
-                client.unpublish(currentTracks)
+        if (currentTracks && currentUser) {
+            if (mute) {
+                currentUser.audioTrack.stop()
+            } else {
+                currentUser.audioTrack.play()
             }
         }
-    }, [joined])
+    }, [mute])
+
+    useEffect(() => {
+        if (currentUser && currentTracks) {
+            if (!cam) {
+                currentUser.videoTrack.stop()
+            } else {
+                currentUser.videoTrack.play()
+            }
+        }
+    }, [cam])
+
 
     useEffect(() => {
         client.on('user-published', handleUserJoined)
@@ -95,17 +111,19 @@ const VideoRoom = ({ setJoined, joined }) => {
                             (<i className='bx bx-microphone text-[20px]'></i>)
                     }
                 </button>
-                <button onClick={() => setCam(!cam)} style={{ backgroundColor: cam && '#999', color: cam ? 'white' : '#999', border: cam ? '0px' : '1px solid #999' }} className={`h-[50px] w-[50px] flex items-center justify-center text-[white] rounded-full`}>
+                <button onClick={() => setCam(!cam)} style={{ backgroundColor: !cam && '#999', color: !cam ? 'white' : '#999', border: !cam ? '0px' : '1px solid #999' }} className={`h-[50px] w-[50px] flex items-center justify-center text-[white] rounded-full`}>
                     {
-                        cam ?
+                        !cam ?
                             (<i className='bx bx-camera-off text-[20px]'></i>)
                             :
                             (<i className='bx bx-camera text-[20px]'></i>)
                     }
                 </button>
-                <button onClick={() => setJoined(false)} className='h-[50px] w-[50px] flex items-center justify-center bg-[#e52929] text-[white] rounded-full'>
-                    <i className='bx bx-phone text-[20px]'></i>
-                </button>
+                <a href='/adding'>
+                    <button onClick={() => setJoined(false)} className='h-[50px] w-[50px] flex items-center justify-center bg-[#e52929] text-[white] rounded-full'>
+                        <i className='bx bx-phone text-[20px]'></i>
+                    </button>
+                </a>
             </div>
         </div >
     )
