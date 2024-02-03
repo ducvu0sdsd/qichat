@@ -2,8 +2,8 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <section style={{ backgroundImage: 'url(/bg.webp)' }} className='font-poppins px-[4rem] bg-[#d67272] h-screen w-[100%] bg-cover'>
-      <div className='flex items-center justify-between pt-[1rem]'>
+    <section style={{ backgroundImage: 'url(/bg.webp)' }} className='relative flex items-center font-poppins px-[4rem] bg-[#d67272] h-screen w-[100%] bg-cover'>
+      <div className='absolute flex items-center w-full px-[4rem] top-0 left-0 justify-between pt-[1rem]'>
         <div className='flex items-center'>
           <img width={'60px'} src='/logo.png' />
           <span className='text-[white] font-bold text-[24px]'>QiChat</span>
