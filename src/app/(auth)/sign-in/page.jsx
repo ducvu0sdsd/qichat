@@ -11,8 +11,8 @@ const SignIn = () => {
                     </div>
                     <div className='flex flex-col items-start gap-4 font-poppins'>
                         <h1 className='text-[#120505] font-bold text-[25px] py-[1rem]'>Sign In</h1>
-                        <input type="phone" placeholder='Phone' className='focus:outline-0 bg-[#f8f8f8] w-[80%] h-[50px] rounded-[10px] px-6' />
-                        <input type="password" placeholder='Password' className='focus:outline-0 bg-[#f8f8f8] w-[80%] h-[50px] rounded-[10px] px-6' />
+                        <input type="phone" placeholder='Phone' className='focus:outline-0 bg-[#f3f3f3] shadow-sm w-[80%] h-[50px] rounded-[10px] px-6' />
+                        <input type="password" placeholder='Password' className='focus:outline-0 bg-[#f3f3f3] shadow-sm w-[80%] h-[50px] rounded-[10px] px-6' />
                         <button className='font-bold text-[15px]'>Forgot password ?</button>
                         <button className='bg-[#e77373] w-[300px] h-[40px] rounded-[10px] text-[white]'>Sign in</button>
                         <span className='font-bold'>Or</span>

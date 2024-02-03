@@ -8,8 +8,8 @@ const NavItem = ({ icon, path }) => {
     console.log(pathname)
     return (
         <Link href={`${path}`}>
-            <div style={{ backgroundImage: pathname === path ? 'url(/bg-vuong.png)' : '' }} className=' cursor-pointer transition-all flex items-center justify-center rounded-full h-[45px] w-[45px] my-[1px]'>
-                <i className={`bx ${icon} transition-all z-10 text-[26px] ${pathname === path ? 'text-[white]' : 'text-[#4e4e4e]'}`}></i>
+            <div style={{ backgroundImage: pathname === path ? 'url(/bg-vuong.png)' : '' }} className=' cursor-pointer transition-all flex items-center justify-center rounded-full h-[40px] w-[40px] my-[1px]'>
+                <i className={`bx ${icon} transition-all z-10 text-[25px] ${pathname === path ? 'text-[white]' : 'text-[#4e4e4e]'}`}></i>
             </div>
         </Link>
     )

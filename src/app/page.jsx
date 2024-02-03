@@ -14,7 +14,7 @@ export default function Home() {
         </div>
       </div>
       <div className='flex items-center w-[100%] justify-center'>
-        <div className='w-[600px] flex flex-col items-start gap-[1rem]'>
+        <div className='w-[600px] h-full flex flex-col justify-center items-start gap-[1rem]'>
           <span className='rounded-[20px] font-semibold text-[white] bg-[#FFB800] px-[1.5rem] py-[0.5rem]'>Hello My Family!!!</span>
           <h1 className='text-[50px] text-[white] leading-[65px] font-semibold'>
             {"It's A Good Platform For Message Sharing"}
