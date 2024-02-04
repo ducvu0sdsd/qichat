@@ -3,7 +3,7 @@ import NavItem from './navItem'
 
 const PrivateNavbar = () => {
     return (
-        <div className='py-[10px] flex flex-col items-center justify-between w-[60px] border-[#e5e5e5] border-r-[1px] h-screen'>
+        <div className='py-[10px] shadow-xl flex flex-col items-center justify-between w-[60px] border-[#e5e5e5] border-r-[1px] h-screen'>
             <div className='flex-col items-center flex'>
                 <img src='/logo.png' width={'55px'} className='my-[7px]' />
                 <NavItem icon={'bx-chat'} path={'/messages'} />

@@ -119,7 +119,7 @@ const VideoRoom = ({ setJoined, joined }) => {
                             (<i className='bx bx-camera text-[20px]'></i>)
                     }
                 </button> */}
-                <a href='/adding'>
+                <a href='/messages'>
                     <button onClick={() => setJoined(false)} className='h-[50px] w-[50px] flex items-center justify-center bg-[#e52929] text-[white] rounded-full'>
                         <i className='bx bx-phone text-[20px]'></i>
                     </button>
