@@ -18,7 +18,7 @@ const MessageArea = () => {
     }, [messageRef.current?.offsetHeight])
 
     return (
-        <div className='h-full w-[65%] border-[#e5e5e5] border-r-[1px] flex flex-col'>
+        <div className='h-full w-full transition-all border-[#e5e5e5] border-r-[1px] flex flex-col'>
             <div className=' flex items-center h-[10%] w-full justify-between px-[15px] py-2 border-[#e5e5e5] border-b-[1px]'>
                 <div className='flex'>
                     <UserIcon />
@@ -30,7 +30,7 @@ const MessageArea = () => {
                 <div className='text-[30px] flex gap-2 text-[#3f3f3f]'>
                     <i className='bx bx-phone cursor-pointer' ></i>
                     <i onClick={() => listHandler.setJoined(true)} className='bx bx-video cursor-pointer' ></i>
-                    <i className='bx bx-info-circle cursor-pointer' ></i>
+                    <i onClick={() => listHandler.setDisplayInfo(!listData.displayInfo)} className='bx bx-info-circle cursor-pointer' ></i>
                 </div>
             </div>
             <div ref={messageRef} className='h-[80%] w-full px-[1rem] py-[0.5rem] overflow-y-auto'>

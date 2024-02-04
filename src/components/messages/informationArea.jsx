@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { MessagesContext } from './context'
 
 const InformationArea = () => {
 
-    const imageRef = useRef()
-    const [load, setLoad] = useState(false)
-    useEffect(() => setLoad(!load), [imageRef.current, globalThis.window.offsetWidth])
+    const { listData } = useContext(MessagesContext)
 
     return (
-        <div className='w-[35%] px-[1rem] h-screen flex flex-col py-[1rem]'>
+        <div style={{ width: `${listData.displayInfo ? '450' : '0'}px`, paddingLeft: listData.displayInfo && '1rem', paddingRight: listData.displayInfo && '1rem' }} className='transition-all overflow-hidden h-screen flex flex-col py-[1rem]'>
             <div className='w-full flex flex-col items-center gap-2'>
                 <img src='/avatar.jpg' className='rounded-full w-[100px] h-[100px]' />
                 <div className='flex flex-col items-center'>
@@ -34,14 +33,14 @@ const InformationArea = () => {
             <div className='mt-[0.5rem] flex flex-col items-center'>
                 <h2 className='w-full font-semibold font-poppins text-[18px]'>Pictures & Videos</h2>
                 <div className='w-full grid grid-cols-4 my-[10px] gap-1 px-[1rem] justify-items-center'>
-                    <div ref={imageRef} style={{ backgroundImage: 'url(/bg.webp)', height: `${imageRef.current?.offsetWidth}px` }} className='w-full rounded-md' />
-                    <div style={{ backgroundImage: 'url(/bg.webp)', height: `${imageRef.current?.offsetWidth}px` }} className='w-full rounded-md' />
-                    <div style={{ backgroundImage: 'url(/bg.webp)', height: `${imageRef.current?.offsetWidth}px` }} className='w-full rounded-md' />
-                    <div style={{ backgroundImage: 'url(/bg.webp)', height: `${imageRef.current?.offsetWidth}px` }} className='w-full rounded-md' />
-                    <div style={{ backgroundImage: 'url(/bg.webp)', height: `${imageRef.current?.offsetWidth}px` }} className='w-full rounded-md' />
-                    <div style={{ backgroundImage: 'url(/bg.webp)', height: `${imageRef.current?.offsetWidth}px` }} className='w-full rounded-md' />
-                    <div style={{ backgroundImage: 'url(/bg.webp)', height: `${imageRef.current?.offsetWidth}px` }} className='w-full rounded-md' />
-                    <div style={{ backgroundImage: 'url(/bg.webp)', height: `${imageRef.current?.offsetWidth}px` }} className='w-full rounded-md' />
+                    <div style={{ backgroundImage: 'url(/bg.webp)' }} className='aspect-square w-full rounded-md' />
+                    <div style={{ backgroundImage: 'url(/bg.webp)' }} className='aspect-square w-full rounded-md' />
+                    <div style={{ backgroundImage: 'url(/bg.webp)' }} className='aspect-square w-full rounded-md' />
+                    <div style={{ backgroundImage: 'url(/bg.webp)' }} className='aspect-square w-full rounded-md' />
+                    <div style={{ backgroundImage: 'url(/bg.webp)' }} className='aspect-square w-full rounded-md' />
+                    <div style={{ backgroundImage: 'url(/bg.webp)' }} className='aspect-square w-full rounded-md' />
+                    <div style={{ backgroundImage: 'url(/bg.webp)' }} className='aspect-square w-full rounded-md' />
+                    <div style={{ backgroundImage: 'url(/bg.webp)' }} className='aspect-square w-full rounded-md' />
                 </div>
                 <button style={{ backgroundImage: 'url(/bg.webp)' }} className='rounded-md text-[white] font-poppins w-[80%] h-[35px] mt-[5px] shadow'>See All</button>
             </div>

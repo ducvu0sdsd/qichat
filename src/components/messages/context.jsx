@@ -5,13 +5,16 @@ export const MessagesContext = createContext();
 
 export const ProviderContext = ({ children }) => {
     const [joined, setJoined] = useState(false)
+    const [displayInfo, setDisplayInfo] = useState(false)
 
     const listData = {
-        joined
+        joined,
+        displayInfo
     }
 
     const listHandler = {
-        setJoined
+        setJoined,
+        setDisplayInfo
     }
 
     return (
