@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import MessageSection from './messageSection'
 import UserIcon from '../userIcon'
 import { MessagesContext } from './context'
@@ -7,6 +7,15 @@ import { MessagesContext } from './context'
 const MessageArea = () => {
 
     const { listData, listHandler } = useContext(MessagesContext)
+    const messageRef = useRef()
+
+    useEffect(() => {
+        // messageRef.current.scrollTop = messageRef.current.scrollHeight;
+        messageRef.current.scrollTo({
+            top: messageRef.current.scrollHeight,
+            behavior: 'smooth',
+        });
+    }, [messageRef.current?.offsetHeight])
 
     return (
         <div className='h-full w-[65%] border-[#e5e5e5] border-r-[1px] flex flex-col'>
@@ -24,7 +33,7 @@ const MessageArea = () => {
                     <i className='bx bx-info-circle cursor-pointer' ></i>
                 </div>
             </div>
-            <div className='h-[80%] w-full px-[1rem] py-[0.5rem] overflow-y-auto'>
+            <div ref={messageRef} className='h-[80%] w-full px-[1rem] py-[0.5rem] overflow-y-auto'>
                 <MessageSection style={'start'} />
                 <MessageSection style={'end'} />
                 <MessageSection style={'start'} />
