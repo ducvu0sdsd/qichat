@@ -1,6 +1,4 @@
 'use client'
-import dynamic from 'next/dynamic'
-const VideoRoom = dynamic(() => import('@/components/call/videoRoom'), { ssr: false });
 import React, { useState } from 'react'
 
 const AddingPage = () => {

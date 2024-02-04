@@ -1,5 +1,6 @@
 'use client'
-import VideoRoom from '@/components/call/videoRoom'
+import dynamic from 'next/dynamic'
+const VideoRoom = dynamic(() => import('@/components/call/videoRoom'), { ssr: false });
 import { MessagesContext, ProviderContext } from '@/components/messages/context'
 import LeftSection from '@/components/messages/leftSection'
 import RightSection from '@/components/messages/rightSection'
