@@ -12,7 +12,7 @@ const LeftSection = () => {
                     <span className='font-semibold text-[13px]'>My Account</span>
                 </div>
             </div>
-            <div className='px-[15px] py-[15px] h-[16%] overflow-hidden'>
+            <div className='px-[15px] pt-[15px] h-[16%] overflow-hidden'>
                 <h2 className='font-poppins font-semibold text-[16px]'>Online Now</h2>
                 <div className='mt-2 flex gap-1 overflow-hidden'>
                     <div className='flex gap-1'>
