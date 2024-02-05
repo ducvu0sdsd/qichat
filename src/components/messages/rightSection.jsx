@@ -4,7 +4,7 @@ import InformationArea from './informationArea'
 
 const RightSection = () => {
     return (
-        <section className='w-full h-screen flex'>
+        <section className='w-[75%] h-screen flex'>
             <MessageArea />
             <InformationArea />
         </section>

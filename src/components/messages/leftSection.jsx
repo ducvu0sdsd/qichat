@@ -27,16 +27,6 @@ const LeftSection = () => {
                             <UserIcon />
                             <UserIcon />
                             <UserIcon />
-                            <UserIcon />
-                            <UserIcon />
-                            <UserIcon />
-                            <UserIcon />
-                            <UserIcon />
-                            <UserIcon />
-                            <UserIcon />
-                            <UserIcon />
-                            <UserIcon />
-                            <UserIcon />
                         </div>
                     </div>
                 </div>
@@ -49,7 +39,7 @@ const LeftSection = () => {
                         <i className='top-[57%] translate-y-[-50%] left-[8px] bx bx-search text-[#999] text-[19px] absolute'></i>
                     </div>
                 </div>
-                <div className='py-[5px] h-[85%] overflow-y-auto message'>
+                <div className='my-[10px] h-[85%] overflow-y-auto message'>
                     <MessageUser />
                     <MessageUser />
                     <MessageUser />

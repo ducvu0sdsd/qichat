@@ -17,15 +17,15 @@ const AddingPage = () => {
                 <div className='px-[15px] pt-[15px] h-full overflow-hidden flex flex-col items-center w-[100%] border-t-[1px] '>
                     <button className='font-semibold bg-[#f3f2f2] my-[3px] w-[98%] justify-start px-[10px] font-poppins py-2 rounded-[8px] flex items-center'>
                         <i className='bx bx-user-plus text-[30px] text-[#353535] mr-2'></i>
-                        <span className='text-[#353535]'>Add Friends</span>
+                        <span className='text-[#353535] text-[15px]'>Add Friends</span>
                     </button>
                     <button className='font-semibold bg-[#f3f2f2] my-[3px] w-[98%] justify-start px-[10px] font-poppins py-2 rounded-[8px] flex items-center'>
                         <i className='bx bx-group text-[30px] text-[#353535] mr-2'></i>
-                        <span className='text-[#353535]'>Create Group</span>
+                        <span className='text-[#353535] text-[15px]'>Create Group</span>
                     </button>
                     <button className='font-semibold bg-[#f3f2f2] my-[3px] w-[98%] justify-start px-[10px] font-poppins py-2 rounded-[8px] flex items-center'>
                         <i className='bx bx-user-check text-[30px] text-[#353535] mr-2'></i>
-                        <span className='text-[#353535]'>Friends Request</span>
+                        <span className='text-[#353535] text-[15px]'>Friends Request</span>
                     </button>
                 </div>
             </div>
