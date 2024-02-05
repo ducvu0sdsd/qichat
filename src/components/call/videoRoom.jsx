@@ -3,8 +3,8 @@ import AgoraRTC from 'agora-rtc-sdk-ng'
 import { VideoPlayer } from './videoPlayer'
 import { handleResizeScreenByNumberOfParticipants } from '@/utils/call'
 
-const APP_ID = '8a94359d703244a88967b428b483d7a4'
-const TOKEN = '007eJxTYOh+X/Jw8acj89fw52tJx58VLixckVXlcuRUytoFG9hjz6spMFgkWpoYm1qmmBsYG5mYJFpYWJqZJ5kYWSSZWBinmCeaeP3dm9oQyMhQd3guMyMDBIL4bAyFmckZiSUMDADP1yEJ'
+const APP_ID = '07d674922e754dfaaeb15ade517ae876'
+const TOKEN = '007eJxTYEg4aP5WX3n5g9mCgqXx1jk9tas3l2Uae/XM0M9IFXVYxqLAYGCeYmZuYmlklGpuapKSlpiYmmRompiSamponphqYW428fL+1IZARoabK7YxMzJAIIjPxlCYmZyRWMLAAAD/AB9c'
 const CHANNEL = 'qichat'
 
 const client = AgoraRTC.createClient({

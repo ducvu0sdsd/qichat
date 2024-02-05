@@ -1,5 +1,6 @@
 import React from 'react'
 import NavItem from './navItem'
+import Link from 'next/link'
 
 const PrivateNavbar = () => {
     return (
@@ -13,7 +14,7 @@ const PrivateNavbar = () => {
                 <NavItem icon={'bx-moon'} />
                 <NavItem icon={'bx-exit'} />
             </div>
-            <img src='/avatar.jpg' className='rounded-full w-[80%]' />
+            <Link href={'/editing-profile'} className='flex justify-center'><img src='/avatar.jpg' className='rounded-full w-[80%]' /></Link>
         </div>
     )
 }

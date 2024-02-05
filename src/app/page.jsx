@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -9,8 +10,8 @@ export default function Home() {
           <span className='text-[white] font-bold text-[24px]'>QiChat</span>
         </div>
         <div className='font-semibold'>
-          <button className='rounded-full text-[15px] px-[20px] h-[35px] bg-[white] font-bold mr-[15px]'>Sign Up</button>
-          <button className='text-[white] text-[15px] font-bold'>Sign In</button>
+          <Link href={'/sign-up'}><button className='rounded-full text-[15px] px-[20px] h-[35px] bg-[white] font-bold mr-[15px]'>Sign Up</button></Link>
+          <Link href={'/sign-in'}><button className='text-[white] text-[15px] font-bold'>Sign In</button></Link>
         </div>
       </div>
       <div className='flex items-center w-[100%] justify-center'>
