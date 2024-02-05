@@ -33,7 +33,7 @@ const MessageArea = () => {
                     <i onClick={() => listHandler.setDisplayInfo(!listData.displayInfo)} className='bx bx-info-circle cursor-pointer' ></i>
                 </div>
             </div>
-            <div ref={messageRef} className='h-[80%] w-full px-[1rem] py-[0.5rem] overflow-y-auto'>
+            <div ref={messageRef} className='h-[80%] w-full px-[1rem] py-[0.5rem] overflow-y-auto message'>
                 <MessageSection style={'start'} />
                 <MessageSection style={'end'} />
                 <MessageSection style={'start'} />

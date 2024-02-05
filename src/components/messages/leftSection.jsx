@@ -14,7 +14,7 @@ const LeftSection = () => {
             </div>
             <div className='px-[15px] pt-[15px] h-[16%] overflow-hidden w-[100%]'>
                 <h2 className='font-poppins font-semibold text-[16px]'>Online Now</h2>
-                <div className='mt-2 flex gap-1 w-[100%] overflow-hidden shadow-lg'>
+                <div className='mt-2 flex gap-1 w-[100%] overflow-hidden'>
                     <div className='flex gap-1 max-w-[250px] overflow-x-auto'>
                         <div className='flex'>
                             <UserIcon />
@@ -35,7 +35,7 @@ const LeftSection = () => {
                         <i className='top-[57%] translate-y-[-50%] left-[8px] bx bx-search text-[#999] text-[19px] absolute'></i>
                     </div>
                 </div>
-                <div className='py-[5px] h-[85%] overflow-y-auto'>
+                <div className='py-[5px] h-[85%] overflow-y-auto message'>
                     <MessageUser />
                     <MessageUser />
                     <MessageUser />
