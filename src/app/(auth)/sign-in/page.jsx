@@ -2,17 +2,22 @@
 import Logo from '@/components/logo'
 import { TypeHTTP, api } from '@/utils/api'
 import React, { useState } from 'react'
+import { useRouter } from 'next/router';
 
 const SignIn = () => {
-
+    const router = useRouter();
     const [phone, setPhone] = useState('')
     const [password, setPassword] = useState('')
 
     const handleSignIn = () => {
         api({ body: { phone, password }, path: '/sign-in', type: TypeHTTP.GET, sendToken: false })
             .then(res => {
-                if (res.status) {
-
+                if (res.statusSignUp === 'Complete Step 1') {
+                    router.push('/sign-up/verification')
+                } else if (res.statusSignUp === 'Complete Step 2') {
+                    router.push('/sign-up/information')
+                } else if (res.statusSignUp === 'Complete Sign Up') {
+                    router.push('/messages')
                 }
             })
     }
