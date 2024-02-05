@@ -2,7 +2,7 @@
 import Logo from '@/components/logo'
 import { TypeHTTP, api } from '@/utils/api'
 import React, { useState } from 'react'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const SignIn = () => {
     const router = useRouter();
