@@ -1,7 +1,22 @@
+'use client'
 import Logo from '@/components/logo'
-import React from 'react'
+import { TypeHTTP, api } from '@/utils/api'
+import React, { useState } from 'react'
 
 const SignIn = () => {
+
+    const [phone, setPhone] = useState('')
+    const [password, setPassword] = useState('')
+
+    const handleSignIn = () => {
+        api({ body: { phone, password }, path: '/sign-in', type: TypeHTTP.GET, sendToken: false })
+            .then(res => {
+                if (res.status) {
+
+                }
+            })
+    }
+
     return (
         <div className='h-screen w-[100%] flex pl-[4rem]' >
             <div className='w-[55%] h-full' >
@@ -10,10 +25,10 @@ const SignIn = () => {
                 </div>
                 <div className='flex flex-col items-start gap-4 h-full font-poppins'>
                     <h1 className='text-[#120505] font-bold text-[25px] py-[1rem]'>Sign In</h1>
-                    <input type="phone" placeholder='Phone' className='focus:outline-0 bg-[#f3f3f3] shadow-sm w-[80%] h-[50px] rounded-[10px] px-6' />
-                    <input type="password" placeholder='Password' className='focus:outline-0 bg-[#f3f3f3] shadow-sm w-[80%] h-[50px] rounded-[10px] px-6' />
+                    <input value={phone} onChange={(e) => setPhone(e.target.value)} type="phone" placeholder='Phone' className='focus:outline-0 bg-[#f3f3f3] shadow-sm w-[80%] h-[50px] rounded-[10px] px-6' />
+                    <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder='Password' className='focus:outline-0 bg-[#f3f3f3] shadow-sm w-[80%] h-[50px] rounded-[10px] px-6' />
                     <button className='font-bold text-[15px]'>Forgot password ?</button>
-                    <button className='bg-[#e77373] w-[300px] h-[40px] rounded-[10px] text-[white]'>Sign in</button>
+                    <button onClick={() => handleSignIn()} className='bg-[#e77373] w-[300px] h-[40px] rounded-[10px] text-[white]'>Sign in</button>
                     <span className='font-bold'>Or</span>
                     <button className='font-bold w-[300px] h-[40px] border-[2px] text-[#353535] rounded-[10px]'> <i className='bx bxl-gmail text-[20px] mr-1 translate-y-[1px]'></i>  Sign in with Gmail</button>
                 </div>

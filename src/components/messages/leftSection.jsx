@@ -4,7 +4,7 @@ import MessageUser from './messageUser'
 
 const LeftSection = () => {
     return (
-        <section className='w-[30%] h-screen border-[#e5e5e5] border-r-[1px]'>
+        <section className='w-[25%] h-screen border-[#e5e5e5] border-r-[1px]'>
             <div className='h-[10%] flex items-center w-full justify-start px-[15px] py-2 border-[#e5e5e5] border-b-[1px]'>
                 <img src='/avatar.jpg' className='rounded-full h-[48px] w-[48px]' />
                 <div className='flex flex-col ml-[10px]'>
@@ -15,8 +15,22 @@ const LeftSection = () => {
             <div className='px-[15px] pt-[15px] h-[16%] overflow-hidden w-[100%]'>
                 <h2 className='font-poppins font-semibold text-[16px]'>Online Now</h2>
                 <div className='mt-2 flex gap-1 w-[100%] overflow-hidden'>
-                    <div className='flex gap-1 max-w-[250px] overflow-x-auto'>
+                    <div className='flex gap-1 w-[100%] overflow-x-auto'>
                         <div className='flex'>
+                            <UserIcon />
+                            <UserIcon />
+                            <UserIcon />
+                            <UserIcon />
+                            <UserIcon />
+                            <UserIcon />
+                            <UserIcon />
+                            <UserIcon />
+                            <UserIcon />
+                            <UserIcon />
+                            <UserIcon />
+                            <UserIcon />
+                            <UserIcon />
+                            <UserIcon />
                             <UserIcon />
                             <UserIcon />
                             <UserIcon />

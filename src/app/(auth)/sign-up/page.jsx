@@ -1,7 +1,33 @@
+'use client'
 import Logo from '@/components/logo'
-import React from 'react'
+import { TypeHTTP, api } from '@/utils/api'
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router';
 
 const SignUp = () => {
+    const router = useRouter();
+    const [phone, setPhone] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+
+    const handleSignUp = () => {
+        if (phone === '') {
+            return
+        }
+        if (password === '') {
+            return
+        }
+        if (confirmPassword !== password) {
+            return
+        }
+        api({ body: { phone, password }, type: TypeHTTP.POST, sendToken: false, path: '/sign-up' })
+            .then(res => {
+                if (res) {
+                    router.push('/sign-up/verification')
+                }
+            })
+    }
+
     return (
         <section className='w-[100%] flex font-poppins' >
             <div style={{ backgroundImage: 'url(/bg-dung.jpg)' }} className='w-[50%] flex items-center relative h-screen justify-center bg-cover' >
@@ -17,13 +43,13 @@ const SignUp = () => {
             </div>
             <div className='w-[50%] px-[80px] flex flex-col justify-center'>
                 <h1 className='font-bold text-[25px] mb-[10px]'>Sign up</h1>
-                <input type='text' placeholder='Phone' className='focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
-                <input type='password' placeholder='Password' className='focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
-                <input type='password' placeholder='Confirm Password' className='focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
-                <button className='bg-[#e77373] w-[300px] h-[40px] rounded-[10px] text-[white] mt-[15px]'>Sign up</button>
+                <input onChange={(e) => setPhone(e.target.value)} value={phone} type='text' placeholder='Phone' className='text-[15px] focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
+                <input onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder='Password' className='text-[15px] focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
+                <input onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} type='password' placeholder='Confirm Password' className='text-[15px] focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
+                <button onClick={() => handleSignUp()} className='bg-[#e77373] w-[300px] h-[40px] rounded-[10px] text-[white] mt-[15px]'>Sign up</button>
                 <span className='my-[10px]'>Or</span>
-                <button className='font-bold w-[300px] h-[40px] border-[2px] text-[#353535] rounded-[10px]'> <i className='bx bxl-gmail text-[20px] mr-1 translate-y-[1px]'></i>  Sign in with Gmail</button>            </div>
-
+                <button className='font-bold w-[300px] h-[40px] border-[2px] text-[#353535] rounded-[10px]'> <i className='bx bxl-gmail text-[20px] mr-1 translate-y-[1px]'></i>  Sign in with Gmail</button>
+            </div>
         </section>
     )
 }
