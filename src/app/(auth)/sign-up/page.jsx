@@ -1,14 +1,21 @@
 'use client'
 import Logo from '@/components/logo'
 import { TypeHTTP, api } from '@/utils/api'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
+import { formatPhoneByFireBase } from '@/utils/call';
+import { AuthContext } from '@/components/auth/context';
+import toast from 'react-hot-toast';
+import { ThemeContext, notifyType } from '@/app/context';
+import { signWithGoogle } from '@/components/firebase/firebase';
 
 const SignUp = () => {
     const router = useRouter();
     const [phone, setPhone] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const { listHandler } = useContext(AuthContext)
+    const { handler } = useContext(ThemeContext)
 
     const handleSignUp = () => {
         if (phone === '') {
@@ -20,9 +27,23 @@ const SignUp = () => {
         if (confirmPassword !== password) {
             return
         }
-        api({ body: { phone, password }, type: TypeHTTP.POST, sendToken: false, path: '/sign-up' })
+        api({ body: { phone: formatPhoneByFireBase(phone), password }, type: TypeHTTP.POST, sendToken: false, path: '/sign-up' })
             .then(res => {
                 if (res) {
+                    listHandler.setUser(res)
+                    handler.notify(notifyType.SUCCESS, 'Account creation completed')
+                    router.push('/sign-up/verification')
+                }
+            })
+            .catch(error => console.log(error))
+    }
+
+    const handleSignUpWithGoogle = () => {
+        signWithGoogle('sign-up')
+            .then(user => {
+                if (user) {
+                    listHandler.setUser(user)
+                    handler.notify(notifyType.SUCCESS, 'Account creation completed')
                     router.push('/sign-up/verification')
                 }
             })
@@ -48,7 +69,7 @@ const SignUp = () => {
                 <input onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} type='password' placeholder='Confirm Password' className='text-[15px] focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
                 <button onClick={() => handleSignUp()} className='bg-[#e77373] w-[300px] h-[40px] rounded-[10px] text-[white] mt-[15px]'>Sign up</button>
                 <span className='my-[10px]'>Or</span>
-                <button className='font-bold w-[300px] h-[40px] border-[2px] text-[#353535] rounded-[10px]'> <i className='bx bxl-gmail text-[20px] mr-1 translate-y-[1px]'></i>  Sign in with Gmail</button>
+                <button onClick={() => handleSignUpWithGoogle()} className='font-bold w-[300px] h-[40px] border-[2px] text-[#353535] rounded-[10px]'> <i className='bx bxl-gmail text-[20px] mr-1 translate-y-[1px]'></i>  Sign up with Gmail</button>
             </div>
         </section>
     )

@@ -4,11 +4,13 @@ const VideoRoom = dynamic(() => import('@/components/call/videoRoom'), { ssr: fa
 import { MessagesContext, ProviderContext } from '@/components/messages/context'
 import LeftSection from '@/components/messages/leftSection'
 import RightSection from '@/components/messages/rightSection'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
+import { ThemeContext } from '@/app/context';
 
 const MesagesPage = () => {
 
     const { listData, listHandler } = useContext(MessagesContext)
+    const { data } = useContext(ThemeContext)
 
     return (
         <section className='flex h-full'>

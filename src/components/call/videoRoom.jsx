@@ -4,7 +4,7 @@ import { VideoPlayer } from './videoPlayer'
 import { handleResizeScreenByNumberOfParticipants } from '@/utils/call'
 
 const APP_ID = '07d674922e754dfaaeb15ade517ae876'
-const TOKEN = '007eJxTYEg4aP5WX3n5g9mCgqXx1jk9tas3l2Uae/XM0M9IFXVYxqLAYGCeYmZuYmlklGpuapKSlpiYmmRompiSamponphqYW428fL+1IZARoabK7YxMzJAIIjPxlCYmZyRWMLAAAD/AB9c'
+const TOKEN = '007eJxTYGBUfHTrhmZHX/3jZeve7vtimGwRtau2eCrHmgvn+Fffb5ZSYDAwTzEzN7E0Mko1NzVJSUtMTE0yNE1MSTU1NE9MtTA3S5M+n9oQyMhwMv45KyMDBIL4bAyFmckZiSUMDAAmDiJi'
 const CHANNEL = 'qichat'
 
 const client = AgoraRTC.createClient({

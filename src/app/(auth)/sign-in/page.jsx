@@ -1,22 +1,54 @@
 'use client'
 import Logo from '@/components/logo'
 import { TypeHTTP, api } from '@/utils/api'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useRouter } from 'next/navigation';
+import { AuthContext } from '@/components/auth/context';
+import { formatPhoneByFireBase } from '@/utils/call';
+import { ThemeContext } from '@/app/context';
+import { signWithGoogle } from '@/components/firebase/firebase';
 
 const SignIn = () => {
+    const { listData, listHandler } = useContext(AuthContext)
+    const { handler } = useContext(ThemeContext)
     const router = useRouter();
     const [phone, setPhone] = useState('')
     const [password, setPassword] = useState('')
 
     const handleSignIn = () => {
-        api({ body: { phone, password }, path: '/sign-in', type: TypeHTTP.GET, sendToken: false })
+        api({ body: { phone: formatPhoneByFireBase(phone), password }, path: '/sign-in', type: TypeHTTP.POST, sendToken: false })
             .then(res => {
-                if (res.statusSignUp === 'Complete Step 1') {
+                listHandler.setUser(res.user)
+                if (res?.user.statusSignUp === 'Complete Step 1') {
                     router.push('/sign-up/verification')
-                } else if (res.statusSignUp === 'Complete Step 2') {
+                } else if (res?.user.statusSignUp === 'Complete Step 2') {
                     router.push('/sign-up/information')
-                } else if (res.statusSignUp === 'Complete Sign Up') {
+                } else if (res?.user.statusSignUp === 'Complete Sign Up') {
+                    globalThis.window.localStorage.setItem('accessToken', res?.tokens.accessToken)
+                    globalThis.window.localStorage.setItem('refreshToken', res?.tokens.refreshToken)
+                    globalThis.window.localStorage.setItem('user_id', res?.user._id)
+                    globalThis.window.localStorage.setItem('admin', res?.user.admin)
+                    handler.setUser(res?.user)
+                    router.push('/messages')
+                }
+            })
+            .catch(error => console.log(error))
+    }
+
+    const handleSignInWithGoogle = () => {
+        signWithGoogle('sign-in')
+            .then(res => {
+                listHandler.setUser(res.user)
+                if (res?.user.statusSignUp === 'Complete Step 1') {
+                    router.push('/sign-up/verification')
+                } else if (res?.user.statusSignUp === 'Complete Step 2') {
+                    router.push('/sign-up/information')
+                } else if (res?.user.statusSignUp === 'Complete Sign Up') {
+                    globalThis.window.localStorage.setItem('accessToken', res?.tokens.accessToken)
+                    globalThis.window.localStorage.setItem('refreshToken', res?.tokens.refreshToken)
+                    globalThis.window.localStorage.setItem('user_id', res?.user._id)
+                    globalThis.window.localStorage.setItem('admin', res?.user.admin)
+                    handler.setUser(res?.user)
                     router.push('/messages')
                 }
             })
@@ -35,7 +67,7 @@ const SignIn = () => {
                     <button className='font-bold text-[15px]'>Forgot password ?</button>
                     <button onClick={() => handleSignIn()} className='bg-[#e77373] w-[300px] h-[40px] rounded-[10px] text-[white]'>Sign in</button>
                     <span className='font-bold'>Or</span>
-                    <button className='font-bold w-[300px] h-[40px] border-[2px] text-[#353535] rounded-[10px]'> <i className='bx bxl-gmail text-[20px] mr-1 translate-y-[1px]'></i>  Sign in with Gmail</button>
+                    <button onClick={() => handleSignInWithGoogle()} className='font-bold w-[300px] h-[40px] border-[2px] text-[#353535] rounded-[10px]'> <i className='bx bxl-gmail text-[20px] mr-1 translate-y-[1px]'></i>  Sign in with Gmail</button>
                 </div>
             </div>
             <div style={{ backgroundImage: 'url(/bg-dung.jpg)' }} className='bg-[rgb(214,114,114)] font-poppins rounded-lg px-[4rem] flex items-center justify-center h-screen bg-cover w-[50%]'>

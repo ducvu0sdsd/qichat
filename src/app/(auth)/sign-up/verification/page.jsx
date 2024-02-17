@@ -1,7 +1,52 @@
-import Logo from '@/components/logo'
-import React from 'react'
+'use client'
+import { RecaptchaVerifier, getAuth, signInWithPhoneNumber, sendEmailVerification } from 'firebase/auth';
+import { auth } from '@/components/firebase/firebase';
+import { AuthContext } from '@/components/auth/context';
+import Logo from '@/components/logo';
+import React, { useContext, useEffect, useState } from 'react';
+import { TypeHTTP, api } from '@/utils/api';
+import { useRouter } from 'next/navigation';
 
 const Verification = () => {
+    const router = useRouter();
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('')
+    const [verification, setVerification] = useState()
+    const [otp, setOtp] = useState('')
+    const { listData, listHandler } = useContext(AuthContext);
+
+    useEffect(() => {
+        if (listData.phone) {
+            setPhone(listData.user.phone);
+            const recaptcha = new RecaptchaVerifier(auth, 'recaptcha', {})
+            signInWithPhoneNumber(auth, listData.user.phone, recaptcha)
+                .then(confirmation => {
+                    setVerification(confirmation)
+                })
+        } else if (listData.user.email) {
+            setEmail(listData.user.email)
+            sendEmailVerification(auth.currentUser)
+            globalThis.window.localStorage.setItem('currentEmail', listData.user.email)
+            globalThis.window.localStorage.setItem('currentUser', listData.user._id)
+        }
+    }, [listData.user]);
+
+    const handleSubmitOTP = () => {
+        verification.confirm(otp)
+            .then(data => {
+                const user = listData.user
+                api({ type: TypeHTTP.PUT, body: { statusSignUp: 'Complete Step 2' }, path: `/users/${user._id}`, sendToken: false })
+                    .then(res => {
+                        if (res) {
+                            router.push('/sign-up/information')
+                        }
+                    })
+            })
+            .catch(() => {
+
+            })
+    }
+
     return (
         <section className='w-[100%] flex font-poppins' >
             <div style={{ backgroundImage: 'url(/bg-dung.jpg)' }} className='w-[50%] flex items-center relative h-screen justify-center bg-cover' >
@@ -17,12 +62,15 @@ const Verification = () => {
             </div>
             <div className='w-[50%] px-[80px] flex flex-col justify-center'>
                 <h1 className='font-bold text-[25px] mb-[10px]'>Verification</h1>
-                <span className='font-medium'>We sent a code to your Phone Number/ Gmai</span>
-                <input type='text' placeholder='Enter OTP' className='focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
-
-                <button type='submit' className='bg-[#e77373] w-[300px] h-[40px] rounded-[10px] text-[white] mt-[15px]'>Submit</button>
+                <span className='font-medium'>{`We sent a ${phone !== '' ? 'code' : 'email verification'} to your ${phone === '' ? `Email (${email})` : `Phone Number (${phone})`}`}</span>
+                <div id='recaptcha'></div>
+                {phone !== '' && (
+                    <>
+                        <input onChange={(e) => setOtp(e.target.value)} value={otp} type='text' placeholder='Enter OTP' className='focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
+                        <button onClick={() => handleSubmitOTP()} type='submit' className='bg-[#e77373] w-[300px] h-[40px] rounded-[10px] text-[white] mt-[15px]'>Submit</button>
+                    </>
+                )}
             </div>
-
         </section>
     )
 }

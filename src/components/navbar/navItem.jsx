@@ -5,7 +5,6 @@ import React from 'react'
 
 const NavItem = ({ icon, path }) => {
     const pathname = usePathname()
-    console.log(pathname)
     return (
         <Link href={`${path}`}>
             <div style={{ backgroundImage: pathname === path ? 'url(/bg-vuong.png)' : '' }} className=' cursor-pointer transition-all flex items-center justify-center rounded-full h-[40px] w-[40px] my-[1px]'>

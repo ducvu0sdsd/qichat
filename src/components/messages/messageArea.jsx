@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import MessageSection from './messageSection'
 import UserIcon from '../userIcon'
 import { MessagesContext } from './context'
+import { TypeHTTP, api } from '@/utils/api'
 
 const MessageArea = () => {
 
@@ -17,6 +18,11 @@ const MessageArea = () => {
         });
     }, [messageRef.current?.offsetHeight])
 
+    const sayHello = () => {
+        api({ type: TypeHTTP.GET, path: '/hello', sendToken: true })
+            .then(res => console.log(res))
+    }
+
     return (
         <div className='h-full w-full transition-all border-[#e5e5e5] border-r-[1px] flex flex-col'>
             <div className=' flex items-center h-[10%] w-full justify-between px-[15px] py-2 border-[#e5e5e5] border-b-[1px]'>
@@ -28,7 +34,7 @@ const MessageArea = () => {
                     </div>
                 </div>
                 <div className='text-[30px] flex gap-2 text-[#3f3f3f]'>
-                    <i className='bx bx-phone cursor-pointer' ></i>
+                    <i onClick={() => sayHello()} className='bx bx-phone cursor-pointer' ></i>
                     <i onClick={() => listHandler.setJoined(true)} className='bx bx-video cursor-pointer' ></i>
                     <i onClick={() => listHandler.setDisplayInfo(!listData.displayInfo)} className='bx bx-info-circle cursor-pointer' ></i>
                 </div>
