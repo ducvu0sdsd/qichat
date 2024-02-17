@@ -5,12 +5,11 @@ import Link from 'next/link'
 import React, { useContext, useEffect, useState } from 'react'
 
 const EmailVerification = () => {
-
-    const user_id = globalThis.window.localStorage.getItem('currentUser')
     const [verify, setVerify] = useState(false)
     const { listData, listHandler } = useContext(AuthContext);
 
     useEffect(() => {
+        const user_id = globalThis.window.localStorage.getItem('currentUser')
         api({ type: TypeHTTP.PUT, body: { statusSignUp: 'Complete Step 2' }, path: `/users/${user_id}`, sendToken: false })
             .then(res => {
                 if (res) {
