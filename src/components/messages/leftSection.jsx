@@ -1,14 +1,19 @@
-import React from 'react'
+'use client'
+import React, { useContext } from 'react'
 import UserIcon from '../userIcon'
 import MessageUser from './messageUser'
+import { ThemeContext } from '@/app/context'
 
 const LeftSection = () => {
+
+    const { data, handler } = useContext(ThemeContext)
+
     return (
         <section className='w-[25%] h-screen border-[#e5e5e5] border-r-[1px]'>
             <div className='h-[10%] flex items-center w-full justify-start px-[15px] py-2 border-[#e5e5e5] border-b-[1px]'>
-                <img src='/avatar.jpg' className='rounded-full h-[48px] w-[48px]' />
+                <img src={data.user.avatar} className='rounded-full h-[48px] w-[48px]' />
                 <div className='flex flex-col ml-[10px]'>
-                    <span className='font-bold'>Vu Tien Duc</span>
+                    <span className='font-bold'>{data.user.fullName}</span>
                     <span className='font-semibold text-[13px]'>My Account</span>
                 </div>
             </div>

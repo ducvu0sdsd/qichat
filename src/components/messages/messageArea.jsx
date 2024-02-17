@@ -4,6 +4,8 @@ import MessageSection from './messageSection'
 import UserIcon from '../userIcon'
 import { MessagesContext } from './context'
 import { TypeHTTP, api } from '@/utils/api'
+import { io } from 'socket.io-client'
+const socket = io.connect('http://localhost:8080')
 
 const MessageArea = () => {
 
@@ -18,9 +20,19 @@ const MessageArea = () => {
         });
     }, [messageRef.current?.offsetHeight])
 
+    useEffect(() => {
+        socket.on('receive_message', (data) => {
+            alert(data.message)
+        })
+    }, [socket])
+
     const sayHello = () => {
         api({ type: TypeHTTP.GET, path: '/hello', sendToken: true })
             .then(res => console.log(res))
+    }
+
+    const sendMessage = () => {
+        socket.emit('send_message', { message: 'hello' })
     }
 
     return (
@@ -52,7 +64,7 @@ const MessageArea = () => {
                 <input placeholder='Type your message...' type='text' className='pr-[65px] text-[14px] rounded-md focus:outline-0 pl-[35px] w-full h-[45px] border-[#f1f1f1] border-[2px]' />
                 <div className='absolute right-6 flex gap-2 items-center'>
                     <i className=" text-[20px] cursor-pointer text-[rgb(168,168,168)] fa-solid fa-paperclip"></i>
-                    <i className='bx bx-send text-[23px] cursor-pointer text-[#a5a5a5]'></i>
+                    <i onClick={sendMessage} className='bx bx-send text-[23px] cursor-pointer text-[#a5a5a5]'></i>
                 </div>
             </div>
         </div>
