@@ -32,7 +32,7 @@ export const signWithGoogle = (type) => new Promise((rejects, resolve) => {
                         rejects(user)
                     })
                     .catch(error => {
-                        console.log(error)
+                        resolve(error)
                     })
             } else if (type === 'sign-in') {
                 api({ body: { email }, path: '/sign-in-with-google', type: TypeHTTP.POST, sendToken: false })
@@ -40,11 +40,11 @@ export const signWithGoogle = (type) => new Promise((rejects, resolve) => {
                         rejects(user)
                     })
                     .catch(error => {
-                        console.log(error)
+                        resolve(error)
                     })
             }
         })
         .catch(error => {
-            console.log(error)
+            resolve(error)
         })
 })

@@ -31,7 +31,7 @@ const ListFriendPage = () => {
             </div>
             <div className='flex mt-[40px] w-[100%] flex-wrap gap-[1.5rem] px-[2rem]'>
                 {friends.map((friend, index) => (
-                    <div className='flex items-center '>
+                    <div key={index} className='flex items-center '>
                         <UserIcon avatar={friend.avatar} />
                         <span className='font-semibold px-[10px] '>{friend.fullName}</span>
                     </div>
