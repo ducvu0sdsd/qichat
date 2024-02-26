@@ -26,9 +26,18 @@ export const ProviderContext = ({ children }) => {
 
     useEffect(() => {
         if (!publicRoutes.includes(pathname)) {
-            api({ type: TypeHTTP.POST, sendToken: true, path: '/check-tokens' })
+            api({ type: TypeHTTP.GET, sendToken: true, path: '/get-user-by-tokens' })
+                .then(user => {
+                    setUser(user)
+                })
                 .catch((error) => {
                     router.push('/')
+                })
+        } else {
+            api({ type: TypeHTTP.GET, sendToken: true, path: '/get-user-by-tokens' })
+                .then(user => {
+                    setUser(user)
+                    router.push('/messages')
                 })
         }
     }, [pathname])

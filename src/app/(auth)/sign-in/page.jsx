@@ -7,6 +7,7 @@ import { AuthContext } from '@/components/auth/context';
 import { formatPhoneByFireBase } from '@/utils/call';
 import { ThemeContext } from '@/app/context';
 import { signWithGoogle } from '@/components/firebase/firebase';
+import Link from 'next/link';
 
 const SignIn = () => {
     const { listData, listHandler } = useContext(AuthContext)
@@ -75,7 +76,7 @@ const SignIn = () => {
                     <h1 className='text-[35px] text-[white]'>Hello, Friend!</h1>
                     <span className='text-[white] mt-[10px]'>Enter your personal information </span>
                     <span className='text-[white] mb-[20px]'>and start the experience</span>
-                    <button className='text-[white] font-medium w-[350px] h-[45px] border-[3px] rounded-[10px]'>Create an account</button>
+                    <Link href={'/sign-up'}><button className='text-[white] font-medium w-[350px] h-[45px] border-[3px] rounded-[10px]'>Create an account</button></Link>
                 </div>
             </div>
         </div>

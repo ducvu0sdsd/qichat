@@ -6,10 +6,17 @@ import { TypeHTTP, api } from '@/utils/api'
 import { useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 
+const genders = {
+    none: 'none',
+    Male: 'Male',
+    Female: 'Female'
+}
+
 const Information = () => {
     const [fullName, setFullName] = useState('')
     const [dateOfBirth, setDateOfBirth] = useState()
     const [bio, setBio] = useState('')
+    const [gender, setGender] = useState('none')
     const { handler } = useContext(ThemeContext)
     const { listData, listHandler } = useContext(AuthContext);
     const router = useRouter();
@@ -17,7 +24,9 @@ const Information = () => {
     useEffect(() => console.log(listData.user), [listData.user])
 
     const handleSubmitInformation = () => {
-        api({ type: TypeHTTP.PUT, body: { fullName, dateOfBirth, bio, statusSignUp: 'Complete Sign Up' }, path: `/users/${listData.user._id}`, sendToken: false })
+        if (gender === genders.none)
+            return
+        api({ type: TypeHTTP.PUT, body: { fullName, dateOfBirth, bio, gender, statusSignUp: 'Complete Sign Up' }, path: `/users/${listData.user._id}`, sendToken: false })
             .then(res => {
                 if (res) {
                     api({ type: TypeHTTP.POST, path: '/generate-tokens', body: { user_id: res?._id, admin: res?.admin }, sendToken: false })
@@ -48,9 +57,14 @@ const Information = () => {
             </div>
             <div className='w-[50%] px-[80px] flex flex-col justify-center'>
                 <h1 className='font-bold text-[25px] mb-[10px]'>Complete Your Profile</h1>
-                <input onChange={(e) => setFullName(e.target.value)} value={fullName} type='text' placeholder='Full Name' className='focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
-                <input onChange={(e) => setDateOfBirth(e.target.value)} value={dateOfBirth} type='date' placeholder='Date Of Birth' className='focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
-                <input onChange={(e) => setBio(e.target.value)} value={bio} type='text' placeholder='Bio' className='focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px]' />
+                <input onChange={(e) => setFullName(e.target.value)} value={fullName} type='text' placeholder='Full Name' className='focus:outline-0 px-[15px] mt-[15px] bg-[#f8f8f8] w-[500px] h-[45px] rounded-[5px] ' />
+                <input onChange={(e) => setDateOfBirth(e.target.value)} value={dateOfBirth} type='date' placeholder='Date Of Birth' className='focus:outline-0 px-[15px] mt-[15px] bg-[#f8f8f8] w-[500px] h-[45px] rounded-[5px] ' />
+                <input onChange={(e) => setBio(e.target.value)} value={bio} type='text' placeholder='Bio' className='focus:outline-0 px-[15px] mt-[15px] bg-[#f8f8f8] w-[500px] h-[45px] rounded-[5px]' />
+                <select onChange={(e) => setGender(e.target.value)} className='focus:outline-0 px-[15px] mt-[15px] bg-[#f8f8f8] w-[500px] h-[45px] rounded-[5px]'>
+                    <option value={genders.none}>Choose Gender</option>
+                    <option value={genders.Male}>Male</option>
+                    <option value={genders.Female}>Female</option>
+                </select>
                 <button onClick={() => handleSubmitInformation()} type='submit' className='bg-[#e77373] w-[300px] h-[40px] rounded-[10px] text-[white] mt-[15px]'>Submit</button>
             </div>
         </section>

@@ -8,6 +8,7 @@ import { AuthContext } from '@/components/auth/context';
 import toast from 'react-hot-toast';
 import { ThemeContext, notifyType } from '@/app/context';
 import { signWithGoogle } from '@/components/firebase/firebase';
+import Link from 'next/link';
 
 const SignUp = () => {
     const router = useRouter();
@@ -59,7 +60,7 @@ const SignUp = () => {
                     <h1 className='text-[white] font-bold text-[30px] leading-[60px] justify-center text-center '>Welcome Back!</h1>
                     <span>To keep connected with us</span>
                     <span>please sign in your personal info</span>
-                    <button className=' border-[2px] mt-[20px] h-[40px] rounded-full text-[white] px-[80px] text-center '>Sign In</button>
+                    <Link href={'/sign-in'}><button className=' border-[2px] mt-[20px] h-[40px] rounded-full text-[white] px-[80px] text-center '>Sign In</button></Link>
                 </div>
             </div>
             <div className='w-[50%] px-[80px] flex flex-col justify-center'>

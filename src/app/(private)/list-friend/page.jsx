@@ -1,7 +1,16 @@
+'use client'
+import { ThemeContext } from '@/app/context'
 import UserIcon from '@/components/userIcon'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 const ListFriendPage = () => {
+    const [friends, setFriends] = useState([])
+    const { data } = useContext(ThemeContext)
+
+    useEffect(() => {
+        setFriends(data.user.friends)
+    }, [data.user])
+
     return (
         <section>
             <div className='h-[10%] flex items-center w-full justify-between px-[2rem] py-2 border-[#e5e5e5] border-b-[1px]'>
@@ -21,42 +30,12 @@ const ListFriendPage = () => {
                 </select>
             </div>
             <div className='flex mt-[40px] w-[100%] flex-wrap gap-[1.5rem] px-[2rem]'>
-                <div className='flex items-center '>
-                    <UserIcon />
-                    <span className='font-semibold px-[10px] '>Vu Tien Duc</span>
-                </div>
-                <div className='flex items-center '>
-                    <UserIcon />
-                    <span className='font-semibold px-[10px] '>Vu Tien Duc</span>
-                </div>
-                <div className='flex items-center '>
-                    <UserIcon />
-                    <span className='font-semibold px-[10px] '>Vu Tien Duc</span>
-                </div>
-                <div className='flex items-center '>
-                    <UserIcon />
-                    <span className='font-semibold px-[10px] '>Vu Tien Duc</span>
-                </div>
-                <div className='flex items-center '>
-                    <UserIcon />
-                    <span className='font-semibold px-[10px] '>Vu Tien Duc</span>
-                </div>
-                <div className='flex items-center '>
-                    <UserIcon />
-                    <span className='font-semibold px-[10px] '>Vu Tien Duc</span>
-                </div>
-                <div className='flex items-center '>
-                    <UserIcon />
-                    <span className='font-semibold px-[10px] '>Vu Tien Duc</span>
-                </div>
-                <div className='flex items-center '>
-                    <UserIcon />
-                    <span className='font-semibold px-[10px] '>Vu Tien Duc</span>
-                </div>
-                <div className='flex items-center '>
-                    <UserIcon />
-                    <span className='font-semibold px-[10px] '>Vu Tien Duc</span>
-                </div>
+                {friends.map((friend, index) => (
+                    <div className='flex items-center '>
+                        <UserIcon avatar={friend.avatar} />
+                        <span className='font-semibold px-[10px] '>{friend.fullName}</span>
+                    </div>
+                ))}
             </div>
         </section>
     )

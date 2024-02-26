@@ -1,4 +1,5 @@
 'use client'
+import { ThemeContext } from '@/app/context'
 import AddFriendPage from '@/components/adding/addFriend'
 import { AddingContext, layouts } from '@/components/adding/context'
 import CreateGroupPage from '@/components/adding/createGroup'
@@ -8,14 +9,15 @@ import React, { useContext, useState } from 'react'
 const AddingPage = () => {
 
     const { listData, listHandler } = useContext(AddingContext)
+    const { data } = useContext(ThemeContext)
 
     return (
         <section className='h-screen w-[100%] flex '>
             <div className='w-[22%] h-screen border-[#e5e5e5] border-r-[1px]'>
                 <div className='h-[10%] flex items-center w-full justify-start px-[15px] py-2 border-[#e5e5e5] border-b-[1px]'>
-                    <img src='/avatar.jpg' className='rounded-full h-[48px] w-[48px]' />
+                    <img src={data.user?.avatar} className='rounded-full h-[48px] w-[48px]' />
                     <div className='flex flex-col ml-[10px]'>
-                        <span className='font-bold'>Vu Tien Duc</span>
+                        <span className='font-bold'>{data.user?.fullName}</span>
                         <span className='font-semibold text-[13px]'>My Account</span>
                     </div>
                 </div>

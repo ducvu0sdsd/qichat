@@ -18,7 +18,6 @@ export const api = ({ path, body, type, sendToken }) => {
             case TypeHTTP.GET:
                 axios.get(path, { headers: sendToken ? { accessToken, refreshToken, user_id, admin } : {} })
                     .then(res => {
-                        console.log(res.data)
                         if (sendToken) {
                             globalThis.window.localStorage.setItem('accessToken', res.data.tokens.accessToken)
                             globalThis.window.localStorage.setItem('refreshToken', res.data.tokens.refreshToken)
@@ -43,7 +42,6 @@ export const api = ({ path, body, type, sendToken }) => {
                         }
                     })
                     .catch(res => {
-                        console.log(res)
                         resolve({ status: res.response?.status, message: res.response?.data })
                     })
                 break

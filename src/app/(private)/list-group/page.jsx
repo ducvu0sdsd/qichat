@@ -1,7 +1,23 @@
+'use client'
+import { ThemeContext } from '@/app/context'
 import UserIcon from '@/components/userIcon'
-import React from 'react'
+import { TypeHTTP, api } from '@/utils/api'
+import React, { useContext, useEffect, useState } from 'react'
 
 const ListGroupPage = () => {
+
+    const [groups, setGroups] = useState([])
+    const { data } = useContext(ThemeContext)
+    useEffect(() => {
+        api({ type: TypeHTTP.GET, path: `/rooms/${data.user?._id}`, sendToken: true })
+            .then(rooms => {
+                setGroups(rooms)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }, [])
+
     return (
         <section>
             <div className='h-[10%] flex items-center w-full justify-between px-[2rem] py-2 border-[#e5e5e5] border-b-[1px]'>
@@ -21,114 +37,17 @@ const ListGroupPage = () => {
                 </select>
             </div>
             <div className='grid grid-cols-4 justify-items-start mt-[40px] w-[100%] gap-[1rem] px-[2rem]'>
-                <div className='relative flex items-center cursor-pointer my-[6px]'>
-                    <UserIcon />
-                    <div className='flex flex-col ml-2'>
-                        <span className='text-[14px] font-semibold'>Learn Together Group</span>
-                        <span className='text-[12px] w-full'>
-                            5 participants
-                        </span>
+                {groups.map((group, index) => (
+                    <div key={index} className='relative flex items-center cursor-pointer my-[6px]'>
+                        <UserIcon type={'Group'} avatar={group.image} />
+                        <div className='flex flex-col ml-2'>
+                            <span className='text-[14px] font-semibold'>{group.name}</span>
+                            <span className='text-[12px] w-full'>
+                                {`${group.users.length} participants`}
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <div className='relative flex items-center cursor-pointer my-[6px]'>
-                    <UserIcon />
-                    <div className='flex flex-col ml-2'>
-                        <span className='text-[14px] font-semibold'>Learn Together Group</span>
-                        <span className='text-[12px] w-full'>
-                            5 participants
-                        </span>
-                    </div>
-                </div>
-                <div className='relative flex items-center cursor-pointer my-[6px]'>
-                    <UserIcon />
-                    <div className='flex flex-col ml-2'>
-                        <span className='text-[14px] font-semibold'>Learn Together Group</span>
-                        <span className='text-[12px] w-full'>
-                            5 participants
-                        </span>
-                    </div>
-                </div>
-                <div className='relative flex items-center cursor-pointer my-[6px]'>
-                    <UserIcon />
-                    <div className='flex flex-col ml-2'>
-                        <span className='text-[14px] font-semibold'>Learn Together Group</span>
-                        <span className='text-[12px] w-full'>
-                            5 participants
-                        </span>
-                    </div>
-                </div>
-                <div className='relative flex items-center cursor-pointer my-[6px]'>
-                    <UserIcon />
-                    <div className='flex flex-col ml-2'>
-                        <span className='text-[14px] font-semibold'>Learn Together Group</span>
-                        <span className='text-[12px] w-full'>
-                            5 participants
-                        </span>
-                    </div>
-                </div>
-                <div className='relative flex items-center cursor-pointer my-[6px]'>
-                    <UserIcon />
-                    <div className='flex flex-col ml-2'>
-                        <span className='text-[14px] font-semibold'>Learn Together Group</span>
-                        <span className='text-[12px] w-full'>
-                            5 participants
-                        </span>
-                    </div>
-                </div>
-                <div className='relative flex items-center cursor-pointer my-[6px]'>
-                    <UserIcon />
-                    <div className='flex flex-col ml-2'>
-                        <span className='text-[14px] font-semibold'>Learn Together Group</span>
-                        <span className='text-[12px] w-full'>
-                            5 participants
-                        </span>
-                    </div>
-                </div>
-                <div className='relative flex items-center cursor-pointer my-[6px]'>
-                    <UserIcon />
-                    <div className='flex flex-col ml-2'>
-                        <span className='text-[14px] font-semibold'>Learn Together Group</span>
-                        <span className='text-[12px] w-full'>
-                            5 participants
-                        </span>
-                    </div>
-                </div>
-                <div className='relative flex items-center cursor-pointer my-[6px]'>
-                    <UserIcon />
-                    <div className='flex flex-col ml-2'>
-                        <span className='text-[14px] font-semibold'>Learn Together Group</span>
-                        <span className='text-[12px] w-full'>
-                            5 participants
-                        </span>
-                    </div>
-                </div>
-                <div className='relative flex items-center cursor-pointer my-[6px]'>
-                    <UserIcon />
-                    <div className='flex flex-col ml-2'>
-                        <span className='text-[14px] font-semibold'>Learn Together Group</span>
-                        <span className='text-[12px] w-full'>
-                            5 participants
-                        </span>
-                    </div>
-                </div>
-                <div className='relative flex items-center cursor-pointer my-[6px]'>
-                    <UserIcon />
-                    <div className='flex flex-col ml-2'>
-                        <span className='text-[14px] font-semibold'>Learn Together Group</span>
-                        <span className='text-[12px] w-full'>
-                            5 participants
-                        </span>
-                    </div>
-                </div>
-                <div className='relative flex items-center cursor-pointer my-[6px]'>
-                    <UserIcon />
-                    <div className='flex flex-col ml-2'>
-                        <span className='text-[14px] font-semibold'>Learn Together Group</span>
-                        <span className='text-[12px] w-full'>
-                            5 participants
-                        </span>
-                    </div>
-                </div>
+                ))}
             </div>
         </section>
     )
