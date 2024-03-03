@@ -72,7 +72,7 @@ const MessageArea = () => {
                         {listData.messages.length === 0 ?
                             <div className='absolute top-[50%] left-[50%] translate-x-[-50%] flex flex-col items-center gap-3 translate-y-[-50%] text-center text-[20px]'>
                                 <img src={returnImage(listData.currentRoom, data.user)} className='w-[200px] h-[200px] rounded-full' />
-                                <span>You don't have a message with {returnName(listData.currentRoom, data.user)} yet, start messaging now !!!</span>
+                                <span>{"You don't have a message with"} {returnName(listData.currentRoom, data.user)} yet, start messaging now !!!</span>
                             </div>
                             :
                             <>
@@ -94,7 +94,7 @@ const MessageArea = () => {
                 :
                 <div className='w-full h-full flex flex-col items-center justify-center'>
                     <Logo />
-                    <span className='text-[18px]'>It's A Good Platform For Message Sharing!!!</span>
+                    <span className='text-[18px]'>{"It's A Good Platform For Message Sharing!!!"}</span>
                 </div>
             }
         </div>
