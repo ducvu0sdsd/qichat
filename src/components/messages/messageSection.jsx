@@ -47,8 +47,8 @@ const MessageSection = ({ style, message }) => {
                 <MessageItem message={message.information} />
                 {message.emojis.length > 0 &&
                     <div style={{ bottom: style === 'end' ? '-55%' : '-35%' }} className='px-1 z-20 flex rounded-md translate-y-[-50%] bg-[#EFF5FD] absolute left-[5px]'>
-                        {message.emojis.map(e => {
-                            return <span className='text-[11px]'>{emoji(e.status)}</span>
+                        {message.emojis.map((e, index) => {
+                            return <span key={index} className='text-[11px]'>{emoji(e.status)}</span>
                         })}
                     </div>
                 }
