@@ -16,7 +16,8 @@ const Verification = () => {
     const { listData, listHandler } = useContext(AuthContext);
 
     useEffect(() => {
-        if (listData.phone) {
+        console.log(listData.user.phone)
+        if (listData.user.phone) {
             setPhone(listData.user.phone);
             const recaptcha = new RecaptchaVerifier(auth, 'recaptcha', {})
             signInWithPhoneNumber(auth, listData.user.phone, recaptcha)

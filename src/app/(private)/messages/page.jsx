@@ -6,11 +6,12 @@ import LeftSection from '@/components/messages/leftSection'
 import RightSection from '@/components/messages/rightSection'
 import React, { useContext, useEffect } from 'react'
 import { ThemeContext } from '@/app/context';
+import { TypeHTTP, api } from '@/utils/api';
 
 const MesagesPage = () => {
 
     const { listData, listHandler } = useContext(MessagesContext)
-    const { data } = useContext(ThemeContext)
+
 
     return (
         <section className='flex h-full'>

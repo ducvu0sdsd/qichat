@@ -25,7 +25,6 @@ const FriendsRequestPage = () => {
     const handleAcceptRequest = (request) => {
         api({ type: TypeHTTP.POST, sendToken: true, path: `/requests/accept-request`, body: { request } })
             .then(res => {
-                console.log(res)
                 handler.setUser(res.user)
                 setRequests(res.requests)
             })

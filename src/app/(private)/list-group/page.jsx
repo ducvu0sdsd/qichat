@@ -9,7 +9,7 @@ const ListGroupPage = () => {
     const [groups, setGroups] = useState([])
     const { data } = useContext(ThemeContext)
     useEffect(() => {
-        api({ type: TypeHTTP.GET, path: `/rooms/${data.user?._id}`, sendToken: true })
+        api({ type: TypeHTTP.GET, path: `/groups/${data.user?._id}`, sendToken: true })
             .then(rooms => {
                 setGroups(rooms)
             })

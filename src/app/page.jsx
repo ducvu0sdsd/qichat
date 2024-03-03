@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <section style={{ backgroundImage: 'url(/bg.webp)' }} className='relative flex items-center font-poppins px-[4rem] bg-[#d67272] h-screen w-[100%] bg-cover'>
+    <section style={{ backgroundImage: 'url(/bg.webp)' }} className='relative flex items-center font-poppins px-[4rem] h-screen w-[100%] bg-cover'>
       <div className='absolute flex items-center w-full px-[4rem] top-0 left-0 justify-between pt-[1rem]'>
         <div className='flex items-center'>
           <img width={'60px'} src='/logo.png' />

@@ -1,16 +1,19 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { MessagesContext } from './context'
+import { returnImage, returnName } from '@/utils/room'
+import { ThemeContext } from '@/app/context'
 
 const InformationArea = () => {
 
     const { listData } = useContext(MessagesContext)
+    const { data } = useContext(ThemeContext)
 
     return (
         <div style={{ width: `${listData.displayInfo ? '450' : '0'}px`, paddingLeft: listData.displayInfo && '1rem', paddingRight: listData.displayInfo && '1rem' }} className='transition-all overflow-hidden h-screen flex flex-col py-[1rem]'>
             <div className='w-full flex flex-col items-center gap-2'>
-                <img src='/avatar.jpg' className='rounded-full w-[100px] h-[100px]' />
+                <img src={returnImage(listData.currentRoom, data.user)} className='rounded-full w-[100px] h-[100px]' />
                 <div className='flex flex-col items-center'>
-                    <span className='text-[19px] font-semibold'>Vu Tien Duc</span>
+                    <span className='text-[19px] font-semibold'>{returnName(listData.currentRoom, data.user)}</span>
                     <span className='text-[13px] font-semibold'>In Operation</span>
                 </div>
             </div>

@@ -7,15 +7,13 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCkPPybb56Qf9RFXnJhQyzO2HYYJYVkzhM",
-    authDomain: "qichat-bf0be.firebaseapp.com",
-    projectId: "qichat-bf0be",
-    storageBucket: "qichat-bf0be.appspot.com",
-    messagingSenderId: "860142033503",
-    appId: "1:860142033503:web:7229dc5f06a6436aa959ea",
-    measurementId: "G-MEYXBGPN5N"
+    apiKey: "AIzaSyBR4J1CMe6-pDh6-AyEHVwpQxL3_HmOQWE",
+    authDomain: "fir-qichat.firebaseapp.com",
+    projectId: "fir-qichat",
+    storageBucket: "fir-qichat.appspot.com",
+    messagingSenderId: "1015562703159",
+    appId: "1:1015562703159:web:440b1032c64d70617f0ab2"
 };
-
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

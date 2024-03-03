@@ -1,5 +1,6 @@
 import axios from "axios";
-axios.defaults.baseURL = 'http://localhost:8080/v1/api'
+export const baseURL = 'http://localhost:8080'
+axios.defaults.baseURL = `${baseURL}/v1/api`
 
 export const TypeHTTP = {
     GET: 'get',

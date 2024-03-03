@@ -8,7 +8,8 @@ const ListFriendPage = () => {
     const { data } = useContext(ThemeContext)
 
     useEffect(() => {
-        setFriends(data.user.friends)
+        if (data.user)
+            setFriends(data.user.friends)
     }, [data.user])
 
     return (

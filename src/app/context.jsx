@@ -1,9 +1,10 @@
 'use client'
-import { TypeHTTP, api } from "@/utils/api";
+import { TypeHTTP, api, baseURL } from "@/utils/api";
 import { usePathname, useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-
+import { io } from 'socket.io-client'
+const socket = io.connect(baseURL)
 export const ThemeContext = createContext();
 
 export const notifyType = {
@@ -23,14 +24,35 @@ export const ProviderContext = ({ children }) => {
                 toast.success(message)
         }
     }
+    useEffect(() => {
+        const onBeforeUnload = (ev) => {
+            let userUpdate = user
+            userUpdate.operating = { status: false, time: new Date() }
+            socket.emit('close_operating', userUpdate)
+            socket.emit('update-room')
+        };
+        globalThis.window.addEventListener("beforeunload", onBeforeUnload);
+
+        return () => {
+            globalThis.window.addEventListener("beforeunload", onBeforeUnload);
+        }
+    }, [pathname, user]);
 
     useEffect(() => {
         if (!publicRoutes.includes(pathname)) {
             api({ type: TypeHTTP.GET, sendToken: true, path: '/get-user-by-tokens' })
                 .then(user => {
                     setUser(user)
+                    user.operating = {
+                        status: true,
+                        time: new Date()
+                    }
+                    socket.emit('update-room')
+                    api({ type: TypeHTTP.PUT, sendToken: false, path: `/users/${user._id}`, body: user })
                 })
                 .catch((error) => {
+                    globalThis.window.localStorage.removeItem('accessToken')
+                    globalThis.window.localStorage.removeItem('refreshToken')
                     router.push('/')
                 })
         } else {
