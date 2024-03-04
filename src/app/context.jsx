@@ -60,8 +60,8 @@ export const ProviderContext = ({ children }) => {
                 })
                 .catch((error) => {
                     console.log(error)
-                    globalThis.window.localStorage.removeItem('accessToken')
-                    globalThis.window.localStorage.removeItem('refreshToken')
+                    // globalThis.window.localStorage.removeItem('accessToken')
+                    // globalThis.window.localStorage.removeItem('refreshToken')
                     router.push('/')
                 })
         } else {
