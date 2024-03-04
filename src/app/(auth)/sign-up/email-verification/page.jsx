@@ -1,5 +1,5 @@
 'use client'
-import { ThemeContext } from '@/app/context'
+import { ThemeContext, notifyType } from '@/app/context'
 import { AuthContext } from '@/components/auth/context'
 import { TypeHTTP, api } from '@/utils/api'
 import Link from 'next/link'
