@@ -8,7 +8,7 @@ const UserIcon = ({ avatar, operating, show }) => {
             {operating?.status ?
                 <div className='h-[13px] bottom-[0px] right-[-1px] w-[13px] absolute bg-[#2fd12f] rounded-full'></div>
                 :
-                show === true && <div className='py-1 px-1 bottom-[-2px] right-[-5px] bg-[black] absolute text-[9px] font-poppins font-bold text-[white] rounded-full'>{tinhSoPhutChamIcon(operating?.time)}</div>
+                show === true && <div className='py-1 px-1 bottom-[-2px] right-[-5px] bg-[black] absolute text-[9px] font-poppins font-bold text-[white] rounded-full'>{!tinhSoPhutChamIcon(operating?.time) ? '0s' : tinhSoPhutChamIcon(operating?.time)}</div>
             }
         </div>
     )

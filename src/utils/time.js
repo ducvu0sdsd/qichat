@@ -49,6 +49,10 @@ export const tinhSoPhutCham = (isoDateStr) => {
 }
 
 export const tinhSoPhutChamIcon = (isoDateStr) => {
+
+    if (!isoDateStr)
+        return '0s'
+
     const targetDate = new Date(isoDateStr);
     const now = new Date();
     const diffInMilliseconds = now - targetDate;
