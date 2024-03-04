@@ -18,7 +18,10 @@ const FriendsRequestPage = () => {
 
     const handleRefuseRequest = (id) => {
         api({ type: TypeHTTP.DELETE, sendToken: true, path: `/requests/${id}` })
-            .then(res => setRequests(res))
+            .then(res => {
+                setRequests(res)
+                handler.notify(notifyType.SUCCESS, 'Refuse Request Successfully')
+            })
             .catch(error => console.log(error))
     }
 
@@ -27,6 +30,7 @@ const FriendsRequestPage = () => {
             .then(res => {
                 handler.setUser(res.user)
                 setRequests(res.requests)
+                handler.notify(notifyType.SUCCESS, 'Accept Request Successfully')
             })
             .catch(error => console.log(error))
     }
@@ -34,7 +38,7 @@ const FriendsRequestPage = () => {
     return (
         <div className='w-[78%] h-screen border-[#e5e5e5] border-r-[1px]'>
             <div className='h-[10%] flex items-center w-full justify-start px-[25px] py-[17px] border-[#e5e5e5] border-b-[px]'>
-                <i className='bx bx-user-check text-[30px] text-[#353535] mr-2'></i>
+                <img src='/icon-friend.png' width={'40px'} />
                 <span className='font-poppins ml-2 text-[18px] font-bold'>Friends Request</span>
             </div>
 
@@ -49,9 +53,9 @@ const FriendsRequestPage = () => {
                                 <div key={index} className='flex items-center'>
                                     {console.log(item)}
                                     <UserIcon avatar={item.fromUser.avatar} />
-                                    <span className='font-semibold px-[7px] '>{item.fromUser.fullName}</span>
-                                    <i onClick={() => handleAcceptRequest(item)} className='bx bx-check text-[22px] cursor-pointer'></i>
-                                    <i onClick={() => handleRefuseRequest(item._id)} className='bx bx-x text-[22px] cursor-pointer'></i>
+                                    <span className='font-semibold text-[13px] px-[7px] '>{item.fromUser.fullName}</span>
+                                    <button onClick={() => handleAcceptRequest(item)} className='text-[10px] mr-1 bg-[green] font-poppins py-[6px] px-2 text-[white] rounded-lg font-semibold'>Accept</button>
+                                    <button onClick={() => handleRefuseRequest(item._id)} className='text-[10px] bg-[red] font-poppins py-[6px] px-2 text-[white] rounded-lg font-semibold'>Refuse</button>
                                 </div>
                             ))}
                         </div>

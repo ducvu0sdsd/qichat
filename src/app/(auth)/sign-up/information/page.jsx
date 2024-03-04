@@ -1,5 +1,5 @@
 'use client'
-import { ThemeContext } from '@/app/context'
+import { ThemeContext, notifyType } from '@/app/context'
 import { AuthContext } from '@/components/auth/context'
 import Logo from '@/components/logo'
 import { TypeHTTP, api } from '@/utils/api'
@@ -36,6 +36,7 @@ const Information = () => {
                             globalThis.window.localStorage.setItem('user_id', res?._id)
                             globalThis.window.localStorage.setItem('admin', res?.admin)
                             handler.setUser(res)
+                            handler.notify(notifyType.SUCCESS, 'Update information successfully')
                             router.push('/messages')
                         })
                 }

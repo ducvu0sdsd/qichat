@@ -70,3 +70,18 @@ export const tinhSoPhutChamIcon = (isoDateStr) => {
         return diffInSeconds + 's';
     }
 }
+
+
+export const formatDateOfBirth = (isoDateStr) => {
+    var date = new Date(isoDateStr);
+
+    // Lấy ngày, tháng, năm từ đối tượng Date
+    var ngay = date.getDate();
+    var thang = date.getMonth() + 1; // Tháng bắt đầu từ 0, nên cộng thêm 1
+    var nam = date.getFullYear();
+
+    // Định dạng lại chuỗi ngày/tháng/năm
+    var chuoiNgayThangNam = ngay + '/' + thang + '/' + nam;
+
+    return chuoiNgayThangNam;
+}

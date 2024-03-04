@@ -25,3 +25,9 @@ body {
 .emoji {
     cursor: pointer;
 }
+
+.wrapper {
+    z-index: 10;
+    cursor: pointer;
+    background-color: #2b2b2b59;
+}

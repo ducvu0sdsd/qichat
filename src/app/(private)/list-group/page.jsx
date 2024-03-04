@@ -23,7 +23,7 @@ const ListGroupPage = () => {
             <div className='h-[10%] flex items-center w-full justify-between px-[2rem] py-2 border-[#e5e5e5] border-b-[1px]'>
                 <div className='h-full flex items-center'>
                     <span className='font-bold text-[22px] font-poppins mr-[0.5rem]'>List Group</span>
-                    <i className='text-[25px] bx bx-group'></i>
+                    <img src='/icon-friends.png' width={'30px'} />
                 </div>
                 <i className='text-[25px] bx bx-plus' ></i>
             </div>
@@ -37,17 +37,21 @@ const ListGroupPage = () => {
                 </select>
             </div>
             <div className='grid grid-cols-4 justify-items-start mt-[40px] w-[100%] gap-[1rem] px-[2rem]'>
-                {groups.map((group, index) => (
-                    <div key={index} className='relative flex items-center cursor-pointer my-[6px]'>
-                        <UserIcon type={'Group'} avatar={group.image} />
-                        <div className='flex flex-col ml-2'>
-                            <span className='text-[14px] font-semibold'>{group.name}</span>
-                            <span className='text-[12px] w-full'>
-                                {`${group.users.length} participants`}
-                            </span>
+                {groups.length === 0 ?
+                    <div></div>
+                    :
+                    groups.map((group, index) => (
+                        <div key={index} className='relative flex items-center cursor-pointer my-[6px]'>
+                            <UserIcon type={'Group'} avatar={group.image} />
+                            <div className='flex flex-col ml-2'>
+                                <span className='text-[14px] font-semibold'>{group.name}</span>
+                                <span className='text-[12px] w-full'>
+                                    {`${group.users.length} participants`}
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                }
             </div>
         </section>
     )

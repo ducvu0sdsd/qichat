@@ -1,8 +1,9 @@
 'use client'
+import Notification from "@/components/notification";
+import FormInformation from "@/components/user/formInformation";
 import { TypeHTTP, api, baseURL } from "@/utils/api";
 import { usePathname, useRouter } from "next/navigation";
-import { createContext, useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { createContext, useEffect, useRef, useState } from "react";
 import { io } from 'socket.io-client'
 const socket = io.connect(baseURL)
 export const ThemeContext = createContext();
@@ -10,20 +11,27 @@ export const ThemeContext = createContext();
 export const notifyType = {
     SUCCESS: 'success',
     FAIL: 'fail',
-    WARNING: 'warning'
+    WARNING: 'warning',
+    NONE: 'none'
 }
 
 export const ProviderContext = ({ children }) => {
     const pathname = usePathname()
     const router = useRouter();
+    const wrapperRef = useRef()
     const publicRoutes = ['/', '/sign-in', '/sign-up', '/sign-up/verification', '/sign-up/information', '/sign-up/email-verification']
     const [user, setUser] = useState()
-    const notify = ({ type, message }) => {
-        switch (type) {
-            case type === notifyType.SUCCESS:
-                toast.success(message)
+    const [info, setInfo] = useState({ status: notifyType.NONE, message: '' })
+    const [userInformation, setUserInformation] = useState()
+
+    useEffect(() => {
+        if (info.status !== notifyType.NONE) {
+            setTimeout(() => {
+                setInfo({ status: 'none', message: '' })
+            }, 3000);
         }
-    }
+    }, [info.status])
+
     useEffect(() => {
         const onBeforeUnload = (ev) => {
             let userUpdate = user
@@ -64,18 +72,34 @@ export const ProviderContext = ({ children }) => {
         }
     }, [pathname])
 
+    const notify = (status, message) => setInfo({ status, message })
+
+    const showUserInformation = (userInfo) => {
+        wrapperRef.current.style.display = 'block'
+        setUserInformation(userInfo)
+    }
+
+    const hiddenUserInformation = (userInfo) => {
+        wrapperRef.current.style.display = 'none'
+        setUserInformation(undefined)
+    }
+
     const data = {
         user
     }
 
     const handler = {
         setUser,
-        notify
+        notify,
+        showUserInformation,
+        hiddenUserInformation
     }
 
     return (
         <ThemeContext.Provider value={{ data, handler }}>
-            <Toaster toastOptions={{ duration: 4000 }} />
+            <div ref={wrapperRef} onClick={() => hiddenUserInformation()} className="wrapper fixed top-0 left-0 hidden w-screen h-screen z-20" />
+            <Notification status={info.status} message={info.message} />
+            <FormInformation user={userInformation} />
             {children}
         </ThemeContext.Provider>
     )

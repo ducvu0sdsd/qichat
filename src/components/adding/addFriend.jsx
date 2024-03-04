@@ -17,7 +17,7 @@ const AddFriendPage = () => {
     const [currentInput, setCurrentInput] = useState(inputs.NONE)
     const [query, setQuery] = useState('')
     const [users, setUsers] = useState([])
-    const { data } = useContext(ThemeContext)
+    const { data, handler } = useContext(ThemeContext)
 
     useEffect(() => setQuery(''), [currentInput])
     useEffect(debounce(() => {
@@ -27,26 +27,11 @@ const AddFriendPage = () => {
             })
     }, 300), [query])
 
-    const handleCreateRequest = (toUser) => {
-        const fromUser = {
-            _id: data.user._id,
-            fullName: data.user.fullName,
-            avatar: data.user.avatar
-        }
-        api({ type: TypeHTTP.POST, body: { toUser, fromUser }, path: '/requests', sendToken: true })
-            .then(result => {
-                console.log(result)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-    }
-
     return (
         <div className='w-[78%] border-[#e5e5e5] border-r-[px]'>
             <div className='h-[10%] flex items-center w-full justify-start px-[25px] py-[17px] border-[#e5e5e5] border-b-[px]'>
-                <i className='bx bx-user-plus text-[30px]'></i>
-                <span className='font-poppins ml-2 text-[18px] font-bold'>Add Friends</span>
+                <img src='/icon-adding.png' width={'40px'} />
+                <span className='font-poppins ml-2 text-[18px] font-bold'>Find Friends</span>
             </div>
             <div className='h-full w-[100%] border-[#e5e5e5] border-t-[1px] pt-[1.5rem] flex'>
                 <div className='flex flex-col items-center w-[40%] px-[2rem]'>
@@ -77,13 +62,11 @@ const AddFriendPage = () => {
                     <div className=' relative px-[1rem] flex flex-wrap items-start content-start py-[1rem] gap-4 h-[450px] overflow-y-auto'>
                         {users.length !== 0 ?
                             users.map((user, index) => (
-                                <div key={index} className='flex items-center cursor-pointer '>
-                                    <UserIcon avatar={user.avatar} />
-                                    <span className='font-bold text-[15px] pl-[8px] pr-[15px] '>{user.fullName}</span>
-                                    {data.user.friends.map(item => item._id).includes(user._id) ?
+                                <div onClick={() => handler.showUserInformation(user)} key={index} className='flex items-center cursor-pointer '>
+                                    <UserIcon avatar={user.avatar} operating={user.operating.status} />
+                                    <span className='font-semibold text-[14px] pl-[8px] pr-[15px] '>{user.fullName}</span>
+                                    {data.user.friends.map(item => item._id).includes(user._id) &&
                                         (<div className='text-[11px] font-bold px-1 cursor-auto py-1 text-[green] border-[green] border-[2px] rounded-lg'>Friend</div>)
-                                        :
-                                        (<button onClick={() => handleCreateRequest({ _id: user._id, fullName: user.fullName, avatar: user.avatar })} className='text-[25px] translate-y-[-2px]'>+</button>)
                                     }
                                 </div>
                             ))

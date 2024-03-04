@@ -2,14 +2,14 @@
 
 import React, { useContext, useRef, useState } from 'react'
 import UserIcon from '../userIcon'
-import { ThemeContext } from '@/app/context'
+import { ThemeContext, notifyType } from '@/app/context'
 import { TypeHTTP, api } from '@/utils/api'
 
 const CreateGroupPage = () => {
     const inputRef = useRef()
     const [image, setImage] = useState('https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2152974972/settings_images/a05d7f7-f3b7-0102-a18b-52050e1111ad_noun-proactive-5427471-02_2.png')
     const [name, setName] = useState('')
-    const { data } = useContext(ThemeContext)
+    const { data, handler } = useContext(ThemeContext)
     const [participants, setParticipants] = useState([
         {
             _id: data.user._id,
@@ -25,7 +25,16 @@ const CreateGroupPage = () => {
             return
         api({ type: TypeHTTP.POST, path: '/rooms', sendToken: true, body: { users: participants, name, type: 'Group', image } })
             .then(room => {
-                console.log(room)
+                setName('')
+                setImage('https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2152974972/settings_images/a05d7f7-f3b7-0102-a18b-52050e1111ad_noun-proactive-5427471-02_2.png')
+                setParticipants([
+                    {
+                        _id: data.user._id,
+                        fullName: data.user.fullName,
+                        avatar: data.user.avatar
+                    }
+                ])
+                handler.notify(notifyType.SUCCESS, 'Create Group Successfully')
             })
             .catch(error => {
                 console.log(error)
@@ -35,7 +44,7 @@ const CreateGroupPage = () => {
     return (
         <div className='w-[78%] h-screen border-[#e5e5e5] border-r-[1px]'>
             <div className='h-[10%] flex items-center w-full justify-start px-[25px] py-[17px] border-[#e5e5e5] border-b-[px]'>
-                <i className='bx bx-group text-[30px]'></i>
+                <img src='/icon-friends.png' width={'40px'} />
                 <span className='font-poppins ml-2 text-[18px] font-bold'>Create Group</span>
             </div>
             <div className=' h-full  w-[100%] border-[#e5e5e5] border-t-[1px] flex'>
@@ -53,12 +62,14 @@ const CreateGroupPage = () => {
                         <span className='font-bold ml-[45px] text-[18px] font-poppins'>
                             {` Participants (${participants.length})`}
                         </span>
-                        <div className='mt-[1rem] px-[2rem] grid grid-cols-3 justify-items-center gap-3'>
+                        <div className='mt-[1rem] px-[2rem] grid grid-cols-3 justify-items-center gap-5'>
                             {participants.map((participant, index) => (
-                                <div key={index} className='flex items-center '>
-                                    <UserIcon avatar={participant.avatar} />
-                                    <span className='font-bold px-[10px] '>{participant.fullName}</span>
-                                    {data.user._id !== participant._id && <button onClick={() => setParticipants(prev => prev.filter(item => item._id !== participant._id))} className='cursor-pointer'>x</button>}
+                                <div key={index} className='flex items-center w-[200px]'>
+                                    <div className='flex items-center'>
+                                        <UserIcon avatar={participant.avatar} operating={participant.operating?.status} />
+                                        <span className='font-semibold px-[10px] text-[14px]'>{participant.fullName}</span>
+                                    </div>
+                                    {data.user._id !== participant._id && <button onClick={() => setParticipants(prev => prev.filter(item => item._id !== participant._id))} className='cursor-pointer'><i className='bx bx-x text-[20px]'></i></button>}
                                 </div>
                             ))}
                         </div>
@@ -76,9 +87,9 @@ const CreateGroupPage = () => {
                     <div className='w-full'>
                         {data.user.friends.map((friend, index) => (
                             <div key={index} className='flex justify-between w-full my-2 items-center'>
-                                <div className='flex items-center '>
+                                <div className='flex items-center  '>
                                     <UserIcon avatar={friend.avatar} />
-                                    <span className='font-bold px-[10px] '>{friend.fullName}</span>
+                                    <span className='font-semibold text-[14px] px-[10px] '>{friend.fullName}</span>
                                 </div>
                                 {participants.map(item => item._id).includes(friend._id) ?
                                     (<div className='text-[11px] bg-[green] text-[white] py-1 px-1 rounded-md font-semibold'>Added</div>)

@@ -46,9 +46,9 @@ const MessageSection = ({ style, message }) => {
                 {style === 'start' && (<span className='text-[10px] font-semibold'>{message.user.fullName.split(' ')[message.user.fullName.split(' ').length - 1]}</span>)}
                 <MessageItem message={message.information} />
                 {message.emojis.length > 0 &&
-                    <div style={{ bottom: style === 'end' ? '-55%' : '-35%' }} className='px-1 z-20 flex rounded-md translate-y-[-50%] bg-[#EFF5FD] absolute left-[5px]'>
+                    <div style={{ bottom: style === 'end' ? '-60%' : '-40%' }} className='px-1 z-20 flex rounded-md translate-y-[-50%] bg-[#EFF5FD] absolute left-[5px]'>
                         {message.emojis.map((e, index) => {
-                            return <span key={index} className='text-[11px]'>{emoji(e.status)}</span>
+                            return <span key={index} className='text-[13px]'>{emoji(e.status)}</span>
                         })}
                     </div>
                 }

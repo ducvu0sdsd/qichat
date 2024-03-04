@@ -14,10 +14,10 @@ const LeftSection = () => {
     return (
         <section className='w-[25%] h-screen border-[#e5e5e5] border-r-[1px]'>
             <div className='h-[10%] flex items-center w-full justify-start px-[15px] py-2 border-[#e5e5e5] border-b-[1px]'>
-                <img src={data.user?.avatar} className='rounded-full h-[48px] w-[48px]' />
+                <UserIcon avatar={data.user?.avatar} operating={data.user?.operating} />
                 <div className='flex flex-col ml-[10px]'>
-                    <span className='font-bold'>{data.user?.fullName}</span>
-                    <span className='font-semibold text-[13px]'>My Account</span>
+                    <span className='font-semibold text-[15px]'>{data.user?.fullName}</span>
+                    <span className='font-semibold text-[12px]'>My Account</span>
                 </div>
             </div>
             <div className='px-[15px] pt-[15px] h-[16%] overflow-hidden w-[100%]'>
