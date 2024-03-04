@@ -32,11 +32,12 @@ export const ProviderContext = ({ children }) => {
     }, [data.user])
 
     useEffect(() => {
-        api({ type: TypeHTTP.GET, path: `/get-messages-by-room/${currentRoom?._id}`, sendToken: true })
-            .then(messages => {
-                setMessages(messages)
-            })
-            .catch(error => console.log(error))
+        if (currentRoom?._id)
+            api({ type: TypeHTTP.GET, path: `/get-messages-by-room/${currentRoom?._id}`, sendToken: true })
+                .then(messages => {
+                    setMessages(messages)
+                })
+                .catch(error => console.log(error))
     }, [currentRoom, data.user?._id])
 
     const listData = {

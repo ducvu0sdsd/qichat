@@ -18,7 +18,7 @@ export const api = ({ path, body, type, sendToken }) => {
     return new Promise((rejects, resolve) => {
         switch (type) {
             case TypeHTTP.GET:
-                axios.get(path, { headers: sendToken ? { accessToken, refreshToken, user_id, admin } : {} })
+                axios.get(path, { headers: sendToken ? { accessToken, refreshToken, userid: user_id, admin } : {} })
                     .then(res => {
                         if (sendToken) {
                             globalThis.window.localStorage.setItem('accessToken', res.data.tokens.accessToken)
@@ -33,7 +33,7 @@ export const api = ({ path, body, type, sendToken }) => {
                     })
                 break
             case TypeHTTP.POST:
-                axios.post(path, body, { headers: sendToken ? { accessToken, refreshToken, user_id, admin } : {} })
+                axios.post(path, body, { headers: sendToken ? { accessToken, refreshToken, userid: user_id, admin } : {} })
                     .then(res => {
                         if (sendToken) {
                             globalThis.window.localStorage.setItem('accessToken', res.data.tokens.accessToken)
@@ -48,7 +48,7 @@ export const api = ({ path, body, type, sendToken }) => {
                     })
                 break
             case TypeHTTP.PUT:
-                axios.put(path, body, { headers: sendToken ? { accessToken, refreshToken, user_id, admin } : {} })
+                axios.put(path, body, { headers: sendToken ? { accessToken, refreshToken, userid: user_id, admin } : {} })
                     .then(res => {
                         if (sendToken) {
                             globalThis.window.localStorage.setItem('accessToken', res.data.tokens.accessToken)
@@ -63,7 +63,7 @@ export const api = ({ path, body, type, sendToken }) => {
                     })
                 break
             case TypeHTTP.DELETE:
-                axios.delete(path, { headers: sendToken ? { accessToken, refreshToken, user_id, admin } : {} })
+                axios.delete(path, { headers: sendToken ? { accessToken, refreshToken, userid: user_id, admin } : {} })
                     .then(res => {
                         if (sendToken) {
                             globalThis.window.localStorage.setItem('accessToken', res.data.tokens.accessToken)
