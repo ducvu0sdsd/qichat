@@ -1,4 +1,5 @@
 import axios from "axios";
+// export const baseURL = 'http://localhost:8080'
 export const baseURL = 'https://shoeshop-backend.online'
 axios.defaults.baseURL = `${baseURL}/v1/api`
 

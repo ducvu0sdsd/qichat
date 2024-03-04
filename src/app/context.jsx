@@ -59,6 +59,7 @@ export const ProviderContext = ({ children }) => {
                     api({ type: TypeHTTP.PUT, sendToken: false, path: `/users/${user._id}`, body: user })
                 })
                 .catch((error) => {
+                    console.log(error)
                     globalThis.window.localStorage.removeItem('accessToken')
                     globalThis.window.localStorage.removeItem('refreshToken')
                     router.push('/')
