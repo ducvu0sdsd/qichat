@@ -87,7 +87,7 @@ const CreateGroupPage = () => {
                     <div className='w-full'>
                         {data.user.friends.map((friend, index) => (
                             <div key={index} className='flex justify-between w-full my-2 items-center'>
-                                <div className='flex items-center  '>
+                                <div className='flex items-center'>
                                     <UserIcon avatar={friend.avatar} />
                                     <span className='font-semibold text-[14px] px-[10px] '>{friend.fullName}</span>
                                 </div>
