@@ -60,7 +60,7 @@ const MessageArea = () => {
                             <div className='flex flex-col ml-[10px]'>
                                 <span className='font-semibold text-[15px]'>{returnName(listData.currentRoom, data.user)}</span>
                                 {listData.currentRoom.users.length === 2 ?
-                                    <span className='font-semibold text-[12px]'>{returnRemainingObject(listData.currentRoom, data.user).operating.status ? <span className='text-[#3e9042] text-[12px]'>Active Now</span> : `Operated in ${tinhSoPhutCham(returnRemainingObject(listData.currentRoom, data.user).operating.time)} ago`}</span>
+                                    <span className='font-semibold text-[12px]'>{returnRemainingObject(listData.currentRoom, data.user).operating.status ? <span className='text-[#3e9042] text-[12px]'>Active Now</span> : `Operated in ${tinhSoPhutCham(returnRemainingObject(listData.currentRoom, data.user).operating.time) ? tinhSoPhutCham(returnRemainingObject(listData.currentRoom, data.user).operating.time) : '0 second'} ago`}</span>
                                     :
                                     <span className='font-semibold text-[12px]'>{listData.currentRoom.users.length} participants</span>
                                 }
