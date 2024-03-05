@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 
 export const AddingContext = createContext()
 
@@ -10,9 +10,16 @@ export const layouts = {
 }
 
 export const ProviderContext = ({ children }) => {
-    const adding = globalThis.window.localStorage.getItem('adding')
-    globalThis.window.localStorage.removeItem('adding')
-    const [currentLayout, setCurrentLayout] = useState(adding ? adding : layouts.ADD_FRIEND_PAGE)
+    const [currentLayout, setCurrentLayout] = useState(layouts.ADD_FRIEND_PAGE)
+
+    useEffect(() => {
+        const adding = globalThis.window.localStorage.getItem('adding')
+        if (adding) {
+            globalThis.window.localStorage.removeItem('adding')
+            setCurrentLayout(adding)
+        }
+    })
+
     const listData = {
         currentLayout
     }
