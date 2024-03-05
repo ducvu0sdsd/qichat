@@ -36,7 +36,7 @@ const ListFriendPage = () => {
             <div className='flex mt-[40px] relative w-[100%] flex-wrap gap-[1.5rem] px-[2rem]'>
                 {friends.length === 0 ?
                     <div className='absolute flex gap-1 items-center flex-col top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
-                        <span>You don't have friends yet</span>
+                        <span>{"You don't have friends yet"}</span>
                         <button onClick={() => {
                             globalThis.window.localStorage.setItem('adding', layouts.ADD_FRIEND_PAGE)
                             router.push('/adding')

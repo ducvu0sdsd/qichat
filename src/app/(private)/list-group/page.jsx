@@ -40,7 +40,7 @@ const ListGroupPage = () => {
             <div className='grid grid-cols-4 justify-items-start mt-[40px] w-[100%] gap-[1rem] px-[2rem]'>
                 {groups.length === 0 ?
                     <div className='absolute flex gap-1 items-center flex-col top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
-                        <span>You haven't joined a group yet</span>
+                        <span>{"You haven't joined a group yet"}</span>
                         <button onClick={() => {
                             globalThis.window.localStorage.setItem('adding', layouts.CREATE_GROUP)
                             router.push('/adding')
