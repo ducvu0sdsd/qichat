@@ -1,9 +1,12 @@
 'use client'
 import { ThemeContext } from '@/app/context'
+import { layouts } from '@/components/adding/context'
 import UserIcon from '@/components/userIcon'
+import { useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 
 const ListFriendPage = () => {
+    const router = useRouter()
     const [friends, setFriends] = useState([])
     const { data } = useContext(ThemeContext)
 
@@ -30,9 +33,15 @@ const ListFriendPage = () => {
                     <option>A-Z</option>
                 </select>
             </div>
-            <div className='flex mt-[40px] w-[100%] flex-wrap gap-[1.5rem] px-[2rem]'>
+            <div className='flex mt-[40px] relative w-[100%] flex-wrap gap-[1.5rem] px-[2rem]'>
                 {friends.length === 0 ?
-                    <div></div>
+                    <div className='absolute flex gap-1 items-center flex-col top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+                        <span>You don't have friends yet</span>
+                        <button onClick={() => {
+                            globalThis.window.localStorage.setItem('adding', layouts.ADD_FRIEND_PAGE)
+                            router.push('/adding')
+                        }} style={{ backgroundImage: 'url(/bg.webp)' }} className='w-[150px] text-[white] py-1 px-2 text-[13px] rounded-lg'>Add Friend Now</button>
+                    </div>
                     :
                     friends.map((friend, index) => (
                         <div key={index} className='flex items-center '>

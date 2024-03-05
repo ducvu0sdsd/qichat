@@ -10,8 +10,9 @@ export const layouts = {
 }
 
 export const ProviderContext = ({ children }) => {
-    const [currentLayout, setCurrentLayout] = useState(layouts.ADD_FRIEND_PAGE)
-
+    const adding = globalThis.window.localStorage.getItem('adding')
+    globalThis.window.localStorage.removeItem('adding')
+    const [currentLayout, setCurrentLayout] = useState(adding ? adding : layouts.ADD_FRIEND_PAGE)
     const listData = {
         currentLayout
     }

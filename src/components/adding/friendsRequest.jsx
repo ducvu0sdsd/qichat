@@ -10,7 +10,7 @@ const FriendsRequestPage = () => {
     const [requests, setRequests] = useState([])
 
     useEffect(() => {
-        api({ type: TypeHTTP.GET, sendToken: true, path: `/requests/${data.user._id}` })
+        api({ type: TypeHTTP.GET, sendToken: true, path: `/requests/${data.user?._id}` })
             .then(res => {
                 setRequests(res)
             })

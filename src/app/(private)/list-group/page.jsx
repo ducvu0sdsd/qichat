@@ -1,11 +1,12 @@
 'use client'
 import { ThemeContext } from '@/app/context'
+import { layouts } from '@/components/adding/context'
 import UserIcon from '@/components/userIcon'
 import { TypeHTTP, api } from '@/utils/api'
+import { useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
-
 const ListGroupPage = () => {
-
+    const router = useRouter()
     const [groups, setGroups] = useState([])
     const { data } = useContext(ThemeContext)
     useEffect(() => {
@@ -38,7 +39,13 @@ const ListGroupPage = () => {
             </div>
             <div className='grid grid-cols-4 justify-items-start mt-[40px] w-[100%] gap-[1rem] px-[2rem]'>
                 {groups.length === 0 ?
-                    <div></div>
+                    <div className='absolute flex gap-1 items-center flex-col top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+                        <span>You haven't joined a group yet</span>
+                        <button onClick={() => {
+                            globalThis.window.localStorage.setItem('adding', layouts.CREATE_GROUP)
+                            router.push('/adding')
+                        }} style={{ backgroundImage: 'url(/bg.webp)' }} className='w-[150px] text-[white] py-1 px-2 text-[13px] rounded-lg'>Join Now</button>
+                    </div>
                     :
                     groups.map((group, index) => (
                         <div key={index} className='relative flex items-center cursor-pointer my-[6px]'>
