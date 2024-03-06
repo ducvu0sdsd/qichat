@@ -153,7 +153,7 @@ const MessageArea = () => {
                             typeInput === types.IMAGE &&
                             <div className='pr-1 flex gap-2 items-center rounded-md focus:outline-0 pl-1 w-full h-[60px] border-[#f1f1f1] border-[2px]'>
                                 {images.map((image, index) => {
-                                    return <div className='relative'>
+                                    return <div key={index} className='relative'>
                                         <img key={index} src={image.path} className='h-[45px] rounded-lg transition-all' />
 
                                         <div onClick={() => setImages(prev => prev.filter(i => i.path !== image.path))}
