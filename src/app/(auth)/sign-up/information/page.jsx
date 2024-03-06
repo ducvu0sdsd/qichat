@@ -3,6 +3,7 @@ import { ThemeContext, notifyType } from '@/app/context'
 import { AuthContext } from '@/components/auth/context'
 import Logo from '@/components/logo'
 import { TypeHTTP, api } from '@/utils/api'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 
@@ -53,7 +54,7 @@ const Information = () => {
                     <h1 className='text-[white] font-bold text-[30px] leading-[60px] justify-center text-center '>Welcome Back!</h1>
                     <span>To keep connected with us</span>
                     <span>please sign in your personal info</span>
-                    <button className=' border-[2px] mt-[20px] h-[40px] rounded-full text-[white] px-[80px] text-center '>Sign In</button>
+                    <Link href={'/sign-in'}><button className=' border-[2px] mt-[20px] h-[40px] rounded-full text-[white] px-[80px] text-center '>Sign In</button></Link>
                 </div>
             </div>
             <div className='w-[50%] px-[80px] flex flex-col justify-center'>

@@ -27,7 +27,7 @@ export const ProviderContext = ({ children }) => {
     useEffect(() => {
         if (info.status !== notifyType.NONE) {
             setTimeout(() => {
-                setInfo({ status: 'none', message: '' })
+                setInfo({ status: notifyType.NONE, message: '' })
             }, 3000);
         }
     }, [info.status])
@@ -57,7 +57,6 @@ export const ProviderContext = ({ children }) => {
                         .then(res => { socket.emit('update-room') })
                 })
                 .catch((error) => {
-                    console.log(error)
                     globalThis.window.localStorage.removeItem('accessToken')
                     globalThis.window.localStorage.removeItem('refreshToken')
                     router.push('/')

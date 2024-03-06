@@ -48,6 +48,9 @@ const SignUp = () => {
                     router.push('/sign-up/verification')
                 }
             })
+            .catch(error => {
+                handler.notify(notifyType.FAIL, error.message)
+            })
     }
 
     return (
