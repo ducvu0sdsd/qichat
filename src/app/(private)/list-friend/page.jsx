@@ -2,18 +2,24 @@
 import { ThemeContext } from '@/app/context'
 import { layouts } from '@/components/adding/context'
 import UserIcon from '@/components/userIcon'
+import { TypeHTTP, api } from '@/utils/api'
 import { useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 
 const ListFriendPage = () => {
     const router = useRouter()
     const [friends, setFriends] = useState([])
-    const { data } = useContext(ThemeContext)
+    const { data, handler } = useContext(ThemeContext)
 
     useEffect(() => {
         if (data.user)
             setFriends(data.user.friends)
     }, [data.user])
+
+    const handleShowUserInformation = (id) => {
+        api({ sendToken: true, type: TypeHTTP.GET, path: `/users/${id}` })
+            .then(user => handler.showUserInformation(user))
+    }
 
     return (
         <section>
@@ -44,7 +50,7 @@ const ListFriendPage = () => {
                     </div>
                     :
                     friends.map((friend, index) => (
-                        <div key={index} className='flex items-center '>
+                        <div onClick={() => handleShowUserInformation(friend._id)} key={index} className='cursor-pointer flex items-center '>
                             <UserIcon avatar={friend.avatar} />
                             <span className='font-semibold px-[10px] text-[14px]'>{friend.fullName}</span>
                         </div>

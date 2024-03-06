@@ -95,7 +95,7 @@ export const ProviderContext = ({ children }) => {
 
     return (
         <ThemeContext.Provider value={{ data, handler }}>
-            <div ref={wrapperRef} onClick={() => hiddenUserInformation()} className="wrapper fixed top-0 left-0 hidden w-screen h-screen z-20" />
+            <div ref={wrapperRef} onClick={() => hiddenUserInformation()} className="wrapper fixed top-0 left-0 hidden w-screen h-screen z-50" />
             <Notification status={info.status} message={info.message} />
             <FormInformation user={userInformation} />
             {children}

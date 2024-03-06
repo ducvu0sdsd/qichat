@@ -31,7 +31,7 @@ const LeftSection = () => {
                             :
                             <div className='flex'>
                                 {listData.friendsOperation.map((friend, index) => (
-                                    <UserIcon avatar={friend.avatar} operating={{ status: true }} key={index} />
+                                    <div className='cursor-pointer' key={index} onClick={() => handler.showUserInformation(friend)}><UserIcon avatar={friend.avatar} operating={{ status: true }} key={index} /></div>
                                 ))}
                             </div>
                         }
