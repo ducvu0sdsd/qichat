@@ -48,7 +48,8 @@ const MessageSection = ({ style, message, handleShowUserInformation }) => {
                 {message.emojis.length > 0 &&
                     <div className='z-0 p-1 flex rounded-full bg-[#EFF5FD] absolute left-[5px] bottom-[-10px]'>
                         {message.emojis.map((e, index) => {
-                            return <span key={index} className='text-[13px]'>{emoji(e.status)}</span>
+                            if (index <= 2)
+                                return <span key={index} className='text-[13px]'>{emoji(e.status)}</span>
                         })}
                     </div>
                 }

@@ -7,6 +7,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { TypeHTTP, api } from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { ThemeContext, notifyType } from '@/app/context';
 
 const Verification = () => {
     const router = useRouter();
@@ -15,9 +16,9 @@ const Verification = () => {
     const [verification, setVerification] = useState()
     const [otp, setOtp] = useState('')
     const { listData, listHandler } = useContext(AuthContext);
+    const { handler } = useContext(ThemeContext)
 
     useEffect(() => {
-        console.log(listData.user.phone)
         if (listData.user.phone) {
             setPhone(listData.user.phone);
             const recaptcha = new RecaptchaVerifier(auth, 'recaptcha', {})
@@ -45,7 +46,7 @@ const Verification = () => {
                     })
             })
             .catch(() => {
-
+                handler.notify(notifyType.FAIL, 'Verification codes do not match')
             })
     }
 

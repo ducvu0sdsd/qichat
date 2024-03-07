@@ -18,14 +18,18 @@ const SignUp = () => {
     const { listHandler } = useContext(AuthContext)
     const { handler } = useContext(ThemeContext)
 
+
     const handleSignUp = () => {
-        if (phone === '') {
+        if (!/^\d{10}$/.test(phone)) {
+            handler.notify(notifyType.WARNING, 'Invalid phone number')
             return
         }
-        if (password === '') {
+        if (password.length < 6) {
+            handler.notify(notifyType.WARNING, 'Password must be at least 6 characters')
             return
         }
         if (confirmPassword !== password) {
+            handler.notify(notifyType.WARNING, 'Passwords do not match')
             return
         }
         api({ body: { phone: formatPhoneByFireBase(phone), password }, type: TypeHTTP.POST, sendToken: false, path: '/sign-up' })
@@ -36,7 +40,10 @@ const SignUp = () => {
                     router.push('/sign-up/verification')
                 }
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+
+                handler.notify(notifyType.FAIL, 'Registered phone number')
+            })
     }
 
     const handleSignUpWithGoogle = () => {
