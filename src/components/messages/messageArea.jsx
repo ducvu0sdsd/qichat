@@ -28,11 +28,13 @@ const MessageArea = () => {
     const inputRef = useRef()
 
     useEffect(() => {
-        messageRef.current?.scrollTo({
-            top: messageRef.current.scrollHeight,
-            behavior: 'smooth',
-        });
-    }, [messageRef.current?.offsetHeight, listData.messages])
+        setTimeout(() => {
+            messageRef.current?.scrollTo({
+                top: messageRef.current.scrollHeight,
+                behavior: 'smooth',
+            });
+        }, 500);
+    }, [listData.messages])
 
     useEffect(() => {
         socket.on(listData.currentRoom?._id, (messages) => {

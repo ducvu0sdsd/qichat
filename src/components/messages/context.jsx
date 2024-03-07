@@ -18,6 +18,11 @@ export const ProviderContext = ({ children }) => {
 
     useEffect(() => {
         if (data.user?._id) {
+            api({ type: TypeHTTP.GET, sendToken: true, path: `/friends-operating/${data.user?._id}` })
+                .then(users => {
+                    setFriendsOperation(users)
+                })
+                .catch(error => { })
             socket.on('update-operation', () => {
                 api({ type: TypeHTTP.GET, path: `/rooms/${data.user?._id}`, sendToken: true })
                     .then(rooms => {

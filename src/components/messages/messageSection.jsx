@@ -44,9 +44,9 @@ const MessageSection = ({ style, message, handleShowUserInformation }) => {
             {style === 'start' && (<div onClick={() => handleShowUserInformation(message.user._id)} className='cursor-pointer'><UserIcon avatar={message.user.avatar} /></div>)}
             <div onMouseEnter={handleMouseHover} onMouseLeave={handleMouseOut} className='flex relative flex-col gap-1'>
                 {style === 'start' && (<span className='text-[10px] font-semibold'>{message.user.fullName.split(' ')[message.user.fullName.split(' ').length - 1]}</span>)}
-                <MessageItem message={message.information} type={message.typeMessage} />
+                <MessageItem style={style} message={message.information} type={message.typeMessage} />
                 {message.emojis.length > 0 &&
-                    <div style={{ bottom: style === 'end' ? '-60%' : '-40%' }} className='px-1 z-0 flex rounded-md translate-y-[-50%] bg-[#EFF5FD] absolute left-[5px]'>
+                    <div className='z-0 p-1 flex rounded-full bg-[#EFF5FD] absolute left-[5px] bottom-[-10px]'>
                         {message.emojis.map((e, index) => {
                             return <span key={index} className='text-[13px]'>{emoji(e.status)}</span>
                         })}
