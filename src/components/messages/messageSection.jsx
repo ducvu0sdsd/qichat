@@ -46,7 +46,7 @@ const MessageSection = ({ style, message, handleShowUserInformation }) => {
                 {style === 'start' && (<span className='text-[10px] font-semibold'>{message.user.fullName.split(' ')[message.user.fullName.split(' ').length - 1]}</span>)}
                 <MessageItem style={style} message={message.information} type={message.typeMessage} />
                 {message.emojis.length > 0 &&
-                    <div className='z-0 p-1 flex rounded-full bg-[#EFF5FD] absolute left-[5px] bottom-[-10px]'>
+                    <div className='z-0 p-1 flex rounded-full bg-[#EFF5FD] absolute left-[5px] bottom-[-15px]'>
                         {message.emojis.map((e, index) => {
                             if (index <= 2)
                                 return <span key={index} className='text-[13px]'>{emoji(e.status)}</span>

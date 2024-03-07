@@ -23,6 +23,7 @@ export const ProviderContext = ({ children }) => {
     const [user, setUser] = useState()
     const [info, setInfo] = useState({ status: notifyType.NONE, message: '' })
     const [userInformation, setUserInformation] = useState()
+    const [url, setUrl] = useState('')
 
     useEffect(() => {
         if (info.status !== notifyType.NONE) {
@@ -73,14 +74,33 @@ export const ProviderContext = ({ children }) => {
 
     const notify = (status, message) => setInfo({ status, message })
 
-    const showUserInformation = (userInfo) => {
+
+    const showWrapper = () => {
         wrapperRef.current.style.display = 'block'
+    }
+
+    const hiddenWrapper = () => {
+        wrapperRef.current.style.display = 'none'
+    }
+
+    const showUserInformation = (userInfo) => {
+        showWrapper()
         setUserInformation(userInfo)
     }
 
     const hiddenUserInformation = (userInfo) => {
-        wrapperRef.current.style.display = 'none'
+        hiddenWrapper()
         setUserInformation(undefined)
+    }
+
+    const showImage = (path) => {
+        showWrapper()
+        setUrl(path)
+    }
+
+    const hiddenImage = () => {
+        hiddenWrapper()
+        setUrl('')
     }
 
     const data = {
@@ -91,14 +111,19 @@ export const ProviderContext = ({ children }) => {
         setUser,
         notify,
         showUserInformation,
-        hiddenUserInformation
+        hiddenUserInformation,
+        showImage,
+        hiddenImage,
+        showWrapper,
+        hiddenWrapper
     }
 
     return (
         <ThemeContext.Provider value={{ data, handler }}>
-            <div ref={wrapperRef} onClick={() => hiddenUserInformation()} className="wrapper fixed top-0 left-0 hidden w-screen h-screen z-50" />
+            <div ref={wrapperRef} onClick={() => { hiddenUserInformation(); hiddenImage() }} className="wrapper fixed top-0 left-0 hidden w-screen h-screen z-50" />
             <Notification status={info.status} message={info.message} />
             <FormInformation user={userInformation} />
+            <img src={url} className="max-w-[400px] max-h-[500px] z-50 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]" />
             {children}
         </ThemeContext.Provider>
     )

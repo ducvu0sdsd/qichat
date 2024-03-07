@@ -3,6 +3,7 @@ import { ThemeContext } from "@/app/context";
 import { TypeHTTP, api, baseURL } from "@/utils/api";
 import { createContext, useContext, useEffect, useState } from "react";
 import { io } from 'socket.io-client'
+import ParticipantForm from "./forms/participantForm";
 const socket = io.connect(baseURL)
 export const MessagesContext = createContext();
 
@@ -13,7 +14,7 @@ export const ProviderContext = ({ children }) => {
     const [currentRoom, setCurrentRoom] = useState()
     const [displayInfo, setDisplayInfo] = useState(false)
     const [messages, setMessages] = useState([])
-    const { data } = useContext(ThemeContext)
+    const { data, handler } = useContext(ThemeContext)
 
 
     useEffect(() => {
@@ -22,7 +23,6 @@ export const ProviderContext = ({ children }) => {
                 .then(users => {
                     setFriendsOperation(users)
                 })
-                .catch(error => { })
             socket.on('update-operation-rooms', () => {
                 api({ type: TypeHTTP.GET, path: `/rooms/${data.user?._id}`, sendToken: true })
                     .then(rooms => {
@@ -45,6 +45,10 @@ export const ProviderContext = ({ children }) => {
                 .catch(error => console.log(error))
     }, [currentRoom, data.user?._id])
 
+    const showParticipantForm = () => {
+        handler.showWrapper()
+    }
+
     const listData = {
         joined,
         displayInfo,
@@ -60,11 +64,13 @@ export const ProviderContext = ({ children }) => {
         setRooms,
         setCurrentRoom,
         setMessages,
-        setFriendsOperation
+        setFriendsOperation,
+        showParticipantForm
     }
 
     return (
         <MessagesContext.Provider value={{ listData, listHandler }}>
+            <ParticipantForm />
             {children}
         </MessagesContext.Provider>
     )

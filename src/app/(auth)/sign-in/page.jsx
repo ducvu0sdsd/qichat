@@ -5,7 +5,7 @@ import React, { useContext, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/components/auth/context';
 import { formatPhoneByFireBase } from '@/utils/call';
-import { ThemeContext } from '@/app/context';
+import { ThemeContext, notifyType } from '@/app/context';
 import { signWithGoogle } from '@/components/firebase/firebase';
 import Link from 'next/link';
 
@@ -33,7 +33,9 @@ const SignIn = () => {
                     router.push('/messages')
                 }
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+                handler.notify(notifyType.FAIL, 'Wrong login information ')
+            })
     }
 
     const handleSignInWithGoogle = () => {
@@ -52,6 +54,9 @@ const SignIn = () => {
                     handler.setUser(res?.user)
                     router.push('/messages')
                 }
+            })
+            .catch(error => {
+                handler.notify(notifyType.FAIL, 'Wrong login information ')
             })
     }
 

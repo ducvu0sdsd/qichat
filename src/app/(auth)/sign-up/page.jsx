@@ -78,7 +78,7 @@ const SignUp = () => {
                 <input onChange={(e) => setPhone(e.target.value)} value={phone} type='text' placeholder='Phone' className='text-[15px] focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
                 <input onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder='Password' className='text-[15px] focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
                 <input onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} type='password' placeholder='Confirm Password' className='text-[15px] focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
-                <button onClick={() => handleSignUp()} className='bg-[#e77373] w-[300px] h-[40px] rounded-[10px] text-[white] mt-[15px]'>Sign up</button>
+                <button onClick={() => handleSignUp()} className='w-[300px] h-[40px] rounded-[10px] text-[white] mt-[15px]'>Sign up</button>
                 <span className='my-[10px]'>Or</span>
                 <button onClick={() => handleSignUpWithGoogle()} className='font-bold w-[300px] h-[40px] border-[2px] text-[#353535] rounded-[10px]'> <i className='bx bxl-gmail text-[20px] mr-1 translate-y-[1px]'></i>  Sign up with Gmail</button>
             </div>

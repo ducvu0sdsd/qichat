@@ -16,7 +16,7 @@ const MessageUser = ({ currentRoom }) => {
             <div className='flex flex-col ml-2'>
                 <span className='text-[14px] font-semibold'>{returnName(currentRoom, data.user)}</span>
                 <span className='text-[12px] w-full'>
-                    {currentRoom.lastMessage.information}
+                    {`${currentRoom.lastMessage.information.substring(0, 25)}${currentRoom.lastMessage.information.length >= 26 ? '...' : ''}`}
                 </span>
             </div>
             <span className='absolute bg-red text-[9px] right-0 top-1'>{formatTime(currentRoom.lastMessage.time)}</span>
