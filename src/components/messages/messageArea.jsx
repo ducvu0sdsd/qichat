@@ -166,8 +166,10 @@ const MessageArea = () => {
                                 })}
                             </div>
                         }
-                        <div className='absolute right-6 flex gap-2 items-center'>
-                            <i onClick={() => inputRef.current.click()} className=" text-[20px] cursor-pointer text-[rgb(168,168,168)] fa-solid fa-paperclip"></i>
+                        <div className='absolute right-6 flex gap-1 items-center'>
+                            <i className='bx bxs-videos text-[25px] translate-y-[2px] cursor-pointer text-[rgb(168,168,168)]' ></i>
+                            <i onClick={() => inputRef.current.click()} className='bx bx-image-add text-[25px] translate-y-[2px] cursor-pointer text-[rgb(168,168,168)]' ></i>
+                            <i className=" text-[20px] cursor-pointer text-[rgb(168,168,168)] fa-solid fa-paperclip"></i>
                             <i onClick={() => sendMessage()} className='bx bx-send text-[23px] cursor-pointer text-[#a5a5a5]'></i>
                         </div>
                     </div>

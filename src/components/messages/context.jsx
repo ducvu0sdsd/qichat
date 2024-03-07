@@ -23,15 +23,15 @@ export const ProviderContext = ({ children }) => {
                     setFriendsOperation(users)
                 })
                 .catch(error => { })
-            socket.on('update-operation', () => {
+            socket.on('update-operation-rooms', () => {
                 api({ type: TypeHTTP.GET, path: `/rooms/${data.user?._id}`, sendToken: true })
                     .then(rooms => {
                         setRooms(rooms)
                     })
-                    .catch(error => console.log(error))
+            })
+            socket.on('update-operation-friends', () => {
                 api({ type: TypeHTTP.GET, sendToken: true, path: `/friends-operating/${data.user?._id}` })
                     .then(users => setFriendsOperation(users))
-                    .catch(error => { })
             })
         }
     }, [data.user?._id])

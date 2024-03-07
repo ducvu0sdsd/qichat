@@ -17,5 +17,5 @@ export const returnName = (room, currentUser) => {
 }
 
 export const returnRemainingObject = (room, currentUser) => {
-    return room.users.filter(user => user.fullName !== currentUser.fullName)[0]
+    return room?.users.filter(user => user.fullName !== currentUser.fullName)[0]
 }

@@ -35,7 +35,6 @@ export const ProviderContext = ({ children }) => {
     useEffect(() => {
         const onBeforeUnload = (ev) => {
             socket.emit('close_operating', { _id: user._id, operating: { status: false, time: new Date() } })
-            socket.emit('update-room')
         };
         globalThis.window.addEventListener("beforeunload", onBeforeUnload);
 
@@ -54,7 +53,9 @@ export const ProviderContext = ({ children }) => {
                         time: new Date()
                     }
                     api({ type: TypeHTTP.PUT, sendToken: false, path: `/users/${user._id}`, body: user })
-                        .then(res => { socket.emit('update-room') })
+                        .then(res => {
+                            socket.emit('update-room')
+                        })
                 })
                 .catch((error) => {
                     globalThis.window.localStorage.removeItem('accessToken')
