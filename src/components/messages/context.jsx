@@ -4,6 +4,7 @@ import { TypeHTTP, api, baseURL } from "@/utils/api";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { io } from 'socket.io-client'
 import ParticipantForm from "./forms/participantForm";
+import Picturevideo from "./forms/picturevideo";
 const socket = io.connect(baseURL)
 export const MessagesContext = createContext();
 
@@ -17,6 +18,7 @@ export const ProviderContext = ({ children }) => {
     const [messages, setMessages] = useState([])
     const { data, handler } = useContext(ThemeContext)
     const [participants, setParticipants] = useState([])
+    const [picturevideos, setPicturevideos] = useState([])
     useEffect(() => {
         if (data.user?._id) {
             api({ type: TypeHTTP.GET, sendToken: true, path: `/friends-operating/${data.user?._id}` })
@@ -53,6 +55,14 @@ export const ProviderContext = ({ children }) => {
         }
     }, [participants])
 
+    useEffect(() => {
+        if (picturevideos.length === 0) {
+            wrapperRef.current.style.display = 'none'
+        } else {
+            wrapperRef.current.style.display = 'block'
+        }
+    }, [picturevideos])
+
     const listData = {
         joined,
         displayInfo,
@@ -60,7 +70,8 @@ export const ProviderContext = ({ children }) => {
         currentRoom,
         messages,
         friendsOperation,
-        participants
+        participants,
+        picturevideos
     }
 
     const listHandler = {
@@ -71,12 +82,14 @@ export const ProviderContext = ({ children }) => {
         setMessages,
         setFriendsOperation,
         setParticipants,
+        setPicturevideos
     }
 
     return (
         <MessagesContext.Provider value={{ listData, listHandler }}>
-            <div ref={wrapperRef} onClick={() => { setParticipants([]) }} className="wrapper fixed top-0 left-0 hidden w-screen h-screen z-50" />
+            <div ref={wrapperRef} onClick={() => { setParticipants([]); setPicturevideos([]) }} className="wrapper fixed top-0 left-0 hidden w-screen h-screen z-50" />
             <ParticipantForm participants={participants} />
+            <Picturevideo picturevideos={picturevideos} />
             {children}
         </MessagesContext.Provider>
     )

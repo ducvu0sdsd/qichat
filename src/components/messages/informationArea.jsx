@@ -85,7 +85,9 @@ const InformationArea = () => {
                                 }
                             })}
                         </div>
-                        <button style={{ backgroundImage: 'url(/bg.webp)' }} className='rounded-md text-[white] font-poppins w-[80%] h-[35px] mt-[5px] shadow'>See All</button>
+                        <button onClick={() => {
+                            listHandler.setPicturevideos(images);
+                        }} style={{ backgroundImage: 'url(/bg.webp)' }} className='rounded-md text-[white] font-poppins w-[80%] h-[35px] mt-[5px] shadow'>See All</button>
                     </>
                 }
             </div>
