@@ -47,12 +47,14 @@ const InformationArea = () => {
                         </div>
                     }
                 })}
-                <div className='cursor-pointer flex w-full px-4 my-1 items-center '>
+                <div onClick={() => {
+                    listHandler.setParticipants(shuffleArray(listData.currentRoom?.users));
+                }} className='cursor-pointer flex w-full px-4 my-1 items-center '>
                     <UserIcon avatar={'https://cdn3.iconfinder.com/data/icons/zeir-minimalism-1/25/more_dots_three_detail_show-256.png'} />
                     <span className='font-semibold px-[5px] text-[14px]'>{'See All...'}</span>
                 </div>
             </div>
-            <div className='my-[5px] flex flex-col items-center'>
+            {/* <div className='my-[5px] flex flex-col items-center'>
                 <h2 className='w-full font-semibold font-poppins text-[16px]'>Attachments</h2>
                 <div className='w-full flex items-center gap-2 font-poppins pl-[1rem]'>
                     <i className="fa-solid fa-paperclip text-[20px] text-[#606060]"></i>
@@ -67,7 +69,7 @@ const InformationArea = () => {
                     <span className='text-[15px] my-[4px]'>qiflix - watching free.rar</span>
                 </div>
                 <button style={{ backgroundImage: 'url(/bg.webp)' }} className='rounded-md text-[white] font-poppins w-[80%] h-[35px] mt-[5px] shadow'>See All</button>
-            </div>
+            </div> */}
             <div className='mt-[0.5rem] flex flex-col items-center'>
                 <h2 className='w-full font-semibold font-poppins text-[16px]'>Pictures & Videos</h2>
                 {images.length === 0 ?
