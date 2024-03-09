@@ -76,7 +76,7 @@ const SignIn = () => {
                     <button onClick={() => handleSignInWithGoogle()} className='font-bold w-[300px] h-[40px] border-[2px] text-[#353535] rounded-[10px]'> <i className='bx bxl-gmail text-[20px] mr-1 translate-y-[1px]'></i>  Sign in with Gmail</button>
                 </div>
             </div>
-            <div style={{ backgroundImage: 'url(/bg-dung.jpg)' }} className='bg-[rgb(214,114,114)] font-poppins rounded-lg px-[4rem] flex items-center justify-center h-screen bg-cover w-[50%]'>
+            <div style={{ backgroundImage: 'url(/bg-dung.jpg)' }} className='font-poppins rounded-lg px-[4rem] flex items-center justify-center h-screen bg-cover w-[50%]'>
                 <div className='flex flex-col items-center'>
                     <h1 className='text-[35px] text-[white]'>Hello, Friend!</h1>
                     <span className='text-[white] mt-[10px]'>Enter your personal information </span>

@@ -23,7 +23,7 @@ const CreateGroupPage = () => {
             return
         if (participants.length < 3)
             return
-        api({ type: TypeHTTP.POST, path: '/rooms', sendToken: true, body: { users: participants, name, type: 'Group', image } })
+        api({ type: TypeHTTP.POST, path: '/rooms', sendToken: true, body: { users: participants, name, type: 'Group', image, creator: data.user._id } })
             .then(room => {
                 setName('')
                 setImage('https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2152974972/settings_images/a05d7f7-f3b7-0102-a18b-52050e1111ad_noun-proactive-5427471-02_2.png')

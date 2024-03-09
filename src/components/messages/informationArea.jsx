@@ -34,26 +34,28 @@ const InformationArea = () => {
                     }
                 </div>
             </div>
-            <div className='my-[0.5rem] flex flex-col items-center'>
-                <h2 className='w-full font-semibold font-poppins text-[16px] flex items-center justify-between'>
-                    <span>5 Participants</span>
-                    <i className='bx bx-user-plus text-[25px] cursor-pointer'></i>
-                </h2>
-                {shuffleArray(listData.currentRoom?.users)?.map((user, index) => {
-                    if (index <= 1) {
-                        return <div key={index} className='flex w-full px-4 my-1 items-center '>
-                            <UserIcon avatar={user.avatar} operating={user.operating} />
-                            <span className='font-semibold px-[5px] text-[14px]'>{user.fullName}</span>
-                        </div>
-                    }
-                })}
-                <div onClick={() => {
-                    listHandler.setParticipants(shuffleArray(listData.currentRoom?.users));
-                }} className='cursor-pointer flex w-full px-4 my-1 items-center '>
-                    <UserIcon avatar={'https://cdn3.iconfinder.com/data/icons/zeir-minimalism-1/25/more_dots_three_detail_show-256.png'} />
-                    <span className='font-semibold px-[5px] text-[14px]'>{'See All...'}</span>
+            {listData.currentRoom?.type === 'Group' && (
+                <div className='my-[0.5rem] flex flex-col items-center'>
+                    <h2 className='w-full font-semibold font-poppins text-[16px] flex items-center justify-between'>
+                        <span>{listData.currentRoom?.users.length} Participants</span>
+                        <i className='bx bx-user-plus text-[25px] cursor-pointer'></i>
+                    </h2>
+                    {shuffleArray(listData.currentRoom?.users)?.map((user, index) => {
+                        if (index <= 1) {
+                            return <div key={index} className='flex w-full px-4 my-1 items-center '>
+                                <UserIcon avatar={user.avatar} operating={user.operating} />
+                                <span className='font-semibold px-[5px] text-[14px]'>{user.fullName}</span>
+                            </div>
+                        }
+                    })}
+                    <div onClick={() => {
+                        listHandler.setParticipants(shuffleArray(listData.currentRoom?.users));
+                    }} className='cursor-pointer flex w-full px-4 my-1 items-center '>
+                        <UserIcon avatar={'https://cdn3.iconfinder.com/data/icons/zeir-minimalism-1/25/more_dots_three_detail_show-256.png'} />
+                        <span className='font-semibold px-[5px] text-[14px]'>{'See All...'}</span>
+                    </div>
                 </div>
-            </div>
+            )}
             {/* <div className='my-[5px] flex flex-col items-center'>
                 <h2 className='w-full font-semibold font-poppins text-[16px]'>Attachments</h2>
                 <div className='w-full flex items-center gap-2 font-poppins pl-[1rem]'>
@@ -86,7 +88,7 @@ const InformationArea = () => {
                             })}
                         </div>
                         <button onClick={() => {
-                            listHandler.setPicturevideos(images);
+                            listHandler.setPictureVideos(images);
                         }} style={{ backgroundImage: 'url(/bg.webp)' }} className='rounded-md text-[white] font-poppins w-[80%] h-[35px] mt-[5px] shadow'>See All</button>
                     </>
                 }

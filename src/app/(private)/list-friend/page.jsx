@@ -22,7 +22,7 @@ const ListFriendPage = () => {
     }
 
     return (
-        <section>
+        <section className=''>
             <div className='h-[10%] flex items-center w-full justify-between px-[2rem] py-2 border-[#e5e5e5] border-b-[1px]'>
                 <div className='h-full flex items-center'>
                     <span className='font-bold text-[22px] font-poppins mr-[0.5rem]'>List Friend</span>
@@ -41,7 +41,7 @@ const ListFriendPage = () => {
             </div>
             <div className='flex mt-[40px] relative w-[100%] flex-wrap gap-[1.5rem] px-[2rem]'>
                 {friends.length === 0 ?
-                    <div className='absolute flex gap-1 items-center flex-col top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+                    <div className='absolute flex gap-1 items-center flex-col top-[100px] left-[50%] translate-x-[-50%] '>
                         <span>{"You don't have friends yet"}</span>
                         <button onClick={() => {
                             globalThis.window.localStorage.setItem('adding', layouts.ADD_FRIEND_PAGE)

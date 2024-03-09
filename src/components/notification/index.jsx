@@ -9,7 +9,7 @@ const Notification = ({ status, message }) => {
     }, [status])
 
     return (
-        <div style={{ right: info.status === 'none' ? '-500px' : '8px', transition: '0.3s', backgroundColor: info.status === notifyType.SUCCESS ? 'white' : info.status === notifyType.FAIL ? 'red' : 'yellow', color: info.status === notifyType.SUCCESS ? 'black' : info.status === notifyType.FAIL ? 'white' : '#6b6b6b' }} className='items-center px-3 flex w-[270px] z-50 rounded-md shadow-md h-[70px] fixed top-4'>
+        <div style={{ right: info.status === 'none' ? '-500px' : '8px', transition: '0.3s', backgroundColor: info.status === notifyType.SUCCESS ? 'white' : info.status === notifyType.FAIL ? 'red' : 'yellow', color: info.status === notifyType.SUCCESS ? 'black' : info.status === notifyType.FAIL ? 'white' : '#6b6b6b' }} className='items-center px-3 flex w-[270px] z-50 rounded-md shadow-md min-h-[70px] fixed top-4'>
             {info.status === notifyType.SUCCESS ?
                 <i className='bx bx-check-circle text-[green] text-[40px] mr-3'></i>
                 :

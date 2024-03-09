@@ -120,11 +120,11 @@ export const ProviderContext = ({ children }) => {
 
     return (
         <ThemeContext.Provider value={{ data, handler }}>
+            {children}
             <div ref={wrapperRef} onClick={() => { hiddenUserInformation(); hiddenImage() }} className="wrapper fixed top-0 left-0 hidden w-screen h-screen z-50" />
             <Notification status={info.status} message={info.message} />
             <FormInformation user={userInformation} />
             <img src={url} className="max-w-[400px] max-h-[500px] z-50 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]" />
-            {children}
         </ThemeContext.Provider>
     )
 } 
