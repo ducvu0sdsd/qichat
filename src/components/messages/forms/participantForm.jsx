@@ -37,7 +37,7 @@ const ParticipantForm = ({ participants }) => {
                 <div className='my-1 h-[300px] w-[100%] overflow-y-auto'>
                     {list.map((participant, index) => {
                         return (
-                            <div className='flex items-center justify-between pr-2 my-2'>
+                            <div key={index} className='flex items-center justify-between pr-2 my-2'>
                                 <div key={index} className='flex gap-2 items-center' >
                                     <UserIcon operating={participant.operating} avatar={participant.avatar} />
                                     <span className='text-[13px] font-semibold'>{participant.fullName}</span>
@@ -58,7 +58,7 @@ const ParticipantForm = ({ participants }) => {
                     {data.user?.friends.map((friend, index) => {
                         if (!list.map(item => item._id).includes(friend._id))
                             return (
-                                <div className='flex items-center'>
+                                <div key={index} className='flex items-center'>
                                     <div key={index} className='flex w-[260px] items-center gap-2 justify-start '>
                                         <UserIcon avatar={friend.avatar} />
                                         <span className='text-[13px] font-semibold '>{friend.fullName}</span>
