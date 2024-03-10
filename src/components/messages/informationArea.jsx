@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { MessagesContext } from './context'
 import { returnImage, returnName, returnRemainingObject } from '@/utils/room'
-import { ThemeContext } from '@/app/context'
+import { ThemeContext, notifyType } from '@/app/context'
 import { tinhSoPhutCham } from '@/utils/time'
-import { TypeHTTP, api } from '@/utils/api'
+import { TypeHTTP, api, baseURL, systemID } from '@/utils/api'
 import UserIcon from '../userIcon'
 import { shuffleArray } from '@/utils/other'
+import { io } from 'socket.io-client'
+const socket = io.connect(baseURL)
 
 const InformationArea = () => {
 
@@ -15,10 +17,32 @@ const InformationArea = () => {
 
     useEffect(() => {
         if (listData.displayInfo === true) {
-            api({ type: TypeHTTP.GET, sendToken: true, path: `/messages/${listData.currentRoom._id}` })
+            api({ type: TypeHTTP.GET, sendToken: true, path: `/messages/${listData.currentRoom?._id}` })
                 .then(media => setImages(media))
         }
     }, [listData.displayInfo, listData.currentRoom])
+
+    const handleLeaveRoom = () => {
+        const room = listData.currentRoom
+        if (room) {
+            room.users = room.users.filter(user => user._id !== data.user?._id)
+            api({ type: TypeHTTP.PUT, path: `/rooms/${data.user?._id}`, sendToken: true, body: room })
+                .then(rooms => {
+                    listHandler.setCurrentRoom(undefined)
+                    listHandler.setDisplayInfo(false)
+                    listHandler.setRooms(rooms)
+                    handler.notify(notifyType.SUCCESS, 'Leave Room Successfully!!!')
+                    const body = {
+                        room_id: listData.currentRoom._id,
+                        reply: null,
+                        information: `${data.user?.fullName} had left this room`,
+                        typeMessage: 'text',
+                        user_id: systemID
+                    }
+                    socket.emit('send_message', body)
+                })
+        }
+    }
 
     return (
         <div style={{ width: `${listData.displayInfo ? '450' : '0'}px`, paddingLeft: listData.displayInfo && '1rem', paddingRight: listData.displayInfo && '1rem' }} className='transition-all relative overflow-y-auto h-screen flex flex-col py-[1rem]'>
@@ -40,16 +64,19 @@ const InformationArea = () => {
                         <span>{listData.currentRoom?.users.length} Participants</span>
                         <i className='bx bx-user-plus text-[25px] cursor-pointer'></i>
                     </h2>
-                    {shuffleArray(listData.currentRoom?.users)?.map((user, index) => {
+                    {listData.currentRoom?.users.map((user, index) => {
                         if (index <= 1) {
                             return <div key={index} className='flex w-full px-4 my-1 items-center '>
                                 <UserIcon avatar={user.avatar} operating={user.operating} />
-                                <span className='font-semibold px-[5px] text-[14px]'>{user.fullName}</span>
+                                <div className='flex flex-col'>
+                                    <span className='font-semibold px-[5px] text-[14px]'>{user.fullName}</span>
+                                    <span className='font-medium px-[5px] text-[11px]'>{user._id === listData.currentRoom?.creator ? 'Admin' : 'Member'}</span>
+                                </div>
                             </div>
                         }
                     })}
                     <div onClick={() => {
-                        listHandler.setParticipants(shuffleArray(listData.currentRoom?.users));
+                        listHandler.setParticipants(listData.currentRoom?.users);
                     }} className='cursor-pointer flex w-full px-4 my-1 items-center '>
                         <UserIcon avatar={'https://cdn3.iconfinder.com/data/icons/zeir-minimalism-1/25/more_dots_three_detail_show-256.png'} />
                         <span className='font-semibold px-[5px] text-[14px]'>{'See All...'}</span>
@@ -93,6 +120,9 @@ const InformationArea = () => {
                     </>
                 }
             </div>
+            <button onClick={() => handleLeaveRoom()} className='bg-[#ff4848] py-2 text-[15px] rounded-xl my-3 text-[white]'>
+                Leave Room
+            </button>
         </div>
     )
 }

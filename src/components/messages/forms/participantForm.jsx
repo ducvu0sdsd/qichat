@@ -2,13 +2,16 @@ import { ThemeContext } from '@/app/context'
 import UserIcon from '@/components/userIcon'
 import React, { useContext, useEffect, useState } from 'react'
 import { MessagesContext } from '../context'
-import { TypeHTTP, api } from '@/utils/api'
+import { TypeHTTP, api, baseURL, systemID } from '@/utils/api'
+import { io } from 'socket.io-client'
+const socket = io.connect(baseURL)
 
 const ParticipantForm = ({ participants }) => {
 
     const { data, handler } = useContext(ThemeContext)
     const { listData, listHandler } = useContext(MessagesContext)
     const [list, setList] = useState(participants)
+    const [leftUsers, setLeftUsers] = useState([])
 
     useEffect(() => {
         setList(participants)
@@ -22,6 +25,28 @@ const ParticipantForm = ({ participants }) => {
                 listHandler.setCurrentRoom(newRooms.filter(item => item._id === room._id)[0])
                 listHandler.setRooms(newRooms)
                 listHandler.setParticipants([])
+                const usersJoinGroup = list.filter(item => !participants.map(i => i._id).includes(item._id))
+                if (usersJoinGroup.length > 0) {
+                    const body = {
+                        room_id: listData.currentRoom._id,
+                        reply: null,
+                        information: `${data.user?.fullName} invited ${usersJoinGroup.map(item => item.fullName).join(', ')} to join the group`,
+                        typeMessage: 'text',
+                        user_id: systemID
+                    }
+                    socket.emit('send_message', body)
+                }
+                if (leftUsers.length > 0) {
+                    const body = {
+                        room_id: listData.currentRoom._id,
+                        reply: null,
+                        information: `${data.user?.fullName} invited ${usersJoinGroup.map(item => item.fullName).join(', ')} out of the group`,
+                        typeMessage: 'text',
+                        user_id: systemID
+                    }
+                    socket.emit('send_message', body)
+                }
+                setLeftUsers([])
             })
             .catch(error => { })
     }
@@ -42,7 +67,26 @@ const ParticipantForm = ({ participants }) => {
                                     <UserIcon operating={participant.operating} avatar={participant.avatar} />
                                     <span className='text-[13px] font-semibold'>{participant.fullName}</span>
                                 </div>
-                                {!participant.operating && <button onClick={() => setList(prev => prev.filter(item => item._id !== participant._id))} className='font-poppins h-[20px] w-[20px] flex items-center justify-center font-semibold border-[green] border-[2px] rounded-lg text-[green]'><i className='text-[16px] bx bx-x'></i></button>}
+                                {/* kiểm tra xem tài khoản của bạn có phải là admin của nhóm đó hay không */}
+                                {listData.currentRoom.creator === data.user?._id ?
+                                    // nếu đúng, sẽ hiển thị btn kick thành viên, ngoại trừ bạn
+                                    participant._id !== data.user?._id && (
+                                        <button onClick={() => {
+                                            setList(prev => prev.filter(item => item._id !== participant._id))
+                                            if (participants.map(item => item._id).includes(participant._id)) {
+                                                setLeftUsers(prev => [...prev, participant])
+                                            }
+                                        }} className='font-poppins h-[20px] w-[20px] flex items-center justify-center font-semibold border-[green] border-[2px] rounded-lg text-[green]'>
+                                            <i className='text-[16px] bx bx-x'></i>
+                                        </button>
+                                    )
+                                    :
+                                    // nếu sai, thì chỉ hiển thị btn kick khi trong quá trình bạn thêm thành viên khách vào nhóm
+                                    !participant.operating &&
+                                    <button onClick={() => setList(prev => prev.filter(item => item._id !== participant._id))} className='font-poppins h-[20px] w-[20px] flex items-center justify-center font-semibold border-[green] border-[2px] rounded-lg text-[green]'>
+                                        <i className='text-[16px] bx bx-x'></i>
+                                    </button>
+                                }
                             </div>
                         )
                     })}
