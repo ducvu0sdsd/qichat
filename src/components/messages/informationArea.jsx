@@ -120,7 +120,7 @@ const InformationArea = () => {
                     </>
                 }
             </div>
-            {listData.currentRoom.type === 'Group' &&
+            {listData.currentRoom?.type === 'Group' &&
                 <button onClick={() => handleLeaveRoom()} className='bg-[#ff4848] py-2 text-[15px] rounded-xl my-3 text-[white]'>
                     Leave Room
                 </button>}
