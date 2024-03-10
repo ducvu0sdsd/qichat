@@ -4,6 +4,7 @@ import UserIcon from '../userIcon'
 import debounce from 'lodash.debounce'
 import { TypeHTTP, api } from '@/utils/api'
 import { ThemeContext } from '@/app/context'
+import { formatPhoneByFireBase } from '@/utils/call'
 
 const inputs = {
     GMAIL_INPUT: 'email',
@@ -21,7 +22,7 @@ const AddFriendPage = () => {
 
     useEffect(() => setQuery(''), [currentInput])
     useEffect(debounce(() => {
-        api({ type: TypeHTTP.GET, sendToken: true, path: `/users/find-by-${currentInput}/${query === '' ? 'none' : query}` })
+        api({ type: TypeHTTP.GET, sendToken: true, path: `/users/find-by-${currentInput}/${query === '' ? 'none' : currentInput === inputs.PHONE_NUMBER_INPUT ? formatPhoneByFireBase(query) : query}` })
             .then(result => {
                 setUsers(result.filter(user => user._id !== data.user._id))
             })

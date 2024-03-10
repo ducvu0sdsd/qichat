@@ -26,6 +26,9 @@ const InformationArea = () => {
         const room = listData.currentRoom
         if (room) {
             room.users = room.users.filter(user => user._id !== data.user?._id)
+            if (!room.users.map(item => item._id).includes(room.creator)) {
+                room.creator = room.users[room.users?.length - 1]._id
+            }
             api({ type: TypeHTTP.PUT, path: `/rooms/${data.user?._id}`, sendToken: true, body: room })
                 .then(rooms => {
                     listHandler.setCurrentRoom(undefined)

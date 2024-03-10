@@ -63,6 +63,9 @@ const MessageSection = ({ style, message, handleShowUserInformation }) => {
                             <button onClick={() => handleSendEmoji('sad')} >{emojiStatus.sad}</button>
                             <button onClick={() => handleSendEmoji('angry')} >{emojiStatus.angry}</button>
                         </div>
+                        <div className='flex gap-1'>
+
+                        </div>
                     </div>
                 </div>
             </div >

@@ -12,6 +12,7 @@ export const notifyType = {
     SUCCESS: 'success',
     FAIL: 'fail',
     WARNING: 'warning',
+    LOADING: 'loading',
     NONE: 'none'
 }
 
@@ -27,9 +28,11 @@ export const ProviderContext = ({ children }) => {
 
     useEffect(() => {
         if (info.status !== notifyType.NONE) {
-            setTimeout(() => {
-                setInfo({ status: notifyType.NONE, message: '' })
-            }, 3000);
+            if (info.status !== notifyType.LOADING) {
+                setTimeout(() => {
+                    setInfo({ status: notifyType.NONE, message: '' })
+                }, 3000);
+            }
         }
     }, [info.status])
 

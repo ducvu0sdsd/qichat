@@ -5,7 +5,7 @@ import UserIcon from '../userIcon'
 import { MessagesContext } from './context'
 import { TypeHTTP, api, baseURL } from '@/utils/api'
 import { returnImage, returnName, returnRemainingObject } from '@/utils/room'
-import { ThemeContext } from '@/app/context'
+import { ThemeContext, notifyType } from '@/app/context'
 import Logo from '../logo'
 import { tinhSoPhutCham } from '@/utils/time'
 import { io } from 'socket.io-client'
@@ -115,7 +115,7 @@ const MessageArea = () => {
                 <>
                     <div className=' flex items-center h-[10%] w-full justify-between px-[15px] py-2 border-[#e5e5e5] border-b-[1px]'>
                         <div className='flex'>
-                            <div onClick={() => handleShowUserInformation(returnRemainingObject(listData.currentRoom, data.user)._id)} className='cursor-pointer'><UserIcon operating={returnRemainingObject(listData.currentRoom, data.user).operating.status} avatar={returnImage(listData.currentRoom, data.user)} /></div>
+                            <div onClick={() => handleShowUserInformation(returnRemainingObject(listData.currentRoom, data.user)?._id)} className='cursor-pointer'><UserIcon operating={returnRemainingObject(listData.currentRoom, data.user)?.operating.status} avatar={returnImage(listData.currentRoom, data.user)} /></div>
                             <div className='flex flex-col ml-[10px]'>
                                 <span className='font-semibold text-[15px]'>{returnName(listData.currentRoom, data.user)}</span>
                                 {listData.currentRoom.type !== 'Group' ?

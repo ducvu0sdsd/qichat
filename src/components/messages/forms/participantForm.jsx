@@ -22,7 +22,11 @@ const ParticipantForm = ({ participants }) => {
         room.users = list
         api({ type: TypeHTTP.PUT, sendToken: true, path: `/rooms/${data.user?._id}`, body: room })
             .then(newRooms => {
-                listHandler.setCurrentRoom(newRooms.filter(item => item._id === room._id)[0])
+                const currentRoom = newRooms.filter(item => item._id === room._id)[0]
+                if (!currentRoom) {
+                    listHandler.setDisplayInfo(false)
+                }
+                listHandler.setCurrentRoom(currentRoom)
                 listHandler.setRooms(newRooms)
                 listHandler.setParticipants([])
                 const usersJoinGroup = list.filter(item => !participants.map(i => i._id).includes(item._id))
@@ -40,7 +44,7 @@ const ParticipantForm = ({ participants }) => {
                     const body = {
                         room_id: listData.currentRoom._id,
                         reply: null,
-                        information: `${data.user?.fullName} invited ${usersJoinGroup.map(item => item.fullName).join(', ')} out of the group`,
+                        information: `${data.user?.fullName} invited ${leftUsers.map(item => item.fullName).join(', ')} out of the group`,
                         typeMessage: 'text',
                         user_id: systemID
                     }
@@ -65,10 +69,13 @@ const ParticipantForm = ({ participants }) => {
                             <div key={index} className='flex items-center justify-between pr-2 my-2'>
                                 <div key={index} className='flex gap-2 items-center' >
                                     <UserIcon operating={participant.operating} avatar={participant.avatar} />
-                                    <span className='text-[13px] font-semibold'>{participant.fullName}</span>
+                                    <div className='flex flex-col'>
+                                        <span className='text-[13px] font-semibold'>{participant.fullName}</span>
+                                        <span className='text-[11px]'>{participant._id === listData.currentRoom?.creator ? 'Admin' : 'Member'}</span>
+                                    </div>
                                 </div>
                                 {/* kiểm tra xem tài khoản của bạn có phải là admin của nhóm đó hay không */}
-                                {listData.currentRoom.creator === data.user?._id ?
+                                {listData.currentRoom?.creator === data.user?._id ?
                                     // nếu đúng, sẽ hiển thị btn kick thành viên, ngoại trừ bạn
                                     participant._id !== data.user?._id && (
                                         <button onClick={() => {
@@ -107,13 +114,18 @@ const ParticipantForm = ({ participants }) => {
                                         <UserIcon avatar={friend.avatar} />
                                         <span className='text-[13px] font-semibold '>{friend.fullName}</span>
                                     </div>
-                                    <button onClick={() => setList(prev => [friend, ...prev])} className='text-[10px] font-poppins py-[2px] font-semibold px-2 border-[green] border-[2px] rounded-lg text-[green]'>Add</button>
+                                    <button onClick={() => {
+                                        setList(prev => [friend, ...prev])
+                                        if (leftUsers.map(item => item._id).includes(friend._id)) {
+                                            setLeftUsers(prev => prev.filter(item => item._id !== friend._id))
+                                        }
+                                    }} className='text-[10px] font-poppins py-[2px] font-semibold px-2 border-[green] border-[2px] rounded-lg text-[green]'>Add</button>
                                 </div>
                             )
                     })}
                 </div>
             </div>
-            {list.length !== participants.length && <button onClick={() => handleSubmit()} style={{ backgroundImage: 'url(/bg.webp)', backgroundSize: 'cover' }} className='bottom-2 right-2 absolute rounded-md text-[white] text-[13px] font-poppins w-[100px] h-[30px] mt-[10px] shadow'>Submit</button>}
+            {(list.length !== participants.length || leftUsers.length !== 0) && <button onClick={() => handleSubmit()} style={{ backgroundImage: 'url(/bg.webp)', backgroundSize: 'cover' }} className='bottom-2 right-2 absolute rounded-md text-[white] text-[13px] font-poppins w-[100px] h-[30px] mt-[10px] shadow'>Submit</button>}
             <button onClick={() => listHandler.setParticipants([])} className='text-[#999] absolute top-2 right-2'><i className='text-[28px] bx bx-x'></i></button>
         </div>
     )

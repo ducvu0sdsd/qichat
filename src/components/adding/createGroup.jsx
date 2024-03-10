@@ -1,13 +1,13 @@
 'use client'
 
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import UserIcon from '../userIcon'
 import { ThemeContext, notifyType } from '@/app/context'
 import { TypeHTTP, api } from '@/utils/api'
 
 const CreateGroupPage = () => {
     const inputRef = useRef()
-    const [image, setImage] = useState('https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2152974972/settings_images/a05d7f7-f3b7-0102-a18b-52050e1111ad_noun-proactive-5427471-02_2.png')
+    const [image, setImage] = useState({ path: 'https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2152974972/settings_images/a05d7f7-f3b7-0102-a18b-52050e1111ad_noun-proactive-5427471-02_2.png' })
     const [name, setName] = useState('')
     const { data, handler } = useContext(ThemeContext)
     const [participants, setParticipants] = useState([
@@ -23,10 +23,18 @@ const CreateGroupPage = () => {
             return
         if (participants.length < 3)
             return
-        api({ type: TypeHTTP.POST, path: '/rooms', sendToken: true, body: { users: participants, name, type: 'Group', image, creator: data.user._id } })
+        const formData = new FormData()
+        formData.append('name', name);
+        formData.append('type', 'Group');
+        formData.append('image', image?.file);
+        formData.append('creator', data.user._id);
+        formData.append(`users`, JSON.stringify(participants));
+        handler.notify(notifyType.LOADING, 'Loading.....')
+        api({ type: TypeHTTP.POST, path: '/rooms', sendToken: true, body: formData })
             .then(room => {
                 setName('')
-                setImage('https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2152974972/settings_images/a05d7f7-f3b7-0102-a18b-52050e1111ad_noun-proactive-5427471-02_2.png')
+                inputRef.current.value = '';
+                setImage({ path: 'https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2152974972/settings_images/a05d7f7-f3b7-0102-a18b-52050e1111ad_noun-proactive-5427471-02_2.png' })
                 setParticipants([
                     {
                         _id: data.user._id,
@@ -41,6 +49,14 @@ const CreateGroupPage = () => {
             })
     }
 
+    const handleFiles = (e) => {
+        const files = e.target.files
+        setImage({
+            path: URL.createObjectURL(files[0]),
+            file: files[0]
+        })
+    }
+
     return (
         <div className='w-[78%] h-screen border-[#e5e5e5] border-r-[1px]'>
             <div className='h-[10%] flex items-center w-full justify-start px-[25px] py-[17px] border-[#e5e5e5] border-b-[px]'>
@@ -50,8 +66,8 @@ const CreateGroupPage = () => {
             <div className=' h-full  w-[100%] border-[#e5e5e5] border-t-[1px] flex'>
                 <div className='w-[70%] flex flex-col items-center pt-[1.5rem]'>
                     <div className='relative'>
-                        <input onChange={e => { console.log(e.target.value) }} ref={inputRef} type='file' accept="image/png, image/jpeg, image/jpg" style={{ display: 'none' }} />
-                        <img src={image} className='rounded-full h-[150px] w-[150px]' />
+                        <input onChange={e => { handleFiles(e) }} ref={inputRef} type='file' accept="image/png, image/jpeg, image/jpg" style={{ display: 'none' }} />
+                        <img src={image.path} className='rounded-full h-[150px] w-[150px]' />
                         <i onClick={() => inputRef.current.click()} className='cursor-pointer bx bx-pencil top-[0rem] right-0 text-[22px] text-[#5f5f5f] absolute' ></i>
                     </div>
                     <div className='relative mt-[1rem]'>
