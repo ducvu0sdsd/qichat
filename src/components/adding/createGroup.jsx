@@ -7,6 +7,7 @@ import { TypeHTTP, api } from '@/utils/api'
 
 const CreateGroupPage = () => {
     const inputRef = useRef()
+    const [nameFilter, setNameFilter] = useState('')
     const [image, setImage] = useState({ path: 'https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2152974972/settings_images/a05d7f7-f3b7-0102-a18b-52050e1111ad_noun-proactive-5427471-02_2.png' })
     const [name, setName] = useState('')
     const { data, handler } = useContext(ThemeContext)
@@ -94,26 +95,27 @@ const CreateGroupPage = () => {
                 </div>
                 <div className='h-[100%] px-[1rem] border-l-[1px] w-[30%] flex flex-col items-center'>
                     <div className='relative w-full mt-[1rem]'>
-                        <input type='text' placeholder='Search' className='text-[14px] pl-[30px] pr-[10px] font-poppins w-full h-[35px] focus:outline-0 rounded-md border-[#cacaca] mt-[5px] border-[1px]' />
+                        <input onChange={e => setNameFilter(e.target.value)} value={nameFilter} type='text' placeholder='Enter Friend Name' className='text-[13px] pl-[30px] pr-[10px] w-full h-[35px] focus:outline-0 rounded-md border-[#cacaca] mt-[5px] border-[1px]' />
                         <i className='top-[57%] translate-y-[-50%] left-[8px] bx bx-search text-[#999] text-[19px] absolute'></i>
                     </div>
                     <span className='font-bold mt-[15px] text-[18px] mb-2 font-poppins w-[100%] '>
                         People
                     </span>
                     <div className='w-full'>
-                        {data.user.friends.map((friend, index) => (
-                            <div key={index} className='flex justify-between w-full my-2 items-center'>
-                                <div className='flex items-center'>
-                                    <UserIcon avatar={friend.avatar} />
-                                    <span className='font-semibold text-[14px] px-[10px] '>{friend.fullName}</span>
+                        {data.user.friends.map((friend, index) => {
+                            if (nameFilter === '' || friend.fullName.toLowerCase().includes(nameFilter.toLowerCase()))
+                                return <div key={index} className='flex justify-between w-full my-2 items-center'>
+                                    <div className='flex items-center'>
+                                        <UserIcon avatar={friend.avatar} />
+                                        <span className='font-semibold text-[14px] px-[10px] '>{friend.fullName}</span>
+                                    </div>
+                                    {participants.map(item => item._id).includes(friend._id) ?
+                                        (<div className='text-[11px] bg-[green] text-[white] py-1 px-1 rounded-md font-semibold'>Added</div>)
+                                        :
+                                        (<button onClick={() => setParticipants(prev => [...prev, friend])} className='text-[25px] translate-y-[-5px] cursor-pointer'>+</button>)
+                                    }
                                 </div>
-                                {participants.map(item => item._id).includes(friend._id) ?
-                                    (<div className='text-[11px] bg-[green] text-[white] py-1 px-1 rounded-md font-semibold'>Added</div>)
-                                    :
-                                    (<button onClick={() => setParticipants(prev => [...prev, friend])} className='text-[25px] translate-y-[-5px] cursor-pointer'>+</button>)
-                                }
-                            </div>
-                        ))}
+                        })}
                     </div>
                 </div>
             </div>

@@ -12,6 +12,8 @@ const ParticipantForm = ({ participants }) => {
     const { listData, listHandler } = useContext(MessagesContext)
     const [list, setList] = useState(participants)
     const [leftUsers, setLeftUsers] = useState([])
+    const [nameList, setNameList] = useState('')
+    const [nameFriends, setNameFriends] = useState('')
 
     useEffect(() => {
         setList(participants)
@@ -60,68 +62,70 @@ const ParticipantForm = ({ participants }) => {
             <div className='w-[45%] h-screen border-[#e5e5e5] border-r-[1px] pl-4 py-6' >
                 <span className='font-semibold text-[20]'>{participants.length} Participants</span>
                 <div className='relative'>
-                    <input type='text' placeholder='Search' className='text-[10px] pl-[30px] pr-[10px] font-poppins w-[200px] h-[33px] focus:outline-0 rounded-md border-[#cacaca] mt-[5px] border-[1px]' />
+                    <input onChange={e => setNameList(e.target.value)} value={nameList} type='text' placeholder='Search' className='text-[12px] pl-[30px] pr-[10px] w-[200px] h-[33px] focus:outline-0 rounded-md border-[#cacaca] mt-[5px] border-[1px]' />
                     <i className='top-[57%] translate-y-[-50%] left-[8px] bx bx-search text-[#999] text-[15px] absolute'></i>
                 </div>
                 <div className='my-1 h-[300px] w-[100%] overflow-y-auto'>
                     {list.map((participant, index) => {
-                        return (
-                            <div key={index} className='flex items-center justify-between pr-2 my-2'>
-                                <div key={index} className='flex gap-2 items-center' >
-                                    <UserIcon operating={participant.operating} avatar={participant.avatar} />
-                                    <div className='flex flex-col'>
-                                        <span className='text-[13px] font-semibold'>{participant.fullName}</span>
-                                        <span className='text-[11px]'>{participant._id === listData.currentRoom?.creator ? 'Admin' : 'Member'}</span>
+                        if (participant.fullName.toLowerCase().includes(nameList.toLowerCase()) || nameList === '')
+                            return (
+                                <div key={index} className='flex items-center justify-between pr-2 my-2'>
+                                    <div key={index} className='flex gap-2 items-center' >
+                                        <UserIcon operating={participant.operating} avatar={participant.avatar} />
+                                        <div className='flex flex-col'>
+                                            <span className='text-[13px] font-semibold'>{participant.fullName}</span>
+                                            <span className='text-[11px]'>{participant._id === listData.currentRoom?.creator ? 'Admin' : 'Member'}</span>
+                                        </div>
                                     </div>
-                                </div>
-                                {/* kiểm tra xem tài khoản của bạn có phải là admin của nhóm đó hay không */}
-                                {listData.currentRoom?.creator === data.user?._id ?
-                                    // nếu đúng, sẽ hiển thị btn kick thành viên, ngoại trừ bạn
-                                    participant._id !== data.user?._id && (
-                                        <button onClick={() => {
-                                            setList(prev => prev.filter(item => item._id !== participant._id))
-                                            if (participants.map(item => item._id).includes(participant._id)) {
-                                                setLeftUsers(prev => [...prev, participant])
-                                            }
-                                        }} className='font-poppins h-[20px] w-[20px] flex items-center justify-center font-semibold border-[green] border-[2px] rounded-lg text-[green]'>
+                                    {/* kiểm tra xem tài khoản của bạn có phải là admin của nhóm đó hay không */}
+                                    {listData.currentRoom?.creator === data.user?._id ?
+                                        // nếu đúng, sẽ hiển thị btn kick thành viên, ngoại trừ bạn
+                                        participant._id !== data.user?._id && (
+                                            <button onClick={() => {
+                                                setList(prev => prev.filter(item => item._id !== participant._id))
+                                                if (participants.map(item => item._id).includes(participant._id)) {
+                                                    setLeftUsers(prev => [...prev, participant])
+                                                }
+                                            }} className='font-poppins h-[20px] w-[20px] flex items-center justify-center font-semibold border-[green] border-[2px] rounded-lg text-[green]'>
+                                                <i className='text-[16px] bx bx-x'></i>
+                                            </button>
+                                        )
+                                        :
+                                        // nếu sai, thì chỉ hiển thị btn kick khi trong quá trình bạn thêm thành viên khách vào nhóm
+                                        !participant.operating &&
+                                        <button onClick={() => setList(prev => prev.filter(item => item._id !== participant._id))} className='font-poppins h-[20px] w-[20px] flex items-center justify-center font-semibold border-[green] border-[2px] rounded-lg text-[green]'>
                                             <i className='text-[16px] bx bx-x'></i>
                                         </button>
-                                    )
-                                    :
-                                    // nếu sai, thì chỉ hiển thị btn kick khi trong quá trình bạn thêm thành viên khách vào nhóm
-                                    !participant.operating &&
-                                    <button onClick={() => setList(prev => prev.filter(item => item._id !== participant._id))} className='font-poppins h-[20px] w-[20px] flex items-center justify-center font-semibold border-[green] border-[2px] rounded-lg text-[green]'>
-                                        <i className='text-[16px] bx bx-x'></i>
-                                    </button>
-                                }
-                            </div>
-                        )
+                                    }
+                                </div>
+                            )
                     })}
                 </div>
             </div>
             <div className='w-[55%] h-screen pl-4 py-4 ' >
                 <div className='relative mb-3'>
-                    <input type='text' placeholder='Search' className='text-[10px] pl-[30px] pr-[10px] font-poppins w-[250px] h-[33px] focus:outline-0 rounded-md border-[#cacaca] mt-[5px] border-[1px]' />
+                    <input onChange={e => setNameFriends(e.target.value)} value={nameFriends} type='text' placeholder='Search' className='text-[12px] pl-[30px] pr-[10px] w-[250px] h-[33px] focus:outline-0 rounded-md border-[#cacaca] mt-[5px] border-[1px]' />
                     <i className='top-[57%] translate-y-[-50%] left-[8px] bx bx-search text-[#999] text-[15px] absolute'></i>
                 </div>
                 <span className='font-semibold'>Friends</span>
                 <div className='flex gap-2 items-start flex-col my-2 h-[250px] overflow-y-auto justify-start' >
                     {data.user?.friends.map((friend, index) => {
                         if (!list.map(item => item._id).includes(friend._id))
-                            return (
-                                <div key={index} className='flex items-center'>
-                                    <div key={index} className='flex w-[260px] items-center gap-2 justify-start '>
-                                        <UserIcon avatar={friend.avatar} />
-                                        <span className='text-[13px] font-semibold '>{friend.fullName}</span>
+                            if (friend.fullName.toLowerCase().includes(nameFriends.toLowerCase()) || nameFriends === '')
+                                return (
+                                    <div key={index} className='flex items-center'>
+                                        <div key={index} className='flex w-[260px] items-center gap-2 justify-start '>
+                                            <UserIcon avatar={friend.avatar} />
+                                            <span className='text-[13px] font-semibold '>{friend.fullName}</span>
+                                        </div>
+                                        <button onClick={() => {
+                                            setList(prev => [friend, ...prev])
+                                            if (leftUsers.map(item => item._id).includes(friend._id)) {
+                                                setLeftUsers(prev => prev.filter(item => item._id !== friend._id))
+                                            }
+                                        }} className='text-[10px] font-poppins py-[2px] font-semibold px-2 border-[green] border-[2px] rounded-lg text-[green]'>Add</button>
                                     </div>
-                                    <button onClick={() => {
-                                        setList(prev => [friend, ...prev])
-                                        if (leftUsers.map(item => item._id).includes(friend._id)) {
-                                            setLeftUsers(prev => prev.filter(item => item._id !== friend._id))
-                                        }
-                                    }} className='text-[10px] font-poppins py-[2px] font-semibold px-2 border-[green] border-[2px] rounded-lg text-[green]'>Add</button>
-                                </div>
-                            )
+                                )
                     })}
                 </div>
             </div>

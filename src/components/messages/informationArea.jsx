@@ -14,6 +14,7 @@ const InformationArea = () => {
     const { listData, listHandler } = useContext(MessagesContext)
     const { data, handler } = useContext(ThemeContext)
     const [medias, setMedias] = useState([])
+    const [groupName, setGroupName] = useState('')
 
     useEffect(() => {
         if (listData.displayInfo === true) {
@@ -49,13 +50,69 @@ const InformationArea = () => {
         }
     }
 
+    const handleUpdateGroupName = () => {
+        if (groupName === '')
+            return
+        const room = listData.currentRoom
+        if (room) {
+            room.name = groupName
+            api({ type: TypeHTTP.PUT, path: `/rooms/${data.user?._id}`, sendToken: true, body: room })
+                .then(rooms => {
+                    listHandler.setCurrentRoom(rooms.filter(item => item._id === listData.currentRoom._id)[0])
+                    listHandler.setDisplayInfo(false)
+                    listHandler.setRooms(rooms)
+                    const body = {
+                        room_id: listData.currentRoom._id,
+                        reply: null,
+                        information: `${data.user?.fullName} has renamed the group "${groupName}"`,
+                        typeMessage: 'text',
+                        user_id: systemID
+                    }
+                    socket.emit('send_message', body)
+                    setGroupName('')
+                })
+        }
+    }
+
+    const handleDisbandRoom = () => {
+        api({ sendToken: true, type: TypeHTTP.DELETE, path: `rooms/${listData.currentRoom?._id}` })
+            .then(res => {
+                listHandler.setCurrentRoom(undefined)
+                listHandler.setDisplayInfo(false)
+                listHandler.setRooms(prev => prev.filter(item => item._id !== listData.currentRoom?._id))
+                const body = {
+                    room_id: listData.currentRoom._id,
+                    reply: null,
+                    information: ``,
+                    typeMessage: 'text',
+                    user_id: systemID
+                }
+                socket.emit('send_message', body)
+                setGroupName('')
+            })
+    }
+
     return (
         <div style={{ width: `${listData.displayInfo ? '450' : '0'}px`, paddingLeft: listData.displayInfo && '1rem', paddingRight: listData.displayInfo && '1rem' }} className='transition-all relative overflow-y-auto h-screen flex flex-col py-[1rem]'>
             <i onClick={() => listHandler.setDisplayInfo(false)} className='text-[#424242] bx bx-x text-[30px] absolute top-2 cursor-pointer right-2'></i>
             <div className='w-full flex flex-col items-center gap-2'>
                 <img src={returnImage(listData.currentRoom, data.user)} className='rounded-full w-[100px] h-[100px]' />
                 <div className='flex flex-col items-center'>
-                    <span className='text-[19px] font-semibold'>{returnName(listData.currentRoom, data.user)}</span>
+                    {groupName === '' ?
+                        <span className='text-[19px] font-semibold'>
+                            {returnName(listData.currentRoom, data.user)}
+                            <i onClick={() => setGroupName(returnName(listData.currentRoom, data.user))} className='cursor-pointer bx bx-pencil ml-2 text-[22px] text-[#5f5f5f]' ></i>
+                        </span>
+                        :
+                        <div className='flex items-center flex-col gap-1 my-2'>
+                            <input value={groupName} onChange={e => setGroupName(e.target.value)} className='border-[#999] border-[2px] h-[32px] rounded-md focus:outline-0 text-[13px] px-2' />
+                            <div className='flex gap-1'>
+                                <button onClick={() => handleUpdateGroupName()} className='text-[12px] bg-[green] text-[white] px-2 py-1 rounded-md'>Save</button>
+                                <button onClick={() => setGroupName('')} className='text-[12px] bg-[red] text-[white] px-2 py-1 rounded-md'>Quit</button>
+                            </div>
+                        </div>
+                    }
+
                     {listData.currentRoom?.type === 'Group' ?
                         <span className='font-semibold text-[12px]'>{listData.currentRoom?.users.length} Participants</span>
                         :
@@ -67,7 +124,7 @@ const InformationArea = () => {
                 <div className='my-[0.5rem] flex flex-col items-center'>
                     <h2 className='w-full font-semibold font-poppins text-[16px] flex items-center justify-between'>
                         <span>{listData.currentRoom?.users.length} Participants</span>
-                        <i className='bx bx-user-plus text-[25px] cursor-pointer'></i>
+                        <i onClick={() => listHandler.setParticipants(listData.currentRoom?.users)} className='bx bx-user-plus text-[25px] cursor-pointer'></i>
                     </h2>
                     {listData.currentRoom?.users.map((user, index) => {
                         if (index <= 1) {
@@ -87,7 +144,8 @@ const InformationArea = () => {
                         <span className='font-semibold px-[5px] text-[14px]'>{'See All...'}</span>
                     </div>
                 </div>
-            )}
+            )
+            }
             {/* <div className='my-[5px] flex flex-col items-center'>
                 <h2 className='w-full font-semibold font-poppins text-[16px]'>Attachments</h2>
                 <div className='w-full flex items-center gap-2 font-poppins pl-[1rem]'>
@@ -127,16 +185,25 @@ const InformationArea = () => {
                             })}
                         </div>
                         <button onClick={() => {
-                            listHandler.setPictureVideos(images);
+                            listHandler.setPictureVideos(medias);
                         }} style={{ backgroundImage: 'url(/bg.webp)' }} className='rounded-md text-[white] font-poppins w-[80%] h-[35px] mt-[5px] shadow'>See All</button>
                     </>
                 }
             </div>
-            {listData.currentRoom?.type === 'Group' &&
-                <button onClick={() => handleLeaveRoom()} className='bg-[#ff4848] py-2 text-[15px] rounded-xl my-3 text-[white]'>
-                    Leave Room
-                </button>}
-        </div>
+            {
+                listData.currentRoom?.type === 'Group' &&
+                <div className='flex gap-2'>
+                    {listData.currentRoom?.creator === data.user?._id &&
+                        <button onClick={() => handleDisbandRoom()} className='bg-[black] w-full py-2 text-[13px] rounded-md my-3 text-[white]'>
+                            Disband the group
+                        </button>
+                    }
+                    <button onClick={() => handleLeaveRoom()} className='bg-[#ff4848] w-full py-2 text-[13px] rounded-md my-3 text-[white]'>
+                        Leave Group
+                    </button>
+                </div>
+            }
+        </div >
     )
 }
 

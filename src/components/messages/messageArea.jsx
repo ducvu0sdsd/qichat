@@ -102,6 +102,7 @@ const MessageArea = () => {
                     }
                     setImages([])
                     setVideos([])
+                    listHandler.setReply(undefined)
                 })
         }
     }
@@ -189,12 +190,12 @@ const MessageArea = () => {
                         <div style={{ top: listData.reply ? `-${replyHeight}px` : '10px' }} className='px-3 flex items-center text-[13px] bg-[#f6f6f6] w-[auto] transition-all rounded-xl absolute left-[1rem]'>
                             <i className="fa-solid cursor-pointer text-[16px] fa-reply text-[#1097ff] mr-2"></i>
                             <span ref={replyRef} style={{ overflowWrap: 'break-word' }} className='max-w-[600px] py-2'>{listData.reply?.information}</span>
-                            <i onClick={() => listHandler.setReply(undsefined)} className='bx bx-x text-[22px] ml-3 cursor-pointer text-[#999]'></i>
+                            <i onClick={() => listHandler.setReply(undefined)} className='bx bx-x text-[22px] ml-3 cursor-pointer text-[#999]'></i>
                         </div>
                         {typeInput === types.TEXT ?
                             <>
                                 <i className='z-20 absolute cursor-pointer text-[20px] text-[#999] left-[27px] bx bx-microphone' ></i>
-                                <input onKeyDown={handleKeyDown} onChange={e => setInformation(e.target.value)} value={information} placeholder='Type your message...' type='text' className='pr-[65px] z-10 text-[14px] rounded-md focus:outline-0 pl-[35px] w-full h-[45px] border-[#f1f1f1] border-[2px]' />
+                                <input onKeyDown={handleKeyDown} onChange={e => setInformation(e.target.value)} value={information} placeholder='Type your message...' type='text' className='pr-[65px] z-0 text-[14px] rounded-md focus:outline-0 pl-[35px] w-full h-[45px] border-[#f1f1f1] border-[2px]' />
                             </>
                             :
                             typeInput === types.IMAGE ?

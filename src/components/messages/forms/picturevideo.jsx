@@ -15,9 +15,14 @@ const PictureVideo = ({ pictureVideos }) => {
                 <div className='h-[85%] w-[100% overflow-y-auto'>
                     <div className=' grid grid-cols-5 gap-3 row w-100% justify-center px-3'>
                         {pictureVideos.map((item, index) => {
-                            return (
-                                <img onClick={() => handler.showImage(item)} key={index} src={item} className='cursor-pointer w-[100px] h-[100px] rounded-lg' />
-                            )
+                            if (item.includes('.amazonaws.com/image_')) {
+                                return <img onClick={() => handler.showImage(item)} key={index} src={item} className='cursor-pointer aspect-square rounded-lg' />
+                            } else if (item.includes('.amazonaws.com/video_')) {
+                                return <div onClick={() => handler.showVideo(item)} key={index} style={{ backgroundImage: `url(/bg.webp)`, backgroundSize: 'cover' }} className='cursor-pointer relative overflow-hidden aspect-square w-full rounded-md' >
+                                    <video className='w-[100%] translate-y-[-40%] rounded-md' src={item} />
+                                    <i className='bx text-[40px] text-[white] shadow-2xl bx-play absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'></i>
+                                </div>
+                            }
                         })}
                     </div>
                 </div>
