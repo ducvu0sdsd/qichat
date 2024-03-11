@@ -95,7 +95,11 @@ const MessageArea = () => {
 
             api({ body: formData, path: '/messages', type: TypeHTTP.POST, sendToken: true })
                 .then(res => {
-                    socket.emit('update-message', { room_id: listData.currentRoom._id, information: images.length, type: 'image' })
+                    if (images.length > 0) {
+                        socket.emit('update-message', { room_id: listData.currentRoom._id, information: images.length, type: 'image' })
+                    } else if (videos.length > 0) {
+                        socket.emit('update-message', { room_id: listData.currentRoom._id, information: videos.length, type: 'video' })
+                    }
                     setImages([])
                     setVideos([])
                 })

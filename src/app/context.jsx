@@ -24,7 +24,8 @@ export const ProviderContext = ({ children }) => {
     const [user, setUser] = useState()
     const [info, setInfo] = useState({ status: notifyType.NONE, message: '' })
     const [userInformation, setUserInformation] = useState()
-    const [url, setUrl] = useState('')
+    const [urlImage, setUrlImage] = useState('')
+    const [urlVideo, setUrlVideo] = useState('')
 
     useEffect(() => {
         if (info.status !== notifyType.NONE) {
@@ -98,12 +99,22 @@ export const ProviderContext = ({ children }) => {
 
     const showImage = (path) => {
         showWrapper()
-        setUrl(path)
+        setUrlImage(path)
     }
 
     const hiddenImage = () => {
         hiddenWrapper()
-        setUrl('')
+        setUrlImage('')
+    }
+
+    const showVideo = (path) => {
+        showWrapper()
+        setUrlVideo(path)
+    }
+
+    const hiddenVideo = () => {
+        hiddenWrapper()
+        setUrlVideo('')
     }
 
     const data = {
@@ -118,16 +129,19 @@ export const ProviderContext = ({ children }) => {
         showImage,
         hiddenImage,
         showWrapper,
-        hiddenWrapper
+        hiddenWrapper,
+        showVideo,
+        hiddenVideo
     }
 
     return (
         <ThemeContext.Provider value={{ data, handler }}>
             {children}
-            <div ref={wrapperRef} onClick={() => { hiddenUserInformation(); hiddenImage() }} className="wrapper fixed top-0 left-0 hidden w-screen h-screen z-50" />
+            <div ref={wrapperRef} onClick={() => { hiddenUserInformation(); hiddenImage(); hiddenVideo() }} className="wrapper fixed top-0 left-0 hidden w-screen h-screen z-50" />
             <Notification status={info.status} message={info.message} />
             <FormInformation user={userInformation} />
-            <img src={url} className="max-w-[400px] max-h-[500px] z-50 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]" />
+            <img src={urlImage} className="max-w-[400px] max-h-[500px] z-50 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]" />
+            <video src={urlVideo} style={{ display: urlVideo === '' ? 'none' : 'block' }} controls className="max-w-[400px] max-h-[500px] z-40 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]" />
         </ThemeContext.Provider>
     )
 } 

@@ -13,12 +13,14 @@ const InformationArea = () => {
 
     const { listData, listHandler } = useContext(MessagesContext)
     const { data, handler } = useContext(ThemeContext)
-    const [images, setImages] = useState([])
+    const [medias, setMedias] = useState([])
 
     useEffect(() => {
         if (listData.displayInfo === true) {
             api({ type: TypeHTTP.GET, sendToken: true, path: `/messages/${listData.currentRoom?._id}` })
-                .then(media => setImages(media))
+                .then(media => {
+                    setMedias(media)
+                })
         }
     }, [listData.displayInfo, listData.currentRoom])
 
@@ -104,16 +106,23 @@ const InformationArea = () => {
             </div> */}
             <div className='mt-[0.5rem] flex flex-col items-center'>
                 <h2 className='w-full font-semibold font-poppins text-[16px]'>Pictures & Videos</h2>
-                {images.length === 0 ?
+                {medias.length === 0 ?
                     <div className='w-full my-[10px] px-[1rem] mt-[3rem] flex justify-center font-semibold font-poppins'>
                         No Pictures & Videos
                     </div>
                     :
                     <>
                         <div className='w-full grid grid-cols-4 my-[10px] gap-1 px-[1rem] justify-items-center'>
-                            {images.map((image, index) => {
-                                if (index >= images.length - 8) {
-                                    return <div onClick={() => handler.showImage(image)} key={index} style={{ backgroundImage: `url(${image})`, backgroundSize: 'cover' }} className='cursor-pointer aspect-square w-full rounded-md' />
+                            {medias.map((media, index) => {
+                                if (index >= medias.length - 8) {
+                                    if (media.includes('.amazonaws.com/image_')) {
+                                        return <div onClick={() => handler.showImage(media)} key={index} style={{ backgroundImage: `url(${media})`, backgroundSize: 'cover' }} className='cursor-pointer aspect-square w-full rounded-md' />
+                                    } else if (media.includes('.amazonaws.com/video_')) {
+                                        return <div onClick={() => handler.showVideo(media)} key={index} style={{ backgroundImage: `url(/bg.webp)`, backgroundSize: 'cover' }} className='cursor-pointer relative overflow-hidden aspect-square w-full rounded-md' >
+                                            <video className='w-[100%] translate-y-[-40%] rounded-md' src={media} />
+                                            <i className='bx text-[40px] text-[white] shadow-2xl bx-play absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'></i>
+                                        </div>
+                                    }
                                 }
                             })}
                         </div>

@@ -19,6 +19,14 @@ const MessageItem = ({ message, type, style }) => {
                 ))}
             </div>
         </div>
+    } else if (type === 'video') {
+        return <div className='max-w-[250px] py-2'>
+            <div style={{ justifyContent: style }} className='leading-[30px] flex gap-1 justify-center flex-wrap items-center w-[auto] bg-[#fafcfe] z-0 py-[2px] rounded-lg text-[14px]'>
+                {message.map((item, index) => (
+                    <video controls key={index} src={item} className='rounded-xl cursor-pointer max-w-[80%]' />
+                ))}
+            </div>
+        </div>
     }
 }
 
