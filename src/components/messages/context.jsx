@@ -19,6 +19,8 @@ export const ProviderContext = ({ children }) => {
     const { data, handler } = useContext(ThemeContext)
     const [participants, setParticipants] = useState([])
     const [pictureVideos, setPictureVideos] = useState([])
+    const [reply, setReply] = useState()
+
     useEffect(() => {
         if (data.user?._id) {
             api({ type: TypeHTTP.GET, sendToken: true, path: `/friends-operating/${data.user?._id}` })
@@ -71,7 +73,8 @@ export const ProviderContext = ({ children }) => {
         messages,
         friendsOperation,
         participants,
-        pictureVideos
+        pictureVideos,
+        reply
     }
 
     const listHandler = {
@@ -82,7 +85,8 @@ export const ProviderContext = ({ children }) => {
         setMessages,
         setFriendsOperation,
         setParticipants,
-        setPictureVideos
+        setPictureVideos,
+        setReply
     }
 
     return (

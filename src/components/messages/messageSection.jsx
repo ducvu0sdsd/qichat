@@ -43,8 +43,13 @@ const MessageSection = ({ style, message, handleShowUserInformation }) => {
         <>{message.user ?
             <div style={{ justifyContent: style }} className='hover:z-10 z-0 flex gap-2 items-end my-[1rem]'>
                 {style === 'start' && (<div onClick={() => handleShowUserInformation(message.user._id)} className='cursor-pointer'><UserIcon avatar={message.user?.avatar} /></div>)}
-                <div onMouseEnter={handleMouseHover} onMouseLeave={handleMouseOut} className='flex relative flex-col gap-1'>
-                    {style === 'start' && (<span className='text-[10px] font-semibold'>{message.user?.fullName.split(' ')[message.user?.fullName.split(' ').length - 1]}</span>)}
+                <div onMouseEnter={handleMouseHover} onMouseLeave={handleMouseOut} style={{ alignItems: style }} className='flex relative flex-col gap-1'>
+                    {style === 'start' && (<span className='text-[10px] translate-y-[3px] font-semibold'>{message.user?.fullName.split(' ')[message.user?.fullName.split(' ').length - 1]}</span>)}
+                    {message.reply?._id && (
+                        <div className='text-[12px] h-[30px] bg-[#e9e9e994] rounded-lg translate-y-[8px] flex items-center px-2'>
+                            {message.reply.information}
+                        </div>
+                    )}
                     <MessageItem style={style} message={message.information} type={message.typeMessage} />
                     {message.emojis.length > 0 &&
                         <div className='z-0 p-1 flex rounded-full bg-[#EFF5FD] absolute left-[5px] bottom-[-15px]'>
@@ -63,8 +68,10 @@ const MessageSection = ({ style, message, handleShowUserInformation }) => {
                             <button onClick={() => handleSendEmoji('sad')} >{emojiStatus.sad}</button>
                             <button onClick={() => handleSendEmoji('angry')} >{emojiStatus.angry}</button>
                         </div>
-                        <div className='flex gap-1'>
-
+                        <div className='flex gap-2 justify-start mt-1 text-[15px] w-full'>
+                            {message.typeMessage === 'text' && <button onClick={() => listHandler.setReply(message)}><i className="fa-solid cursor-pointer fa-reply text-[#999]"></i></button>}
+                            <button><i className="fa-solid cursor-pointer fa-delete-left text-[#999]"></i></button>
+                            <button><i className="fa-solid cursor-pointer ml-[2px] fa-flag text-[#999]"></i></button>
                         </div>
                     </div>
                 </div>

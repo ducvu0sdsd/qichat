@@ -7,7 +7,7 @@ const MessageItem = ({ message, type, style }) => {
 
     if (type === 'text') {
         return (
-            <div style={{ overflowWrap: 'break-word' }} className='leading-[21px] overflow-wrap max-w-[250px] z-0 bg-[#EFF5FD] px-[10px] py-[10px] rounded-lg text-[14px]'>
+            <div style={{ overflowWrap: 'break-word' }} className='leading-[21px] overflow-wrap max-w-[250px] z-0 bg-[#EFF5FD] px-[10px] py-[7px] rounded-lg text-[14px]'>
                 {message}
             </div>
         )

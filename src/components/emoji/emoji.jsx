@@ -1,6 +1,6 @@
 
 export const emojiStatus = {
-    likelike: '😍',
+    likelike: '❤️',
     like: '👍',
     sad: '😥',
     wow: '😮',

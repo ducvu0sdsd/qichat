@@ -54,13 +54,17 @@ const MessageArea = () => {
         if (typeInput === types.TEXT) {
             const body = {
                 room_id: listData.currentRoom._id,
-                reply: null,
+                reply: {
+                    _id: listData.reply ? listData.reply?._id : null,
+                    information: listData.reply ? listData.reply?.information : null
+                },
                 information,
                 typeMessage: 'text',
                 user_id: data.user._id
             }
             socket.emit('send_message', body)
             setInformation('')
+            listHandler.setReply(undefined)
         }
         else if (typeInput === types.IMAGE) {
             const formData = new FormData();
@@ -101,6 +105,7 @@ const MessageArea = () => {
                 }]
             })
         }
+        e.target.value = ''
     }
 
     const handleShowUserInformation = (id) => {
@@ -110,7 +115,7 @@ const MessageArea = () => {
 
     return (
         <div className='h-full w-full transition-all border-[#e5e5e5] border-r-[1px] flex flex-col'>
-            <input onChange={e => handleFiles(e)} ref={inputRef} multiple type='file' accept="image/png, image/jpeg, image/jpg" style={{ display: 'none' }} />
+            <input onChange={e => { handleFiles(e) }} ref={inputRef} multiple type='file' accept="image/png, image/jpeg, image/jpg" style={{ display: 'none' }} />
             {listData.currentRoom ?
                 <>
                     <div className=' flex items-center h-[10%] w-full justify-between px-[15px] py-2 border-[#e5e5e5] border-b-[1px]'>
@@ -145,32 +150,39 @@ const MessageArea = () => {
                             </>
                         }
                     </div>
-                    <div className='mt-1 relative w-full px-[1rem] flex items-center'>
-                        {typeInput === types.TEXT ?
-                            <>
-                                <i className='absolute cursor-pointer text-[20px] text-[#999] left-[27px] bx bx-microphone' ></i>
-                                <input onKeyDown={handleKeyDown} onChange={e => setInformation(e.target.value)} value={information} placeholder='Type your message...' type='text' className='pr-[65px] text-[14px] rounded-md focus:outline-0 pl-[35px] w-full h-[45px] border-[#f1f1f1] border-[2px]' />
-                            </>
-                            :
-                            typeInput === types.IMAGE &&
-                            <div className='pr-1 flex gap-2 items-center rounded-md focus:outline-0 pl-1 w-full h-[60px] border-[#f1f1f1] border-[2px]'>
-                                {images.map((image, index) => {
-                                    return <div key={index} className='relative'>
-                                        <img key={index} src={image.path} className='h-[45px] rounded-lg transition-all' />
+                    <div className='relative'>
+                        <div style={{ top: listData.reply ? '-55%' : '5px' }} className='px-3 flex items-center pb-2 text-[13px] translate-y-[2px] bg-[#f6f6f6] w-[auto] transition-all rounded-xl h-[40px] absolute left-[1rem]'>
+                            <i className="fa-solid cursor-pointer text-[16px] fa-reply text-[#1097ff] mr-2"></i>
+                            {listData.reply?.information}
+                            <i onClick={() => listHandler.setReply(undefined)} className='bx bx-x text-[22px] ml-3 cursor-pointer text-[#999]'></i>
+                        </div>
+                        <div className='mt-1 relative w-full px-[1rem] flex items-center'>
+                            {typeInput === types.TEXT ?
+                                <>
+                                    <i className='absolute cursor-pointer text-[20px] text-[#999] left-[27px] bx bx-microphone' ></i>
+                                    <input onKeyDown={handleKeyDown} onChange={e => setInformation(e.target.value)} value={information} placeholder='Type your message...' type='text' className='pr-[65px] text-[14px] rounded-md focus:outline-0 pl-[35px] w-full h-[45px] border-[#f1f1f1] border-[2px]' />
+                                </>
+                                :
+                                typeInput === types.IMAGE &&
+                                <div className='pr-1 flex gap-2 bg-[white] items-center rounded-md focus:outline-0 pl-1 w-full h-[60px] border-[#f1f1f1] border-[2px]'>
+                                    {images.map((image, index) => {
+                                        return <div key={index} className='relative'>
+                                            <img key={index} src={image.path} className='h-[45px] rounded-lg transition-all' />
 
-                                        <div onClick={() => setImages(prev => prev.filter(i => i.path !== image.path))}
-                                            className='absolute top-[-5px] cursor-pointer right-[-5px] h-[17px] w-[17px] flex justify-center items-center z-10 bg-[black] rounded-full'>
-                                            <i className='text-[white] bx bx-x'></i>
+                                            <div onClick={() => setImages(prev => prev.filter(i => i.path !== image.path))}
+                                                className='absolute top-[-5px] cursor-pointer right-[-5px] h-[17px] w-[17px] flex justify-center items-center z-10 bg-[black] rounded-full'>
+                                                <i className='text-[white] bx bx-x'></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                })}
+                                    })}
+                                </div>
+                            }
+                            <div className='absolute right-6 flex gap-1 items-center'>
+                                <i className='bx bxs-videos text-[25px] translate-y-[2px] cursor-pointer text-[rgb(168,168,168)]' ></i>
+                                <i onClick={() => inputRef.current.click()} className='bx bx-image-add text-[25px] translate-y-[2px] cursor-pointer text-[rgb(168,168,168)]' ></i>
+                                <i className=" text-[20px] cursor-pointer text-[rgb(168,168,168)] fa-solid fa-paperclip"></i>
+                                <i onClick={() => sendMessage()} className='bx bx-send text-[23px] cursor-pointer text-[#a5a5a5]'></i>
                             </div>
-                        }
-                        <div className='absolute right-6 flex gap-1 items-center'>
-                            <i className='bx bxs-videos text-[25px] translate-y-[2px] cursor-pointer text-[rgb(168,168,168)]' ></i>
-                            <i onClick={() => inputRef.current.click()} className='bx bx-image-add text-[25px] translate-y-[2px] cursor-pointer text-[rgb(168,168,168)]' ></i>
-                            <i className=" text-[20px] cursor-pointer text-[rgb(168,168,168)] fa-solid fa-paperclip"></i>
-                            <i onClick={() => sendMessage()} className='bx bx-send text-[23px] cursor-pointer text-[#a5a5a5]'></i>
                         </div>
                     </div>
                 </>
