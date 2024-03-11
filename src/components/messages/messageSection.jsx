@@ -36,45 +36,59 @@ const MessageSection = ({ style, message, handleShowUserInformation }) => {
             }
         }
         const messageSend = { ...message, emojis: [...message.emojis, emoji] }
-        socket.emit('send_emoji', messageSend)
+        socket.emit('send_emoji_disable', messageSend)
+    }
+
+    const handleSendDisable = () => {
+        const messageSend = { ...message, disabled: true }
+        socket.emit('send_emoji_disable', messageSend)
     }
 
     return (
         <>{message.user ?
             <div style={{ justifyContent: style }} className='hover:z-10 z-0 flex gap-2 items-end my-[1rem]'>
                 {style === 'start' && (<div onClick={() => handleShowUserInformation(message.user._id)} className='cursor-pointer'><UserIcon avatar={message.user?.avatar} /></div>)}
-                <div onMouseEnter={handleMouseHover} onMouseLeave={handleMouseOut} style={{ alignItems: style }} className='flex relative flex-col gap-1'>
-                    {style === 'start' && (<span className='text-[10px] translate-y-[3px] font-semibold'>{message.user?.fullName.split(' ')[message.user?.fullName.split(' ').length - 1]}</span>)}
-                    {message.reply?._id && (
-                        <div className='text-[12px] h-[30px] bg-[#e9e9e994] rounded-lg translate-y-[8px] flex items-center px-2'>
-                            {message.reply.information}
-                        </div>
-                    )}
-                    <MessageItem style={style} message={message.information} type={message.typeMessage} />
-                    {message.emojis.length > 0 &&
-                        <div className='z-0 p-1 flex rounded-full bg-[#EFF5FD] absolute left-[5px] bottom-[-15px]'>
-                            {message.emojis.map((e, index) => {
-                                if (index <= 2)
-                                    return <span key={index} className='text-[13px]'>{emoji(e.status)}</span>
-                            })}
-                        </div>
-                    }
-                    <div ref={emojiRef} style={style === 'end' ? { left: '-182px' } : { right: '-182px' }} className='transition-all hidden opacity-[0] absolute flex-col items-center px-3 border-[#f4f4f4] border-[2px] rounded-lg bottom-0 py-1'>
-                        <div className='flex gap-1'>
-                            <button onClick={() => handleSendEmoji('likelike')} >{emojiStatus.likelike}</button>
-                            <button onClick={() => handleSendEmoji('like')} >{emojiStatus.like}</button>
-                            <button onClick={() => handleSendEmoji('smile')} >{emojiStatus.smile}</button>
-                            <button onClick={() => handleSendEmoji('wow')} >{emojiStatus.wow}</button>
-                            <button onClick={() => handleSendEmoji('sad')} >{emojiStatus.sad}</button>
-                            <button onClick={() => handleSendEmoji('angry')} >{emojiStatus.angry}</button>
-                        </div>
-                        <div className='flex gap-2 justify-start mt-1 text-[15px] w-full'>
-                            {message.typeMessage === 'text' && <button onClick={() => listHandler.setReply(message)}><i className="fa-solid cursor-pointer fa-reply text-[#999]"></i></button>}
-                            <button><i className="fa-solid cursor-pointer fa-delete-left text-[#999]"></i></button>
-                            <button><i className="fa-solid cursor-pointer ml-[2px] fa-flag text-[#999]"></i></button>
+                {message.disabled ?
+                    <div>
+                        {style === 'start' && (<span className='text-[10px] translate-y-[3px] font-semibold'>{message.user?.fullName.split(' ')[message.user?.fullName.split(' ').length - 1]} </span>)}
+                        <div className='bg-[#f5f5f5c3] py-2 px-3 rounded-lg text-[13px]'>
+                            <i className="fa-solid cursor-pointer fa-delete-left text-[#999]"></i> The message has been revoked
                         </div>
                     </div>
-                </div>
+                    :
+                    <div onMouseEnter={handleMouseHover} onMouseLeave={handleMouseOut} style={{ alignItems: style }} className='flex relative flex-col gap-1'>
+                        {style === 'start' && (<span className='text-[10px] translate-y-[3px] font-semibold'>{message.user?.fullName.split(' ')[message.user?.fullName.split(' ').length - 1]}</span>)}
+                        {message.reply?._id && (
+                            <div style={{ overflowWrap: 'break-word' }} className='overflow-wrap text-[12px] py-2 max-w-[250px] bg-[#e9e9e994] rounded-lg translate-y-[8px] px-2'>
+                                {message.reply.information}
+                            </div>
+                        )}
+                        <MessageItem style={style} message={message.information} type={message.typeMessage} />
+                        {message.emojis.length > 0 &&
+                            <div className='z-0 p-1 flex rounded-full bg-[#EFF5FD] absolute left-[5px] bottom-[-15px]'>
+                                {message.emojis.map((e, index) => {
+                                    if (index <= 2)
+                                        return <span key={index} className='text-[13px]'>{emoji(e.status)}</span>
+                                })}
+                            </div>
+                        }
+                        <div ref={emojiRef} style={style === 'end' ? { left: '-182px' } : { right: '-182px' }} className='transition-all hidden opacity-[0] absolute flex-col items-center px-3 border-[#f4f4f4] border-[2px] rounded-lg bottom-0 py-1'>
+                            <div className='flex gap-1'>
+                                <button onClick={() => handleSendEmoji('likelike')} >{emojiStatus.likelike}</button>
+                                <button onClick={() => handleSendEmoji('like')} >{emojiStatus.like}</button>
+                                <button onClick={() => handleSendEmoji('smile')} >{emojiStatus.smile}</button>
+                                <button onClick={() => handleSendEmoji('wow')} >{emojiStatus.wow}</button>
+                                <button onClick={() => handleSendEmoji('sad')} >{emojiStatus.sad}</button>
+                                <button onClick={() => handleSendEmoji('angry')} >{emojiStatus.angry}</button>
+                            </div>
+                            <div className='flex gap-2 justify-start mt-1 text-[15px] w-full'>
+                                {message.typeMessage === 'text' && <button onClick={() => listHandler.setReply(message)}><i className="fa-solid cursor-pointer fa-reply text-[#999]"></i></button>}
+                                {style === 'end' && <button onClick={() => handleSendDisable()}><i className="fa-solid cursor-pointer fa-delete-left text-[#999]"></i></button>}
+                                <button><i className="fa-solid cursor-pointer ml-[2px] fa-flag text-[#999]"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div >
             :
             <div className='flex items-center justify-center my-[1rem] text-[13px]'>

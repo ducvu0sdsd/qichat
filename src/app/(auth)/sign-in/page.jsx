@@ -2,7 +2,7 @@
 import Logo from '@/components/logo'
 import { TypeHTTP, api } from '@/utils/api'
 import React, { useContext, useState } from 'react'
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { AuthContext } from '@/components/auth/context';
 import { formatPhoneByFireBase } from '@/utils/call';
 import { ThemeContext, notifyType } from '@/app/context';
@@ -10,6 +10,7 @@ import { signWithGoogle } from '@/components/firebase/firebase';
 import Link from 'next/link';
 
 const SignIn = () => {
+    const pathname = usePathname()
     const { listData, listHandler } = useContext(AuthContext)
     const { handler } = useContext(ThemeContext)
     const router = useRouter();
@@ -34,7 +35,9 @@ const SignIn = () => {
                 }
             })
             .catch(error => {
-                handler.notify(notifyType.FAIL, 'Wrong login information ')
+                if (pathname === '/sign-in') {
+                    handler.notify(notifyType.FAIL, 'Wrong login information ')
+                }
             })
     }
 
