@@ -42,7 +42,7 @@ const LeftSection = () => {
                 <div className='h-[15%]'>
                     <h2 className='font-poppins font-semibold text-[16px]'>Messages</h2>
                     <div className='relative'>
-                        <input type='text' placeholder='Search' className='text-[14px] pl-[30px] pr-[10px] font-poppins w-full h-[35px] focus:outline-0 rounded-md border-[#cacaca] mt-[5px] border-[1px]' />
+                        <input type='text' placeholder='Search' className='text-[14px] pl-[30px] pr-[10px] w-full h-[35px] focus:outline-0 rounded-md border-[#cacaca] mt-[5px] border-[1px]' />
                         <i className='top-[57%] translate-y-[-50%] left-[8px] bx bx-search text-[#999] text-[19px] absolute'></i>
                     </div>
                 </div>

@@ -18,6 +18,7 @@ const SignIn = () => {
     const [password, setPassword] = useState('')
 
     const handleSignIn = () => {
+        handler.notify(notifyType.LOADING, 'Verifying Account')
         api({ body: { phone: formatPhoneByFireBase(phone), password }, path: '/sign-in', type: TypeHTTP.POST, sendToken: false })
             .then(res => {
                 listHandler.setUser(res.user)
@@ -33,6 +34,7 @@ const SignIn = () => {
                     handler.setUser(res?.user)
                     router.push('/messages')
                 }
+                handler.notify(notifyType.NONE, '')
             })
             .catch(error => {
                 if (pathname === '/sign-in') {

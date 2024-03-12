@@ -72,7 +72,7 @@ const CreateGroupPage = () => {
                         <i onClick={() => inputRef.current.click()} className='cursor-pointer bx bx-pencil top-[0rem] right-0 text-[22px] text-[#5f5f5f] absolute' ></i>
                     </div>
                     <div className='relative mt-[1rem]'>
-                        <input type='text' onChange={e => setName(e.target.value)} value={name} placeholder='Group Name' className='text-[14px] w-[300px] pl-[30px] pr-[10px] font-poppins h-[35px] focus:outline-0 rounded-md border-[#cacaca] border-[1px]' />
+                        <input type='text' onChange={e => setName(e.target.value)} value={name} placeholder='Group Name' className='text-[14px] w-[300px] pl-[30px] pr-[10px] h-[35px] focus:outline-0 rounded-md border-[#cacaca] border-[1px]' />
                         <i className='top-[50%] translate-y-[-50%] left-[8px] bx bx-pencil text-[#999] text-[19px] absolute'></i>
                     </div>
                     <div className='mt-[1.5rem] w-full'>

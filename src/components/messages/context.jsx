@@ -21,6 +21,8 @@ export const ProviderContext = ({ children }) => {
     const [pictureVideos, setPictureVideos] = useState([])
     const [reply, setReply] = useState()
 
+    useEffect(() => { console.log(rooms) }, [rooms])
+
     useEffect(() => {
         if (data.user?._id) {
             api({ type: TypeHTTP.GET, sendToken: true, path: `/friends-operating/${data.user?._id}` })

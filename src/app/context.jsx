@@ -139,7 +139,7 @@ export const ProviderContext = ({ children }) => {
             {children}
             <div ref={wrapperRef} onClick={() => { hiddenUserInformation(); hiddenImage(); hiddenVideo() }} className="wrapper fixed top-0 left-0 hidden w-screen h-screen z-50" />
             <Notification status={info.status} message={info.message} />
-            <FormInformation user={userInformation} />
+            <FormInformation userInfo={userInformation} />
             <img src={urlImage} className="max-w-[400px] max-h-[500px] z-50 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]" />
             <video src={urlVideo} style={{ display: urlVideo === '' ? 'none' : 'block' }} controls className="max-w-[400px] max-h-[500px] z-40 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]" />
         </ThemeContext.Provider>

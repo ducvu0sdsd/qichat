@@ -101,7 +101,7 @@ const InformationArea = () => {
                     {groupName === '' ?
                         <span className='text-[19px] font-semibold'>
                             {returnName(listData.currentRoom, data.user)}
-                            <i onClick={() => setGroupName(returnName(listData.currentRoom, data.user))} className='cursor-pointer bx bx-pencil ml-2 text-[22px] text-[#5f5f5f]' ></i>
+                            {listData.currentRoom?.type === 'Group' && <i onClick={() => setGroupName(returnName(listData.currentRoom, data.user))} className='cursor-pointer bx bx-pencil ml-2 text-[22px] text-[#5f5f5f]' ></i>}
                         </span>
                         :
                         <div className='flex items-center flex-col gap-1 my-2'>

@@ -65,9 +65,9 @@ const MessageSection = ({ style, message, handleShowUserInformation }) => {
                         )}
                         <MessageItem style={style} message={message.information} type={message.typeMessage} />
                         {message.emojis.length > 0 &&
-                            <div className='z-0 p-1 flex rounded-full bg-[#EFF5FD] absolute left-[5px] bottom-[-15px]'>
+                            <div style={style === 'end' ? { right: '5px' } : { left: '5px' }} className='z-0 p-1 flex rounded-full bg-[#EFF5FD] absolute bottom-[-15px]'>
                                 {message.emojis.map((e, index) => {
-                                    if (index <= 2)
+                                    if (index <= 3)
                                         return <span key={index} className='text-[13px]'>{emoji(e.status)}</span>
                                 })}
                             </div>

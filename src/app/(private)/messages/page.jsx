@@ -11,6 +11,22 @@ import { TypeHTTP, api } from '@/utils/api';
 const MesagesPage = () => {
 
     const { listData, listHandler } = useContext(MessagesContext)
+    useEffect(() => {
+        const id = globalThis.window.localStorage.getItem('userForCurrentRoom')
+        if (id) {
+            const room = listData.rooms.filter(item => {
+                if (item.type === 'Single') {
+                    if (item.users.map(i => i._id).includes(id)) {
+                        return item
+                    }
+                }
+            })[0]
+            if (room) {
+                listHandler.setCurrentRoom(room)
+                globalThis.window.localStorage.removeItem('room_id')
+            }
+        }
+    }, [listData.rooms])
 
 
     return (
