@@ -21,23 +21,25 @@ export const ProviderContext = ({ children }) => {
     const [pictureVideos, setPictureVideos] = useState([])
     const [reply, setReply] = useState()
 
-    useEffect(() => { console.log(rooms) }, [rooms])
-
     useEffect(() => {
         if (data.user?._id) {
             api({ type: TypeHTTP.GET, sendToken: true, path: `/friends-operating/${data.user?._id}` })
                 .then(users => {
                     setFriendsOperation(users)
                 })
-            socket.on('update-operation-rooms', () => {
-                api({ type: TypeHTTP.GET, path: `/rooms/${data.user?._id}`, sendToken: true })
-                    .then(rooms => {
-                        setRooms(rooms)
-                    })
+            socket.on('update-operation-rooms', (body) => {
+                if (body.friends_id?.includes(data.user?._id)) {
+                    api({ type: TypeHTTP.GET, path: `/rooms/${data.user?._id}`, sendToken: true })
+                        .then(rooms => {
+                            setRooms(rooms)
+                        })
+                }
             })
-            socket.on('update-operation-friends', () => {
-                api({ type: TypeHTTP.GET, sendToken: true, path: `/friends-operating/${data.user?._id}` })
-                    .then(users => setFriendsOperation(users))
+            socket.on('update-operation-friends', (body) => {
+                if (body.friends_id?.includes(data.user?._id)) {
+                    api({ type: TypeHTTP.GET, sendToken: true, path: `/friends-operating/${data.user?._id}` })
+                        .then(users => setFriendsOperation(users))
+                }
             })
         }
     }, [data.user?._id])

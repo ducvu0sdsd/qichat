@@ -43,7 +43,8 @@ const InformationArea = () => {
                         reply: null,
                         information: `${data.user?.fullName} had left this room`,
                         typeMessage: 'text',
-                        user_id: systemID
+                        user_id: systemID,
+                        users: listData.currentRoom?.users.map(item => item._id)
                     }
                     socket.emit('send_message', body)
                 })
@@ -66,7 +67,8 @@ const InformationArea = () => {
                         reply: null,
                         information: `${data.user?.fullName} has renamed the group "${groupName}"`,
                         typeMessage: 'text',
-                        user_id: systemID
+                        user_id: systemID,
+                        users: listData.currentRoom?.users.map(item => item._id)
                     }
                     socket.emit('send_message', body)
                     setGroupName('')
@@ -85,7 +87,8 @@ const InformationArea = () => {
                     reply: null,
                     information: ``,
                     typeMessage: 'text',
-                    user_id: systemID
+                    user_id: systemID,
+                    users: listData.currentRoom?.users.map(item => item._id)
                 }
                 socket.emit('send_message', body)
                 setGroupName('')

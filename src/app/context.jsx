@@ -59,7 +59,9 @@ export const ProviderContext = ({ children }) => {
                     }
                     api({ type: TypeHTTP.PUT, sendToken: false, path: `/users/${user._id}`, body: user })
                         .then(res => {
-                            socket.emit('update-room')
+                            const friends_id = res.friends.map(item => item._id)
+                            friends_id.push(res._id)
+                            socket.emit('update-room', friends_id)
                         })
                 })
                 .catch((error) => {

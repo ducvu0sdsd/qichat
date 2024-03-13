@@ -72,7 +72,8 @@ const MessageArea = () => {
                     },
                     information,
                     typeMessage: 'text',
-                    user_id: data.user._id
+                    user_id: data.user._id,
+                    users: listData.currentRoom?.users.map(item => item._id)
                 }
                 socket.emit('send_message', body)
                 setInformation('')
@@ -191,7 +192,7 @@ const MessageArea = () => {
             .then(res => {
                 handler.setUser(res.user)
                 setRequest(undefined)
-                socket.emit('update-room')
+                socket.emit('update-room', data.user?.friends(item => item._id))
                 handler.notify(notifyType.SUCCESS, 'Accept Request Successfully')
             })
             .catch(error => console.log(error))
