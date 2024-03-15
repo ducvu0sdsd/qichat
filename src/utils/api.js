@@ -1,7 +1,7 @@
 import axios from "axios";
-// export const baseURL = 'http://localhost:8080'
+export const baseURL = 'https://qichat-be.vercel.app'
 export const systemID = '5f4a3e1b2c3d4e5f67890abc'
-export const baseURL = 'https://shoeshop-backend.online'
+// export const baseURL = 'https://shoeshop-backend.online'
 axios.defaults.baseURL = `${baseURL}/v1/api`
 
 export const TypeHTTP = {
