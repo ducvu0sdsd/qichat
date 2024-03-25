@@ -5,11 +5,12 @@ import { AuthContext } from '@/components/auth/context';
 import Logo from '@/components/logo';
 import React, { useContext, useEffect, useState } from 'react';
 import { TypeHTTP, api } from '@/utils/api';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ThemeContext, notifyType } from '@/app/context';
 
 const Verification = () => {
+    const pathname = usePathname()
     const router = useRouter();
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('')
@@ -19,22 +20,28 @@ const Verification = () => {
     const { handler } = useContext(ThemeContext)
 
     useEffect(() => {
-        if (listData.user.phone) {
+        if (!listData.user) {
+            router.push('/sign-up')
+        }
+    }, [pathname])
+
+    useEffect(() => {
+        if (listData.user?.phone) {
             setPhone(listData.user.phone);
             const recaptcha = new RecaptchaVerifier(auth, 'recaptcha', {})
             signInWithPhoneNumber(auth, listData.user.phone, recaptcha)
                 .then(confirmation => {
                     setVerification(confirmation)
                 })
-        } else if (listData.user.email) {
+        } else if (listData.user?.email) {
             setEmail(listData.user.email)
-            sendEmailVerification(auth.currentUser)
+            api({ sendToken: false, path: `/send-verify-code/${listData.user.email}`, type: TypeHTTP.POST })
             globalThis.window.localStorage.setItem('currentEmail', listData.user.email)
             globalThis.window.localStorage.setItem('currentUser', listData.user._id)
         }
     }, [listData.user]);
 
-    const handleSubmitOTP = () => {
+    const handleSubmitOTPWithPhoneNumber = () => {
         verification.confirm(otp)
             .then(data => {
                 const user = listData.user
@@ -47,6 +54,22 @@ const Verification = () => {
             })
             .catch(() => {
                 handler.notify(notifyType.FAIL, 'Verification codes do not match')
+            })
+    }
+
+    const handleSubmitOTPWithGmail = () => {
+        api({ type: TypeHTTP.POST, sendToken: false, path: '/verify-gmail', body: { code: otp, email } })
+            .then(res => {
+                const user = listData.user
+                api({ type: TypeHTTP.PUT, body: { statusSignUp: 'Complete Step 2' }, path: `/users/${user._id}`, sendToken: false })
+                    .then(res => {
+                        if (res) {
+                            router.push('/sign-up/information')
+                        }
+                    })
+            })
+            .catch(error => {
+                handler.notify(notifyType.FAIL, error.message.data)
             })
     }
 
@@ -70,7 +93,13 @@ const Verification = () => {
                 {phone !== '' && (
                     <>
                         <input onChange={(e) => setOtp(e.target.value)} value={otp} type='text' placeholder='Enter OTP' className='focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
-                        <button onClick={() => handleSubmitOTP()} type='submit' className='bg-[#e77373] w-[300px] h-[40px] rounded-[10px] text-[white] mt-[15px]'>Submit</button>
+                        <button onClick={() => handleSubmitOTPWithPhoneNumber()} type='submit' className='bg-[#e77373] w-[300px] h-[40px] rounded-[10px] text-[white] mt-[15px]'>Submit</button>
+                    </>
+                )}
+                {email !== '' && (
+                    <>
+                        <input onChange={(e) => setOtp(e.target.value)} value={otp} type='text' placeholder='Enter OTP' className='focus:outline-0 px-[15px] mt-[15px] bg-[#f5f2f2] w-[500px] h-[45px] rounded-[5px] ' />
+                        <button onClick={() => handleSubmitOTPWithGmail()} type='submit' className='bg-[#e77373] w-[300px] h-[40px] rounded-[10px] text-[white] mt-[15px]'>Submit</button>
                     </>
                 )}
             </div>

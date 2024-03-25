@@ -4,7 +4,7 @@ import { AuthContext } from '@/components/auth/context'
 import Logo from '@/components/logo'
 import { TypeHTTP, api } from '@/utils/api'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 
 const genders = {
@@ -14,6 +14,7 @@ const genders = {
 }
 
 const Information = () => {
+    const pathname = usePathname()
     const [fullName, setFullName] = useState('')
     const [dateOfBirth, setDateOfBirth] = useState()
     const [bio, setBio] = useState('')
@@ -22,7 +23,11 @@ const Information = () => {
     const { listData, listHandler } = useContext(AuthContext);
     const router = useRouter();
 
-    useEffect(() => console.log(listData.user), [listData.user])
+    useEffect(() => {
+        if (!listData.user) {
+            router.push('/sign-up')
+        }
+    }, [pathname])
 
     const handleSubmitInformation = () => {
         if (gender === genders.none)
