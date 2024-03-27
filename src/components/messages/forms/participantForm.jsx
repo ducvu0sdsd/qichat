@@ -37,7 +37,7 @@ const ParticipantForm = ({ participants }) => {
                         room_id: listData.currentRoom._id,
                         reply: null,
                         information: `${data.user?.fullName} invited ${usersJoinGroup.map(item => item.fullName).join(', ')} to join the group`,
-                        typeMessage: 'text',
+                        typeMessage: 'notify',
                         user_id: systemID
                     }
                     socket.emit('send_message', body)
@@ -47,7 +47,7 @@ const ParticipantForm = ({ participants }) => {
                         room_id: listData.currentRoom._id,
                         reply: null,
                         information: `${data.user?.fullName} invited ${leftUsers.map(item => item.fullName).join(', ')} out of the group`,
-                        typeMessage: 'text',
+                        typeMessage: 'notify',
                         user_id: systemID
                     }
                     socket.emit('send_message', body)

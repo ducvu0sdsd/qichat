@@ -97,6 +97,7 @@ const MessageArea = () => {
                     users: listData.currentRoom?.users.map(item => item._id)
                 }
                 socket.emit('send_message', body)
+                listHandler.setMessages([...listData.messages, body])
                 setInformation('')
                 listHandler.setReply(undefined)
             }
@@ -231,7 +232,7 @@ const MessageArea = () => {
                             <div className='flex flex-col ml-[10px]'>
                                 <span className='font-semibold text-[15px] h-[22px]'>
                                     {returnName(listData.currentRoom, data.user)}
-                                    {!data.user?.friends.map(item => item._id).includes(returnID(listData.currentRoom, data.user)) &&
+                                    {/* {!data.user?.friends.map(item => item._id).includes(returnID(listData.currentRoom, data.user)) &&
                                         <>
                                             {!request ? <button onClick={() => handleCreateRequest()} style={{ backgroundImage: 'url(/bg.webp)' }} className='ml-3 text-[white] py-1 px-2 text-[12px] rounded-lg'>Add Friend</button>
                                                 :
@@ -244,7 +245,7 @@ const MessageArea = () => {
                                                     <button className='text-[12px] bg-[green] font-poppins py-1 px-3 text-[white] rounded-lg font-semibold ml-3'>Friend request sent</button>
                                             }
                                         </>
-                                    }
+                                    } */}
                                 </span>
                                 {listData.currentRoom.type !== 'Group' ?
                                     data.user.friends.map(item => item._id).includes(returnID(listData.currentRoom, data.user)) ?
@@ -271,7 +272,7 @@ const MessageArea = () => {
                             :
                             <>
                                 {listData.messages.map((message, index) => (
-                                    <MessageSection handleShowUserInformation={handleShowUserInformation} style={message.user?._id !== data.user._id ? 'start' : 'end'} message={message} key={index} />
+                                    <MessageSection handleShowUserInformation={handleShowUserInformation} style={message.user_id !== data.user._id ? 'start' : 'end'} message={message} key={index} />
                                 ))}
                             </>
                         }

@@ -53,14 +53,14 @@ const MessageSection = ({ style, message, handleShowUserInformation }) => {
     // })
 
     return (
-        <>{message.user ?
-            <div style={{ alignItems: style }} className='hover:z-10 z-0 flex flex-col my-[1rem]'>
+        <>{message.typeMessage !== 'notify' ?
+            <div style={{ alignItems: style }} className='hover:z-10 z-0 flex flex-col my-[12px]'>
                 <div className='flex gap-1 items-end'>
                     {style === 'start' && (<div onClick={() => handleShowUserInformation(message.user._id)} className='cursor-pointer'><UserIcon avatar={message.user?.avatar} /></div>)}
                     {message.disabled ?
                         <div>
                             {style === 'start' && (<span className='text-[10px] translate-y-[3px] font-semibold'>{message.user?.fullName.split(' ')[message.user?.fullName.split(' ').length - 1]} </span>)}
-                            <div className='bg-[#f5f5f5c3] py-2 px-3 rounded-lg text-[13px]'>
+                            <div className='bg-[#f5f5f5c3] py-1 px-3 rounded-lg text-[11px]'>
                                 <i className="fa-solid cursor-pointer fa-delete-left text-[#999]"></i> The message has been revoked
                             </div>
                         </div>
@@ -73,8 +73,8 @@ const MessageSection = ({ style, message, handleShowUserInformation }) => {
                                 </div>
                             )}
                             <MessageItem style={style} message={message.information} type={message.typeMessage} />
-                            {message.emojis.length > 0 &&
-                                <div style={{ left: '5px' }} className='z-0 p-1 flex rounded-full bg-[#EFF5FD] absolute bottom-[-15px]'>
+                            {message.emojis?.length > 0 &&
+                                <div style={{ left: '5px', bottom: '-10px' }} className='z-0 flex rounded-full bg-[#EFF5FD] absolute bottom-[-15px]'>
                                     {message.emojis.map((e, index) => {
                                         if (index <= 3)
                                             return <span key={index} className='text-[13px]'>{emoji(e.status)}</span>
