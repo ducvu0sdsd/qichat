@@ -16,10 +16,24 @@ export const ProviderContext = ({ children }) => {
     const [currentRoom, setCurrentRoom] = useState()
     const [displayInfo, setDisplayInfo] = useState(false)
     const [messages, setMessages] = useState([])
+    const [usersSeen, setUsersSeen] = useState([])
     const { data, handler } = useContext(ThemeContext)
     const [participants, setParticipants] = useState([])
     const [pictureVideos, setPictureVideos] = useState([])
     const [reply, setReply] = useState()
+
+    useEffect(() => {
+        console.log(usersSeen)
+    }, [usersSeen])
+
+    useEffect(() => {
+        socket.on(`update_seen_${currentRoom?._id}`, (data) => {
+            setUsersSeen(data.users)
+        })
+        return () => {
+            socket.off(`update_seen_${currentRoom?._id}`)
+        }
+    }, [currentRoom])
 
     useEffect(() => {
         if (data.user?._id) {
@@ -41,6 +55,11 @@ export const ProviderContext = ({ children }) => {
                         .then(users => setFriendsOperation(users))
                 }
             })
+        }
+
+        return () => {
+            socket.off('update-operation-rooms')
+            socket.off('update-operation-friends')
         }
     }, [data.user?._id])
 
@@ -78,10 +97,12 @@ export const ProviderContext = ({ children }) => {
         friendsOperation,
         participants,
         pictureVideos,
-        reply
+        reply,
+        usersSeen
     }
 
     const listHandler = {
+        setUsersSeen,
         setJoined,
         setDisplayInfo,
         setRooms,

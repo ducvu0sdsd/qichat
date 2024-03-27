@@ -31,7 +31,23 @@ const MessageArea = () => {
     const [request, setRequest] = useState()
     const [typeInput, setTypeInput] = useState(types.IMAGE)
     const [replyHeight, setReplyHeight] = useState(0)
+    const [updateSeen, setUpdateSeen] = useState(false)
     const inputRef = useRef()
+
+    useEffect(() => {
+        globalThis.window.localStorage.removeItem('userForCurrentRoom')
+        let updated = false
+        if (listData.currentRoom && listData.messages.length > 1) {
+            const user = listData.currentRoom.users.filter(item => item._id === data.user?._id)[0]
+            if (user.seen !== listData.messages[listData.messages.length - 1]._id) {
+                socket.emit('update_seen', { room_id: listData.currentRoom._id, user_id: data.user?._id, seen: listData.messages[listData.messages.length - 1]._id, users: listData.currentRoom.users.map(item => item._id) })
+            } else {
+                listHandler.setUsersSeen(listData.currentRoom.users)
+            }
+        }
+        if (updated === false)
+            listHandler.setUsersSeen(listData.currentRoom?.users)
+    }, [listData.messages, listData.currentRoom])
 
     useEffect(() => {
         api({ type: TypeHTTP.POST, sendToken: true, path: '/requests/get-by-2-user', body: { user_id1: returnID(listData.currentRoom, data.user), user_id2: data.user?._id } })
@@ -47,14 +63,19 @@ const MessageArea = () => {
                 behavior: 'smooth',
             });
         }, 500);
-    }, [listData.messages])
+    }, [listData.messages?.length])
 
     useEffect(() => {
         socket.on(listData.currentRoom?._id, (messages) => {
-            listHandler.setMessages(messages)
+            if (listData.currentRoom?._id === messages[0].room_id) {
+                listHandler.setMessages(messages)
+            }
         })
 
-    }, [socket, listData.currentRoom?._id])
+        return () => {
+            socket.off(listData.currentRoom?._id);
+        }
+    }, [socket, listData.currentRoom])
 
     useEffect(() => {
         if (images.length === 0 && videos.length === 0)
@@ -113,6 +134,7 @@ const MessageArea = () => {
                     listHandler.setReply(undefined)
                 })
         }
+        setUpdateSeen(!updateSeen)
     }
 
     const handleKeyDown = (event) => {
@@ -225,7 +247,10 @@ const MessageArea = () => {
                                     }
                                 </span>
                                 {listData.currentRoom.type !== 'Group' ?
-                                    <span className='font-semibold text-[12px]'>{returnRemainingObject(listData.currentRoom, data.user).operating.status ? <span className='text-[#3e9042] text-[12px]'>Active Now</span> : `Operated in ${tinhSoPhutCham(returnRemainingObject(listData.currentRoom, data.user).operating.time) ? tinhSoPhutCham(returnRemainingObject(listData.currentRoom, data.user).operating.time) : '0 second'} ago`}</span>
+                                    data.user.friends.map(item => item._id).includes(returnID(listData.currentRoom, data.user)) ?
+                                        <span className='font-semibold text-[12px]'>{returnRemainingObject(listData.currentRoom, data.user).operating.status ? <span className='text-[#3e9042] text-[12px]'>Active Now</span> : `Operated in ${tinhSoPhutCham(returnRemainingObject(listData.currentRoom, data.user).operating.time) ? tinhSoPhutCham(returnRemainingObject(listData.currentRoom, data.user).operating.time) : '0 second'} ago`}</span>
+                                        :
+                                        <span className='font-semibold text-[12px] text-[green]'>Stranger</span>
                                     :
                                     <span className='font-semibold text-[12px]'>{listData.currentRoom.users.length} participants</span>
                                 }

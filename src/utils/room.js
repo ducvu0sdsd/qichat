@@ -5,7 +5,7 @@ export const returnImage = (room, currentUser) => {
         return undefined
     if (room.type === 'Group')
         return room.image
-    return room.users.filter(user => user.fullName !== currentUser.fullName)[0].avatar
+    return room.users?.filter(user => user.fullName !== currentUser.fullName)[0].avatar
 }
 
 export const returnName = (room, currentUser) => {
@@ -13,7 +13,7 @@ export const returnName = (room, currentUser) => {
         return undefined
     if (room.type === 'Group')
         return room.name
-    return room.users.filter(user => user.fullName !== currentUser.fullName)[0].fullName
+    return room.users?.filter(user => user.fullName !== currentUser.fullName)[0].fullName
 }
 
 export const returnID = (room, currentUser) => {
@@ -21,9 +21,10 @@ export const returnID = (room, currentUser) => {
         return undefined
     if (room.type === 'Group')
         return room.name
-    return room.users.filter(user => user.fullName !== currentUser.fullName)[0]._id
+    return room.users?.filter(user => user.fullName !== currentUser.fullName)[0]._id
 }
 
 export const returnRemainingObject = (room, currentUser) => {
-    return room?.users.filter(user => user.fullName !== currentUser.fullName)[0]
+    return room?.users?.filter(user => user.fullName !== currentUser.fullName)[0]
 }
+
